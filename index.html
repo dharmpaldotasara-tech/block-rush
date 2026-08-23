@@ -12,10 +12,10 @@
 }
 body{
   margin:0;min-height:100vh;font-family:Arial,sans-serif;color:var(--text);
-  display:flex;justify-content:center;align-items:center;overflow:hidden;
+  display:flex;justify-content:center;align-items:center;overflow:auto;
   background:radial-gradient(circle at top,#2563eb 0%,#111827 100%);
 }
-.app{width:min(94vw,520px);padding:18px 14px 22px}
+.app{width:min(94vw,520px);padding:14px 14px 28px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
 .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
 .logo{font-size:34px;font-weight:900;letter-spacing:1px}
 .logo span{color:#ffd43b}
@@ -46,8 +46,8 @@ body{
   border:0;border-radius:13px;background:#fff;color:#1161d8;padding:11px 18px;
   font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18)
 }
-.pieces{display:flex;justify-content:space-around;align-items:center;min-height:105px;gap:10px}
-.piece-slot{width:31%;height:95px;display:flex;justify-content:center;align-items:center}
+.pieces{display:flex;justify-content:space-around;align-items:center;min-height:82px;gap:10px}
+.piece-slot{width:31%;height:78px;display:flex;justify-content:center;align-items:center}
 .piece{
   display:grid;gap:4px;cursor:grab;touch-action:none;user-select:none;
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));transition:transform .1s
@@ -55,9 +55,9 @@ body{
 .piece.dragging{position:fixed;z-index:20;pointer-events:none;transform:scale(1.15)}
 .mini-cell{width:20px;height:20px;border-radius:5px}
 .yellow{background:#ffe27a}.cyan{background:#5fe3ff}.pink{background:#ff8ad8}
-.controls{display:flex;gap:8px;margin-top:6px}
+.controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .control{
-  flex:1;border:0;border-radius:14px;padding:11px 6px;background:#fff;color:#1764d9;
+  flex:1 1 30%;min-width:0;border:0;border-radius:14px;padding:11px 6px;background:#fff;color:#1764d9;
   font-weight:900;cursor:pointer
 }
 .hint{text-align:center;font-size:11px;opacity:.8;margin-top:8px}
@@ -75,6 +75,16 @@ body{
 @media(max-width:430px){
  .logo{font-size:28px}.game-card{padding:12px}.board{gap:4px}.cell{border-radius:6px}
  .mini-cell{width:18px;height:18px}
+}
+
+@media (max-height:850px){
+  .app{padding:8px 12px 14px;justify-content:flex-start}
+  .header{margin-bottom:6px}.logo{font-size:27px}#score{font-size:25px}
+  .game-card{padding:10px;border-radius:18px}
+  .board{max-width:350px;gap:4px;padding:5px}
+  .pieces{min-height:68px}.piece-slot{height:64px}.mini-cell{width:17px;height:17px}
+  .hint{margin-top:3px;font-size:10px}.controls{margin-top:6px}
+  .control{padding:8px 5px;font-size:11px}
 }
 </style>
 </head>
@@ -286,16 +296,18 @@ const melody = [
   440.00, 392.00, 329.63, 293.66
 ];
 
-function startMusic(){
+async function startMusic(){
   if(!musicOn || musicTimer) return;
   try{
     const C = window.AudioContext || window.webkitAudioContext;
     if(!C) return;
     if(!musicCtx) musicCtx = new C();
-    if(musicCtx.state === 'suspended') musicCtx.resume();
+    if(musicCtx.state === 'suspended') await musicCtx.resume();
+    if(musicCtx.state !== 'running') return;
 
+    if(musicGain) { try { musicGain.disconnect(); } catch(e){} }
     musicGain = musicCtx.createGain();
-    musicGain.gain.value = 0.035;
+    musicGain.gain.value = 0.06;
     musicGain.connect(musicCtx.destination);
 
     musicStep = 0;
@@ -303,23 +315,19 @@ function startMusic(){
       if(!musicOn || !musicCtx || musicCtx.state !== 'running') return;
       const osc = musicCtx.createOscillator();
       const gain = musicCtx.createGain();
-      osc.type = 'sine';
+      osc.type = 'triangle';
       osc.frequency.value = melody[musicStep % melody.length];
       gain.gain.setValueAtTime(0.0001, musicCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.045, musicCtx.currentTime + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + 0.28);
-      osc.connect(gain);
-      gain.connect(musicGain);
-      osc.start();
-      osc.stop(musicCtx.currentTime + 0.3);
+      gain.gain.exponentialRampToValueAtTime(0.10, musicCtx.currentTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + 0.30);
+      osc.connect(gain); gain.connect(musicGain);
+      osc.start(); osc.stop(musicCtx.currentTime + 0.31);
       musicStep++;
     };
-
     playNote();
-    musicTimer = setInterval(playNote, 320);
-  }catch(e){}
+    musicTimer = setInterval(playNote, 340);
+  }catch(e){ console.log('Music error:',e); }
 }
-
 function stopMusic(){
   if(musicTimer){ clearInterval(musicTimer); musicTimer=null; }
   if(musicGain){
@@ -341,7 +349,7 @@ function beep(freq=500,dur=.05){
  try{
    const C=window.AudioContext||window.webkitAudioContext,ctx=new C();
    const o=ctx.createOscillator(),g=ctx.createGain();
-   o.frequency.value=freq;o.type='sine';g.gain.value=.025;
+   o.frequency.value=freq;o.type='sine';g.gain.value=.05;
    o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+dur);
  }catch(e){}
 }
@@ -356,11 +364,11 @@ function setSound(v){sound=v;document.getElementById('soundToggle').textContent=
 function setVib(v){vibration=v;document.getElementById('vibToggle').textContent=v?'ON':'OFF';document.getElementById('vibrationBtn').textContent=v?'📳 VIBRATION':'📴 VIBRATION'}
 document.getElementById('soundToggle').onclick=()=>setSound(!sound);
 document.getElementById('vibToggle').onclick=()=>setVib(!vibration);
-document.getElementById('soundBtn').onclick=()=>setMusic(!musicOn);
+document.getElementById('soundBtn').onclick=()=>{ if(!musicOn) setMusic(true); else startMusic(); };
 document.getElementById('vibrationBtn').onclick=()=>setVib(!vibration);
 document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 
-['pointerdown','keydown','touchstart'].forEach(evt=>{
+['pointerdown','keydown','touchstart','click'].forEach(evt=>{
   document.addEventListener(evt, ()=>startMusic(), {once:true, passive:true});
 });
 
