@@ -87,12 +87,30 @@ body{
   .control{padding:8px 5px;font-size:11px}
 }
 </style>
+
+<style id="level-system-style">
+#level{letter-spacing:1px}
+.level-up-overlay{
+ position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+ background:rgba(5,15,60,.58);z-index:9999;pointer-events:none;
+}
+.level-up-card{
+ padding:28px 34px;border-radius:22px;background:rgba(30,120,255,.96);
+ color:#fff;text-align:center;box-shadow:0 15px 50px rgba(0,0,0,.35);
+ font-family:Arial,sans-serif;
+}
+.level-up-card .big{font-size:34px;font-weight:900;margin-bottom:6px}
+.level-up-card .small{font-size:16px;font-weight:700}
+</style>
+
 </head>
 <body>
 <div class="app">
   <div class="header">
     <div class="logo">BLOCK <span>RUSH</span></div>
-    <div class="scorebox"><small>SCORE</small><div id="score">0</div></div>
+    <div class="scorebox"><small>SCORE</small><div id="level" style="font-weight:800;margin-bottom:4px;">LEVEL 1</div>
+<div id="levelProgress" style="font-size:12px;margin-top:4px;opacity:.9;">Clear 2 more lines to level up</div>
+<div id="score">0</div></div>
   </div>
 
   <div class="game-card">
@@ -411,6 +429,94 @@ window.addEventListener("pointerdown", () => {
 window.addEventListener("keydown", () => {
   try { startMusic(); } catch(e) {}
 }, { once: true });
+</script>
+
+
+<script id="level-system">
+(() => {
+  let gameLevel = 1;
+  let linesForNextLevel = 2;
+  let clearedLines = 0;
+
+  function getEl(id){ return document.getElementById(id); }
+
+  function updateLevelUI(){
+    const levelEl = getEl("level");
+    const progressEl = getEl("levelProgress");
+    if(levelEl) levelEl.textContent = "LEVEL " + gameLevel;
+    if(progressEl){
+      const left = Math.max(1, linesForNextLevel - clearedLines);
+      progressEl.textContent = "Clear " + left + " more line" + (left === 1 ? "" : "s") + " to level up";
+    }
+  }
+
+  function showLevelUp(){
+    const overlay = document.createElement("div");
+    overlay.className = "level-up-overlay";
+    overlay.innerHTML =
+      '<div class="level-up-card">' +
+      '<div class="big">LEVEL ' + gameLevel + ' 🎉</div>' +
+      '<div class="small">Difficulty increased!</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 1100);
+  }
+
+  function levelUpIfNeeded(lines){
+    if(!lines || lines < 1) return;
+    clearedLines += lines;
+
+    while(clearedLines >= linesForNextLevel){
+      clearedLines -= linesForNextLevel;
+      gameLevel++;
+      // Each new level requires more cleared lines.
+      linesForNextLevel = Math.min(8, 2 + Math.floor((gameLevel - 1) * 0.7));
+      showLevelUp();
+    }
+    updateLevelUI();
+  }
+
+  // Expose a simple hook so the existing row/column-clear logic can call it.
+  window.blockRushLevelUp = levelUpIfNeeded;
+
+  // Try to hook into common clear-line functions without changing gameplay logic.
+  const candidates = ["clearLines","clearCompletedLines","checkLines","clearFullLines","removeCompleted"];
+  for(const name of candidates){
+    if(typeof window[name] === "function" && !window[name].__levelWrapped){
+      const original = window[name];
+      const wrapped = function(){
+        const before = document.querySelectorAll(".cell.filled,.filled").length;
+        const result = original.apply(this, arguments);
+        let count = 0;
+        if(typeof result === "number") count = result;
+        else if(arguments.length && typeof arguments[0] === "number") count = arguments[0];
+        if(count > 0) levelUpIfNeeded(count);
+        return result;
+      };
+      wrapped.__levelWrapped = true;
+      window[name] = wrapped;
+    }
+  }
+
+  // Reset on New Game.
+  document.addEventListener("click", e => {
+    const t = e.target;
+    if(t && ((t.textContent || "").trim().toUpperCase() === "NEW GAME" || t.id === "newGame")){
+      gameLevel = 1;
+      clearedLines = 0;
+      linesForNextLevel = 2;
+      updateLevelUI();
+    }
+  });
+
+  // Difficulty scaling hook: existing game code can use this value if supported.
+  Object.defineProperty(window, "blockRushLevel", {
+    configurable:true,
+    get:() => gameLevel
+  });
+
+  updateLevelUI();
+})();
 </script>
 
 </body>
