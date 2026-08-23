@@ -49,7 +49,7 @@ body{
 .pieces{display:flex;justify-content:space-around;align-items:center;min-height:82px;gap:10px}
 .piece-slot{width:31%;height:78px;display:flex;justify-content:center;align-items:center}
 .piece{
-  display:grid;grid-auto-rows:20px;align-content:start;gap:4px;min-width:20px;min-height:20px;cursor:grab;touch-action:none;user-select:none;
+  display:grid;grid-auto-rows:20px;align-content:start;gap:4px;min-width:20px;min-height:20px;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));transition:transform .1s
 }
 .piece.dragging{position:fixed;z-index:20;pointer-events:none;transform:scale(1.15)}
@@ -159,6 +159,121 @@ body{
 }
 </style>
 
+
+/* FINAL POLISH */
+.level-up-overlay{
+  animation:levelOverlayIn .18s ease-out;
+  background:rgba(3,12,45,.42);
+  backdrop-filter:blur(3px);
+}
+.level-up-card{
+  min-width:min(86vw,380px);
+  padding:30px 34px;
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(145deg,#2b8cff,#1254d8);
+  animation:levelCardPop .72s cubic-bezier(.2,.85,.25,1.2);
+}
+.level-up-card .big{
+  text-shadow:0 4px 18px rgba(0,0,0,.25);
+  animation:levelTextPulse .72s ease-in-out infinite alternate;
+}
+.level-up-card:after{
+  content:"✦  ✦  ✦";
+  display:block;
+  margin-top:12px;
+  font-size:20px;
+  letter-spacing:12px;
+  animation:sparkle 1s ease-in-out infinite;
+}
+@keyframes levelOverlayIn{from{opacity:0}to{opacity:1}}
+@keyframes levelCardPop{0%{transform:scale(.55) rotate(-3deg);opacity:0}60%{transform:scale(1.08) rotate(1deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+@keyframes levelTextPulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+@keyframes sparkle{50%{transform:translateY(-4px);opacity:.65}}
+
+.gameover-modal{
+  position:relative;
+  overflow:hidden;
+  padding:30px 24px 24px;
+  background:linear-gradient(145deg,#155fd7,#082b82);
+}
+.gameover-modal:before{
+  content:"";
+  position:absolute;inset:-80px;
+  background:radial-gradient(circle at 50% 10%,rgba(255,212,59,.28),transparent 35%);
+  pointer-events:none;
+}
+.gameover-badge{
+  position:relative;
+  display:inline-block;
+  padding:7px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:12px;font-weight:900;letter-spacing:1px;
+}
+.gameover-modal h2{
+  position:relative;
+  margin:12px 0 4px;
+  font-size:34px;
+  letter-spacing:.5px;
+}
+.gameover-sub{position:relative;opacity:.82;margin:0 0 18px;font-weight:700}
+.result-grid{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;
+}
+.result-box{
+  padding:13px 8px;border-radius:15px;
+  background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.12);
+}
+.result-box span{display:block;font-size:11px;opacity:.75;font-weight:800;text-transform:uppercase}
+.result-box b{display:block;font-size:23px;margin-top:3px}
+.new-best{
+  position:relative;
+  margin:10px 0 4px;padding:9px 12px;border-radius:12px;
+  background:rgba(255,212,59,.16);color:#ffe27a;font-weight:1000;
+  animation:bestPulse 1s ease-in-out infinite alternate;
+}
+@keyframes bestPulse{to{transform:scale(1.03);box-shadow:0 0 24px rgba(255,212,59,.18)}}
+.gameover-actions{position:relative;display:flex;gap:9px;margin-top:12px}
+.gameover-actions .control{margin:0}
+@media(max-width:430px){
+  body{align-items:flex-start;overflow-x:hidden}
+  .app{width:100%;min-height:100dvh;padding:10px 10px 18px;justify-content:flex-start}
+  .header{margin:3px 2px 8px}
+  .logo{font-size:25px}
+  .scorebox small{font-size:10px}
+  #level{font-size:13px!important}
+  #levelProgress{font-size:10px!important}
+  #score{font-size:27px}
+  .game-card{width:100%;padding:9px;border-radius:18px}
+  .board{width:min(94vw,420px);gap:3px;padding:4px;border-radius:14px}
+  .cell{border-radius:5px}
+  .pieces{min-height:74px;gap:4px}
+  .piece-slot{height:70px}
+  .piece{grid-auto-rows:18px;gap:3px}
+  .mini-cell{width:18px;height:18px;border-radius:4px}
+  .controls{gap:6px;margin-top:6px}
+  .control{padding:10px 4px;font-size:10px;border-radius:12px}
+  .hint{font-size:9px;margin-top:3px}
+  .gameover-modal{width:min(92vw,390px);padding:26px 18px 18px}
+  .gameover-modal h2{font-size:30px}
+  .gameover-actions{flex-direction:column}
+  .gameover-actions .control{width:100%}
+}
+@media(max-height:720px) and (orientation:landscape){
+  .app{min-height:auto;padding:6px 10px}
+  .header{margin-bottom:4px}
+  .logo{font-size:23px}
+  #score{font-size:23px}
+  .board{max-width:min(52vh,340px)}
+  .pieces{min-height:58px}.piece-slot{height:54px}
+  .control{padding:7px 4px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .level-up-card,.level-up-card .big,.level-up-card:after,.new-best{animation:none!important}
+}
+
 </head>
 <body>
 <div class="app">
@@ -200,12 +315,21 @@ body{
 </div>
 
 <div id="gameOverOverlay" class="overlay">
-  <div class="modal">
-    <h2>Game Over!</h2>
-    <p>Your score: <b id="finalScore">0</b></p>
-    <p>🪙 Coins earned this run: <b id="finalCoins">0</b></p>
-    <p id="newBestMsg" style="display:none">🏆 NEW BEST SCORE!</p>
-    <button id="playAgain" class="control">PLAY AGAIN</button>
+  <div class="modal gameover-modal">
+    <div class="gameover-badge">RUN COMPLETE</div>
+    <h2>GAME OVER</h2>
+    <p class="gameover-sub">Great run! Ready for another?</p>
+    <div class="result-grid">
+      <div class="result-box"><span>Score</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Level</span><b id="finalLevel">1</b></div>
+      <div class="result-box"><span>Coins Earned</span><b>🪙 <span id="finalCoins">0</span></b></div>
+      <div class="result-box"><span>Best</span><b id="finalBest">0</b></div>
+    </div>
+    <p id="newBestMsg" class="new-best" style="display:none">🏆 NEW BEST SCORE!</p>
+    <div class="gameover-actions">
+      <button id="playAgain" class="control">▶ PLAY AGAIN</button>
+      <button id="gameOverLeaderboard" class="control">🏆 LEADERBOARD</button>
+    </div>
   </div>
 </div>
 
@@ -387,7 +511,7 @@ function showLevelUp(){
   overlay.className='level-up-overlay';
   overlay.innerHTML='<div class="level-up-card"><div class="big">LEVEL '+level+' 🎉</div><div class="small">Keep going!</div></div>';
   document.body.appendChild(overlay);
-  setTimeout(()=>overlay.remove(),1200);
+  setTimeout(()=>overlay.remove(),1550);
 }
 
 function hasMove(){
@@ -417,11 +541,17 @@ function gameOver(){
  gameEnded = true;
  saveLeaderboard();
  rewardCoins(10);
+
  document.getElementById('finalScore').textContent=score;
+ const fl=document.getElementById('finalLevel'); if(fl) fl.textContent=level;
  const fc=document.getElementById('finalCoins'); if(fc) fc.textContent=runCoins;
- const nb=document.getElementById('newBestMsg'); if(nb) nb.style.display=(score>previousBest?'block':'none');
+ const fb=document.getElementById('finalBest'); if(fb) fb.textContent=Math.max(best,score);
+ const nb=document.getElementById('newBestMsg');
+ if(nb) nb.style.display=(score>previousBest?'block':'none');
+
  document.getElementById('gameOverOverlay').style.display='flex';
  beep(180,.18);
+ playGameOverMusic();
 }
 function hideOverlays(){
  document.querySelectorAll('.overlay').forEach(x=>x.style.display='none');
@@ -573,8 +703,14 @@ function beep(freq=500,dur=.05){
 }
 function vibrate(ms){if(vibration&&navigator.vibrate)navigator.vibrate(ms)}
 
-document.getElementById('newGame').onclick=()=>{beep();resetBoard()};
-document.getElementById('playAgain').onclick=()=>{beep();resetBoard()};
+function startFreshGame(){
+  try{ if(gameOverMusicTimer) clearTimeout(gameOverMusicTimer); }catch(e){}
+  resetBoard();
+  try{startMusic();}catch(e){}
+}
+document.getElementById('newGame').onclick=()=>{beep();startFreshGame()};
+document.getElementById('playAgain').onclick=()=>{beep();startFreshGame()};
+document.getElementById('gameOverLeaderboard').onclick=()=>openLeaderboard();
 document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';
 document.getElementById('closeSettings').onclick=hideOverlays;
 
@@ -612,6 +748,59 @@ document.getElementById('startSettings').onclick=function(){
 };
 
 resetBoard();
+
+let gameOverMusicCtx = null;
+let gameOverMusicTimer = null;
+
+function playGameOverMusic(){
+  try{
+    stopMusic();
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC || !musicOn) return;
+    gameOverMusicCtx = gameOverMusicCtx || new AC();
+    const ctx=gameOverMusicCtx;
+    if(ctx.state==="suspended") ctx.resume();
+
+    if(gameOverMusicTimer) clearTimeout(gameOverMusicTimer);
+    const master=ctx.createGain();
+    master.gain.value=.22;
+    master.connect(ctx.destination);
+
+    const notes=[
+      {f:392,d:.18},{f:349.23,d:.18},{f:329.63,d:.22},
+      {f:261.63,d:.35},{f:293.66,d:.22},{f:261.63,d:.45}
+    ];
+    let t=ctx.currentTime+.04;
+
+    notes.forEach((n,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=i<3?"triangle":"sine";
+      o.frequency.setValueAtTime(n.f,t);
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(.11,t+.015);
+      g.gain.exponentialRampToValueAtTime(.0001,t+n.d);
+      o.connect(g);g.connect(master);
+      o.start(t);o.stop(t+n.d+.04);
+      t+=n.d*.9;
+    });
+
+    // Soft final chord.
+    [130.81,164.81,196].forEach(f=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="sine";o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t-.02);
+      g.gain.exponentialRampToValueAtTime(.035,t+.03);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.75);
+      o.connect(g);g.connect(master);
+      o.start(t-.02);o.stop(t+.8);
+    });
+
+    gameOverMusicTimer=setTimeout(()=>{
+      try{master.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.25)}catch(e){}
+    },850);
+  }catch(e){}
+}
+
 </script>
 
 <script>
