@@ -296,37 +296,73 @@ const melody = [
   440.00, 392.00, 329.63, 293.66
 ];
 
-async function startMusic(){
-  if(!musicOn || musicTimer) return;
-  try{
-    const C = window.AudioContext || window.webkitAudioContext;
-    if(!C) return;
-    if(!musicCtx) musicCtx = new C();
-    if(musicCtx.state === 'suspended') await musicCtx.resume();
-    if(musicCtx.state !== 'running') return;
+async let musicCtx = null;
+let musicTimer = null;
+let musicPlaying = false;
+let musicStep = 0;
 
-    if(musicGain) { try { musicGain.disconnect(); } catch(e){} }
-    musicGain = musicCtx.createGain();
-    musicGain.gain.value = 0.22;
-    musicGain.connect(musicCtx.destination);
+function startMusic() {
+  if (musicPlaying) return;
+  musicPlaying = true;
 
-    musicStep = 0;
-    const playNote = () => {
-      if(!musicOn || !musicCtx || musicCtx.state !== 'running') return;
-      const osc = musicCtx.createOscillator();
-      const gain = musicCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.value = melody[musicStep % melody.length];
-      gain.gain.setValueAtTime(0.0001, musicCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.20, musicCtx.currentTime + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + 0.30);
-      osc.connect(gain); gain.connect(musicGain);
-      osc.start(); osc.stop(musicCtx.currentTime + 0.31);
-      musicStep++;
-    };
-    playNote();
-    musicTimer = setInterval(playNote, 340);
-  }catch(e){ console.log('Music error:',e); }
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+
+  musicCtx = musicCtx || new AC();
+  if (musicCtx.state === "suspended") musicCtx.resume();
+
+  const master = musicCtx.createGain();
+  master.gain.value = 0.16;
+  master.connect(musicCtx.destination);
+
+  // Bright arcade-style instrumental: bass + pluck arpeggio + soft pad.
+  const tempo = 132;
+  const beat = 60 / tempo;
+  const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 293.66, 392.00];
+  const bass  = [130.81, 130.81, 146.83, 146.83, 164.81, 164.81, 146.83, 130.81];
+
+  function tone(freq, duration, type, volume, when) {
+    const osc = musicCtx.createOscillator();
+    const g = musicCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(volume, when + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+    osc.connect(g);
+    g.connect(master);
+    osc.start(when);
+    osc.stop(when + duration + 0.03);
+  }
+
+  function schedule() {
+    if (!musicPlaying) return;
+    const now = musicCtx.currentTime + 0.03;
+
+    for (let i = 0; i < 8; i++) {
+      const t = now + i * beat * 0.5;
+      tone(notes[(musicStep + i) % notes.length], beat * 0.38, "triangle", 0.055, t);
+
+      if (i % 2 === 0) {
+        tone(bass[(musicStep + i) % bass.length], beat * 0.72, "sine", 0.085, t);
+      }
+    }
+
+    // Gentle chord pad every 4 beats.
+    const chord = [notes[musicStep % 8], notes[(musicStep + 2) % 8], notes[(musicStep + 4) % 8]];
+    chord.forEach((f, j) => tone(f / 2, beat * 3.5, "sine", 0.018, now + j * 0.015));
+
+    musicStep = (musicStep + 8) % notes.length;
+    musicTimer = setTimeout(schedule, beat * 4 * 1000 - 40);
+  }
+
+  schedule();
+}
+
+function stopMusic() {
+  musicPlaying = false;
+  if (musicTimer) clearTimeout(musicTimer);
+  musicTimer = null;
 }
 function stopMusic(){
   if(musicTimer){ clearInterval(musicTimer); musicTimer=null; }
@@ -375,5 +411,16 @@ document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 
 resetBoard();
 </script>
+
+<script>
+const musicAutoStartHook = true;
+window.addEventListener("pointerdown", () => {
+  try { startMusic(); } catch(e) {}
+}, { once: true });
+window.addEventListener("keydown", () => {
+  try { startMusic(); } catch(e) {}
+}, { once: true });
+</script>
+
 </body>
 </html>
