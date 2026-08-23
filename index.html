@@ -49,7 +49,7 @@ body{
 .pieces{display:flex;justify-content:space-around;align-items:center;min-height:82px;gap:10px}
 .piece-slot{width:31%;height:78px;display:flex;justify-content:center;align-items:center}
 .piece{
-  display:grid;gap:4px;cursor:grab;touch-action:none;user-select:none;
+  display:grid;grid-auto-rows:20px;align-content:start;gap:4px;min-width:20px;min-height:20px;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));transition:transform .1s
 }
 .piece.dragging{position:fixed;z-index:20;pointer-events:none;transform:scale(1.15)}
@@ -104,58 +104,178 @@ body{
 </style>
 
 
-<style id="pro-polish">
-body{overflow:auto;min-height:100vh}
-.app{position:relative}
-.start-screen{
- position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
- background:radial-gradient(circle at 50% 20%,#2188ff 0%,#071b55 55%,#020617 100%);
- padding:20px
-}
-.start-card{
- width:min(92vw,390px);padding:30px 22px;border-radius:30px;text-align:center;
- background:rgba(12,50,125,.86);border:1px solid #ffffff2b;box-shadow:0 25px 80px #0008;
- backdrop-filter:blur(14px)
-}
-.start-logo{font-size:42px;font-weight:1000;letter-spacing:1px;text-shadow:0 5px 20px #0006}
-.start-logo span{color:#ffd43b}
-.start-tag{margin:8px 0 24px;opacity:.85;font-weight:700}
-.big-play{
- width:100%;padding:15px;border:0;border-radius:16px;background:#ffd43b;color:#123b9a;
- font-size:18px;font-weight:1000;box-shadow:0 8px 25px #0004;cursor:pointer
-}
-.menu-row{display:flex;gap:8px;margin-top:12px}
-.menu-btn{flex:1;padding:12px;border:0;border-radius:14px;background:#ffffff18;color:#fff;font-weight:900}
-.coin-pill{
- display:inline-flex;gap:7px;align-items:center;margin:10px 0 0;padding:7px 12px;border-radius:20px;
- background:#0003;font-weight:900
-}
-.game-logo{cursor:pointer}
-.coinbar{display:flex;align-items:center;gap:8px;font-weight:900;font-size:14px}
-.coin{color:#ffd43b;font-size:19px}
-.level-badge{font-weight:1000;font-size:13px;color:#ffd43b;margin-bottom:2px}
-.progress-wrap{height:5px;background:#ffffff20;border-radius:9px;margin-top:4px;overflow:hidden}
-#levelProgressBar{height:100%;width:0;background:#ffd43b;transition:width .3s}
-.pulse{animation:pulse .35s ease}
-@keyframes pulse{50%{transform:scale(1.08)}}
-.reward{
- position:fixed;top:16%;left:50%;transform:translateX(-50%);z-index:9998;
- background:#ffd43b;color:#15347e;padding:10px 18px;border-radius:22px;font-weight:1000;
- box-shadow:0 10px 35px #0005;animation:reward .9s ease forwards
-}
-@keyframes reward{0%{opacity:0;transform:translate(-50%,20px) scale(.8)}20%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-35px)}}
-.leaderboard-modal{
- width:min(92vw,380px);max-height:82vh;overflow:auto;background:#0d3d9d;border-radius:24px;
- padding:22px;color:white;box-shadow:0 20px 70px #0008
-}
-.leader-row{display:flex;justify-content:space-between;padding:10px 8px;border-bottom:1px solid #ffffff18}
-.leader-row.me{background:#ffffff12;border-radius:10px}
-.rank{font-weight:1000;width:38px}.leader-name{flex:1;text-align:left}.leader-score{font-weight:1000}
-.empty-board{animation:boardGlow 1.4s ease-in-out infinite alternate}
-@keyframes boardGlow{from{box-shadow:0 0 0 #3db7ff00}to{box-shadow:0 0 25px #3db7ff55}}
+<style id="professional-addons">
+.coinbar{font-weight:900;font-size:14px;white-space:nowrap}.coinbar span:first-child{color:#ffd43b;font-size:18px}
+.start-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 20%,#258cff,#071b55 60%,#020617);padding:20px}
+.start-card{width:min(92vw,390px);padding:30px 22px;border-radius:30px;text-align:center;background:rgba(12,50,125,.92);border:1px solid #ffffff2b;box-shadow:0 25px 80px #0008}
+.start-logo{font-size:42px;font-weight:1000}.start-logo span{color:#ffd43b}.start-tag{margin:8px 0 24px;opacity:.85;font-weight:700}
+.coin-pill{display:inline-flex;gap:7px;align-items:center;margin:0 0 18px;padding:8px 13px;border-radius:20px;background:#0003;font-weight:900}
+.big-play{width:100%;padding:15px;border:0;border-radius:16px;background:#ffd43b;color:#123b9a;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 8px 25px #0004}
+.menu-row{display:flex;gap:8px;margin-top:12px}.menu-btn{flex:1;padding:12px;border:0;border-radius:14px;background:#ffffff18;color:#fff;font-weight:900;cursor:pointer}
+.leaderboard-modal{width:min(92vw,380px);max-height:82vh;overflow:auto;background:#0d3d9d;border-radius:24px;padding:22px;color:#fff;box-shadow:0 20px 70px #0008}
+.leader-row{display:flex;align-items:center;gap:8px;padding:10px 6px;border-bottom:1px solid #ffffff18}.rank{font-weight:1000;width:36px}.leader-name{flex:1;text-align:left}.leader-score{font-weight:1000}
 @media(max-width:430px){.start-logo{font-size:36px}}
 </style>
 
+
+<style>
+.coin-display{
+  position:absolute;
+  top:18px;
+  left:18px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.22);
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  backdrop-filter:blur(8px);
+  z-index:5;
+}
+#newBestMsg{
+  font-weight:900;
+  font-size:16px;
+  margin:8px 0;
+}
+.reward{
+  position:fixed;
+  left:50%;
+  top:22%;
+  transform:translateX(-50%);
+  z-index:9999;
+  padding:10px 18px;
+  border-radius:999px;
+  background:#fff;
+  color:#1649b8;
+  font-weight:900;
+  box-shadow:0 12px 35px rgba(0,0,0,.25);
+  animation:coinPop .9s ease forwards;
+}
+@keyframes coinPop{
+  0%{opacity:0;transform:translate(-50%,18px) scale(.85)}
+  20%{opacity:1;transform:translate(-50%,0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-55px) scale(1.05)}
+}
+</style>
+
+
+<style id="final-polish-style">
+/* FINAL POLISH */
+.level-up-overlay{
+  animation:levelOverlayIn .18s ease-out;
+  background:rgba(3,12,45,.42);
+  backdrop-filter:blur(3px);
+}
+.level-up-card{
+  min-width:min(86vw,380px);
+  padding:30px 34px;
+  border:1px solid rgba(255,255,255,.28);
+  background:linear-gradient(145deg,#2b8cff,#1254d8);
+  animation:levelCardPop .72s cubic-bezier(.2,.85,.25,1.2);
+}
+.level-up-card .big{
+  text-shadow:0 4px 18px rgba(0,0,0,.25);
+  animation:levelTextPulse .72s ease-in-out infinite alternate;
+}
+.level-up-card:after{
+  content:"✦  ✦  ✦";
+  display:block;
+  margin-top:12px;
+  font-size:20px;
+  letter-spacing:12px;
+  animation:sparkle 1s ease-in-out infinite;
+}
+@keyframes levelOverlayIn{from{opacity:0}to{opacity:1}}
+@keyframes levelCardPop{0%{transform:scale(.55) rotate(-3deg);opacity:0}60%{transform:scale(1.08) rotate(1deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+@keyframes levelTextPulse{from{transform:scale(1)}to{transform:scale(1.06)}}
+@keyframes sparkle{50%{transform:translateY(-4px);opacity:.65}}
+
+.gameover-modal{
+  position:relative;
+  overflow:hidden;
+  padding:30px 24px 24px;
+  background:linear-gradient(145deg,#155fd7,#082b82);
+}
+.gameover-modal:before{
+  content:"";
+  position:absolute;inset:-80px;
+  background:radial-gradient(circle at 50% 10%,rgba(255,212,59,.28),transparent 35%);
+  pointer-events:none;
+}
+.gameover-badge{
+  position:relative;
+  display:inline-block;
+  padding:7px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.2);
+  font-size:12px;font-weight:900;letter-spacing:1px;
+}
+.gameover-modal h2{
+  position:relative;
+  margin:12px 0 4px;
+  font-size:34px;
+  letter-spacing:.5px;
+}
+.gameover-sub{position:relative;opacity:.82;margin:0 0 18px;font-weight:700}
+.result-grid{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;
+}
+.result-box{
+  padding:13px 8px;border-radius:15px;
+  background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.12);
+}
+.result-box span{display:block;font-size:11px;opacity:.75;font-weight:800;text-transform:uppercase}
+.result-box b{display:block;font-size:23px;margin-top:3px}
+.new-best{
+  position:relative;
+  margin:10px 0 4px;padding:9px 12px;border-radius:12px;
+  background:rgba(255,212,59,.16);color:#ffe27a;font-weight:1000;
+  animation:bestPulse 1s ease-in-out infinite alternate;
+}
+@keyframes bestPulse{to{transform:scale(1.03);box-shadow:0 0 24px rgba(255,212,59,.18)}}
+.gameover-actions{position:relative;display:flex;gap:9px;margin-top:12px}
+.gameover-actions .control{margin:0}
+@media(max-width:430px){
+  body{align-items:flex-start;overflow-x:hidden}
+  .app{width:100%;min-height:100dvh;padding:10px 10px 18px;justify-content:flex-start}
+  .header{margin:3px 2px 8px}
+  .logo{font-size:25px}
+  .scorebox small{font-size:10px}
+  #level{font-size:13px!important}
+  #levelProgress{font-size:10px!important}
+  #score{font-size:27px}
+  .game-card{width:100%;padding:9px;border-radius:18px}
+  .board{width:min(94vw,420px);gap:3px;padding:4px;border-radius:14px}
+  .cell{border-radius:5px}
+  .pieces{min-height:74px;gap:4px}
+  .piece-slot{height:70px}
+  .piece{grid-auto-rows:18px;gap:3px}
+  .mini-cell{width:18px;height:18px;border-radius:4px}
+  .controls{gap:6px;margin-top:6px}
+  .control{padding:10px 4px;font-size:10px;border-radius:12px}
+  .hint{font-size:9px;margin-top:3px}
+  .gameover-modal{width:min(92vw,390px);padding:26px 18px 18px}
+  .gameover-modal h2{font-size:30px}
+  .gameover-actions{flex-direction:column}
+  .gameover-actions .control{width:100%}
+}
+@media(max-height:720px) and (orientation:landscape){
+  .app{min-height:auto;padding:6px 10px}
+  .header{margin-bottom:4px}
+  .logo{font-size:23px}
+  #score{font-size:23px}
+  .board{max-width:min(52vh,340px)}
+  .pieces{min-height:58px}.piece-slot{height:54px}
+  .control{padding:7px 4px;font-size:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .level-up-card,.level-up-card .big,.level-up-card:after,.new-best{animation:none!important}
+}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -163,7 +283,7 @@ body{overflow:auto;min-height:100vh}
     <div class="logo">BLOCK <span>RUSH</span></div>
     <div class="scorebox"><small>SCORE</small><div id="level" style="font-weight:800;margin-bottom:4px;">LEVEL 1</div>
 <div id="levelProgress" style="font-size:12px;margin-top:4px;opacity:.9;">Clear 2 more lines to level up</div>
-<div id="score">0</div></div>
+<div class="coin-display">🪙 <span id="coins">0</span></div><div id="score">0</div></div>
   </div>
 
   <div class="game-card">
@@ -181,8 +301,7 @@ body{overflow:auto;min-height:100vh}
     <div class="controls">
       <button class="control" id="soundBtn">🎵 MUSIC</button>
       <button class="control" id="vibrationBtn">📳 VIBRATION</button>
-      <button class="control" id="settingsBtn">⚙ SETTINGS</button>
-<button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button>
+      <button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button>
     </div>
   </div>
 </div>
@@ -198,10 +317,42 @@ body{overflow:auto;min-height:100vh}
 </div>
 
 <div id="gameOverOverlay" class="overlay">
-  <div class="modal">
-    <h2>💥 GAME OVER</h2><div style="font-size:13px;opacity:.8">FINAL SCORE</div>
-    <p>Your score: <b id="finalScore">0</b></p>
-    <button id="playAgain" class="control">PLAY AGAIN</button>
+  <div class="modal gameover-modal">
+    <div class="gameover-badge">RUN COMPLETE</div>
+    <h2>GAME OVER</h2>
+    <p class="gameover-sub">Great run! Ready for another?</p>
+    <div class="result-grid">
+      <div class="result-box"><span>Score</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Level</span><b id="finalLevel">1</b></div>
+      <div class="result-box"><span>Coins Earned</span><b>🪙 <span id="finalCoins">0</span></b></div>
+      <div class="result-box"><span>Best</span><b id="finalBest">0</b></div>
+    </div>
+    <p id="newBestMsg" class="new-best" style="display:none">🏆 NEW BEST SCORE!</p>
+    <div class="gameover-actions">
+      <button id="playAgain" class="control">▶ PLAY AGAIN</button>
+      <button id="gameOverLeaderboard" class="control">🏆 LEADERBOARD</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="startScreen" class="start-screen">
+  <div class="start-card">
+    <div class="start-logo">BLOCK <span>RUSH</span></div>
+    <div class="start-tag">Stack. Clear. Rush to the top.</div>
+    <div class="coin-pill">🪙 <span id="startCoins">0</span> COINS</div>
+    <button id="startGame" class="big-play">▶ PLAY NOW</button>
+    <div class="menu-row">
+      <button id="startLeaderboard" class="menu-btn">🏆 LEADERBOARD</button>
+      <button id="startSettings" class="menu-btn">⚙ SETTINGS</button>
+    </div>
+  </div>
+</div>
+<div id="leaderboardOverlay" class="overlay">
+  <div class="leaderboard-modal">
+    <h2>🏆 Leaderboard</h2>
+    <div id="leaderboardList"></div>
+    <button id="closeLeaderboard" class="control" style="width:100%;margin-top:14px">CLOSE</button>
   </div>
 </div>
 
@@ -214,10 +365,50 @@ const bestEl=document.getElementById('best');
 
 let board=[], score=0, best=Number(localStorage.getItem('blockRushBest')||0);
 let level = 1, totalLines = 0, linesNeeded = 2;
-let coins = Number(localStorage.getItem('blockRushCoins')||0);
-let started = false;
-
 let sound=true, vibration=true, currentPieces=[];
+
+let coins = Number(localStorage.getItem('blockRushCoins')||0);
+let runCoins = 0;
+let previousBest = best;
+
+function saveCoins(){
+  localStorage.setItem('blockRushCoins', String(coins));
+  const a=document.getElementById('coins'), b=document.getElementById('startCoins');
+  if(a)a.textContent=coins;
+  if(b)b.textContent=coins;
+}
+function rewardCoins(amount){
+  coins += amount; runCoins += amount; saveCoins();
+  const r=document.createElement('div');
+  r.className='reward'; r.textContent='🪙 +'+amount;
+  document.body.appendChild(r); setTimeout(()=>r.remove(),900);
+}
+function loadLeaderboard(){
+  try{
+    const x=JSON.parse(localStorage.getItem('blockRushLeaderboard')||'[]');
+    return Array.isArray(x)?x:[];
+  }catch(e){return []}
+}
+function saveLeaderboard(){
+  const list=loadLeaderboard();
+  list.push({name:'YOU',score:score,level:level});
+  list.sort((a,b)=>b.score-a.score);
+  localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)));
+}
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboardList'); if(!el)return;
+  const list=loadLeaderboard();
+  el.innerHTML=list.length ? list.map((x,i)=>(
+    '<div class="leader-row"><div class="rank">#'+(i+1)+
+    '</div><div class="leader-name">'+x.name+'<br><small>Level '+x.level+
+    '</small></div><div class="leader-score">'+x.score+'</div></div>'
+  )).join('') : '<p style="opacity:.8">No scores yet. Be the first!</p>';
+}
+function openLeaderboard(){
+  renderLeaderboard();
+  document.getElementById('leaderboardOverlay').style.display='flex';
+}
+
 let dragState=null;
 
 const SHAPES=[
@@ -234,45 +425,12 @@ const COLORS=['yellow','cyan','pink'];
 
 bestEl.textContent=best;
 
-
-function saveCoins(){
-  localStorage.setItem('blockRushCoins', coins);
-  const a=document.getElementById('coins'),b=document.getElementById('startCoins');
-  if(a)a.textContent=coins;if(b)b.textContent=coins;
-}
-function rewardCoins(amount, text){
-  coins += amount; saveCoins();
-  const r=document.createElement('div');r.className='reward';r.textContent='🪙 +'+amount+' '+text;
-  document.body.appendChild(r);setTimeout(()=>r.remove(),950);
-}
-function loadLeaderboard(){
-  let list=[];
-  try{list=JSON.parse(localStorage.getItem('blockRushLeaderboard')||'[]')}catch(e){}
-  if(!Array.isArray(list))list=[];
-  return list.sort((a,b)=>b.score-a.score).slice(0,10);
-}
-function saveLeaderboard(){
-  const list=loadLeaderboard();
-  list.push({name:'YOU',score:score,level:level});
-  list.sort((a,b)=>b.score-a.score);
-  localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)));
-}
-function renderLeaderboard(){
-  const el=document.getElementById('leaderboardList');if(!el)return;
-  const list=loadLeaderboard();
-  if(!list.length){el.innerHTML='<p style="opacity:.8">No scores yet. Be the first!</p>';return}
-  el.innerHTML=list.map((x,i)=>`<div class="leader-row"><div class="rank">#${i+1}</div><div class="leader-name">${x.name}<br><small>Level ${x.level}</small></div><div class="leader-score">${x.score}</div></div>`).join('');
-}
-function openLeaderboard(){renderLeaderboard();document.getElementById('leaderboardOverlay').style.display='flex'}
-
 function resetBoard(){
+ gameEnded = false;
  board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
- score=0; level=1; totalLines=0; updateScore(); updateLevel(); saveCoins(); renderBoard(); generatePieces(); hideOverlays();
+ score=0; level=1; totalLines=0; runCoins=0; previousBest=best; updateScore(); updateLevel(); renderBoard(); generatePieces(); piecesEl.style.visibility='visible'; hideOverlays();
 }
-function updateScore(){
-  scoreEl.textContent=score;bestEl.textContent=best;
-  scoreEl.classList.remove('pulse');void scoreEl.offsetWidth;scoreEl.classList.add('pulse');
-}
+function updateScore(){scoreEl.textContent=score;bestEl.textContent=best}
 function renderBoard(preview=[]){
  boardEl.innerHTML='';
  for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++){
@@ -285,7 +443,7 @@ function renderBoard(preview=[]){
 function makePiece(shape,color,index){
  const p=document.createElement('div');p.className='piece';p.dataset.index=index;
  const maxR=Math.max(...shape.map(x=>x[0])),maxC=Math.max(...shape.map(x=>x[1]));
- p.style.gridTemplateColumns=`repeat(${maxC+1},20px)`;
+ p.style.gridTemplateColumns=`repeat(${maxC+1},20px)`;p.style.gridTemplateRows=`repeat(${maxR+1},20px)`;
  shape.forEach(([r,c])=>{
    const x=document.createElement('div');x.className='mini-cell '+color;
    x.style.gridRow=r+1;x.style.gridColumn=c+1;p.appendChild(x);
@@ -326,7 +484,7 @@ function clearLines(){
  beep(760,.09);vibrate(35);
  if(score>best){best=score;localStorage.setItem('blockRushBest',best)}
  totalLines += count;
- rewardCoins(count * 5, 'LINE BONUS');
+ rewardCoins(count * 5);
  updateLevel();
  return count;
 }
@@ -335,7 +493,7 @@ function updateLevel(){
   const newLevel = 1 + Math.floor(totalLines / linesNeeded);
   if(newLevel > level){
     level = newLevel;
-    rewardCoins(25, 'LEVEL UP!');
+    rewardCoins(25);
     beep(880,.12);
     vibrate(60);
     showLevelUp();
@@ -355,12 +513,16 @@ function showLevelUp(){
   overlay.className='level-up-overlay';
   overlay.innerHTML='<div class="level-up-card"><div class="big">LEVEL '+level+' 🎉</div><div class="small">Keep going!</div></div>';
   document.body.appendChild(overlay);
-  setTimeout(()=>overlay.remove(),1200);
+  setTimeout(()=>overlay.remove(),1550);
 }
 
 function hasMove(){
- return currentPieces.some(p=>{
-   for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(canPlace(p.shape,r,c))return true;
+ return currentPieces.filter(Boolean).some(p=>{
+   for(let r=0;r<SIZE;r++){
+     for(let c=0;c<SIZE;c++){
+       if(canPlace(p.shape,r,c)) return true;
+     }
+   }
    return false;
  });
 }
@@ -368,14 +530,30 @@ function afterPieceUsed(index){
  currentPieces[index]=null;
  const allUsed=currentPieces.every(x=>x===null);
  if(allUsed) generatePieces();
- if(!hasMove()) setTimeout(gameOver,120);
+
+ // Check the freshly available pieces. If none can fit anywhere,
+ // the game ends immediately.
+ if(currentPieces.filter(Boolean).length && !hasMove()){
+   setTimeout(gameOver,120);
+ }
 }
+let gameEnded = false;
 function gameOver(){
+ if(gameEnded) return;
+ gameEnded = true;
  saveLeaderboard();
- rewardCoins(10, 'GAME COMPLETE');
+ rewardCoins(10);
+
  document.getElementById('finalScore').textContent=score;
+ const fl=document.getElementById('finalLevel'); if(fl) fl.textContent=level;
+ const fc=document.getElementById('finalCoins'); if(fc) fc.textContent=runCoins;
+ const fb=document.getElementById('finalBest'); if(fb) fb.textContent=Math.max(best,score);
+ const nb=document.getElementById('newBestMsg');
+ if(nb) nb.style.display=(score>previousBest?'block':'none');
+
  document.getElementById('gameOverOverlay').style.display='flex';
  beep(180,.18);
+ playGameOverMusic();
 }
 function hideOverlays(){
  document.querySelectorAll('.overlay').forEach(x=>x.style.display='none');
@@ -428,6 +606,7 @@ function endDrag(e){
 
 
 let musicOn = true;
+let musicPlaying = false;
 let musicCtx = null;
 let musicGain = null;
 let musicTimer = null;
@@ -442,7 +621,7 @@ const melody = [
 
 
 function startMusic() {
-  if (musicPlaying) return;
+  if (!musicOn || musicPlaying) return;
   musicPlaying = true;
 
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -526,8 +705,14 @@ function beep(freq=500,dur=.05){
 }
 function vibrate(ms){if(vibration&&navigator.vibrate)navigator.vibrate(ms)}
 
-document.getElementById('newGame').onclick=()=>{started=true;beep();resetBoard()};
-document.getElementById('playAgain').onclick=()=>{beep();resetBoard()};
+function startFreshGame(){
+  try{ if(gameOverMusicTimer) clearTimeout(gameOverMusicTimer); }catch(e){}
+  resetBoard();
+  try{startMusic();}catch(e){}
+}
+document.getElementById('newGame').onclick=()=>{beep();startFreshGame()};
+document.getElementById('playAgain').onclick=()=>{beep();startFreshGame()};
+document.getElementById('gameOverLeaderboard').onclick=()=>openLeaderboard();
 document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';
 document.getElementById('closeSettings').onclick=hideOverlays;
 
@@ -546,26 +731,85 @@ document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 
 ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>startMusic(),{once:true}));
 
-document.getElementById('startGame').onclick=()=>{
-  started=true;
-  document.getElementById('startScreen').style.display='none';
-  resetBoard();
-  startMusic();
-};
-document.getElementById('startLeaderboard').onclick=openLeaderboard;
-document.getElementById('leaderboardBtn').onclick=openLeaderboard;
-document.getElementById('closeLeaderboard').onclick=()=>document.getElementById('leaderboardOverlay').style.display='none';
-document.getElementById('startSettings').onclick=()=>{
-  document.getElementById('startScreen').style.display='none';
-  document.getElementById('settingsOverlay').style.display='flex';
-};
-document.getElementById('settingsBtn').onclick=()=>{
-  document.getElementById('settingsOverlay').style.display='flex';
-};
-document.getElementById('gameLogo').onclick=()=>{if(!started)document.getElementById('startScreen').style.display='flex'};
 saveCoins();
 
+function launchGame(e){
+  if(e){ e.preventDefault(); e.stopPropagation(); }
+  const screen=document.getElementById('startScreen');
+  if(screen) screen.style.display='none';
+  resetBoard();
+  try{ startMusic(); }catch(err){}
+}
+const startGameBtn=document.getElementById('startGame');
+if(startGameBtn){
+  startGameBtn.addEventListener('pointerdown', launchGame);
+  startGameBtn.addEventListener('click', launchGame);
+}
+
+document.getElementById('startLeaderboard').onclick=openLeaderboard;
+document.getElementById('leaderboardBtn').onclick=openLeaderboard;
+document.getElementById('closeLeaderboard').onclick=function(){
+  document.getElementById('leaderboardOverlay').style.display='none';
+};
+document.getElementById('startSettings').onclick=function(){
+  document.getElementById('startScreen').style.display='none';
+  document.getElementById('settingsOverlay').style.display='flex';
+};
+
 resetBoard();
+
+let gameOverMusicCtx = null;
+let gameOverMusicTimer = null;
+
+function playGameOverMusic(){
+  try{
+    stopMusic();
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC || !musicOn) return;
+    gameOverMusicCtx = gameOverMusicCtx || new AC();
+    const ctx=gameOverMusicCtx;
+    if(ctx.state==="suspended") ctx.resume();
+
+    if(gameOverMusicTimer) clearTimeout(gameOverMusicTimer);
+    const master=ctx.createGain();
+    master.gain.value=.22;
+    master.connect(ctx.destination);
+
+    const notes=[
+      {f:392,d:.18},{f:349.23,d:.18},{f:329.63,d:.22},
+      {f:261.63,d:.35},{f:293.66,d:.22},{f:261.63,d:.45}
+    ];
+    let t=ctx.currentTime+.04;
+
+    notes.forEach((n,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=i<3?"triangle":"sine";
+      o.frequency.setValueAtTime(n.f,t);
+      g.gain.setValueAtTime(.0001,t);
+      g.gain.exponentialRampToValueAtTime(.11,t+.015);
+      g.gain.exponentialRampToValueAtTime(.0001,t+n.d);
+      o.connect(g);g.connect(master);
+      o.start(t);o.stop(t+n.d+.04);
+      t+=n.d*.9;
+    });
+
+    // Soft final chord.
+    [130.81,164.81,196].forEach(f=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="sine";o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t-.02);
+      g.gain.exponentialRampToValueAtTime(.035,t+.03);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.75);
+      o.connect(g);g.connect(master);
+      o.start(t-.02);o.stop(t+.8);
+    });
+
+    gameOverMusicTimer=setTimeout(()=>{
+      try{master.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.25)}catch(e){}
+    },850);
+  }catch(e){}
+}
+
 </script>
 
 <script>
@@ -580,28 +824,6 @@ window.addEventListener("keydown", () => {
 
 
 
-
-
-<div id="startScreen" class="start-screen">
-  <div class="start-card">
-    <div class="start-logo">BLOCK <span>RUSH</span></div>
-    <div class="start-tag">Stack. Clear. Rush to the top.</div>
-    <div class="coin-pill">🪙 <span id="startCoins">0</span> COINS</div>
-    <button id="startGame" class="big-play">▶ PLAY NOW</button>
-    <div class="menu-row">
-      <button id="startLeaderboard" class="menu-btn">🏆 LEADERBOARD</button>
-      <button id="startSettings" class="menu-btn">⚙ SETTINGS</button>
-    </div>
-  </div>
-</div>
-
-<div id="leaderboardOverlay" class="overlay">
-  <div class="leaderboard-modal">
-    <h2>🏆 Leaderboard</h2>
-    <div id="leaderboardList"></div>
-    <button id="closeLeaderboard" class="control" style="width:100%;margin-top:14px">CLOSE</button>
-  </div>
-</div>
 
 </body>
 </html>
