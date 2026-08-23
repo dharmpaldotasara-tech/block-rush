@@ -104,55 +104,16 @@ body{
 </style>
 
 
-<style id="pro-polish">
-body{overflow:auto;min-height:100vh}
-.app{position:relative}
-.start-screen{
- position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;
- background:radial-gradient(circle at 50% 20%,#2188ff 0%,#071b55 55%,#020617 100%);
- padding:20px
-}
-.start-card{
- width:min(92vw,390px);padding:30px 22px;border-radius:30px;text-align:center;
- background:rgba(12,50,125,.86);border:1px solid #ffffff2b;box-shadow:0 25px 80px #0008;
- backdrop-filter:blur(14px)
-}
-.start-logo{font-size:42px;font-weight:1000;letter-spacing:1px;text-shadow:0 5px 20px #0006}
-.start-logo span{color:#ffd43b}
-.start-tag{margin:8px 0 24px;opacity:.85;font-weight:700}
-.big-play{
- width:100%;padding:15px;border:0;border-radius:16px;background:#ffd43b;color:#123b9a;
- font-size:18px;font-weight:1000;box-shadow:0 8px 25px #0004;cursor:pointer
-}
-.menu-row{display:flex;gap:8px;margin-top:12px}
-.menu-btn{flex:1;padding:12px;border:0;border-radius:14px;background:#ffffff18;color:#fff;font-weight:900}
-.coin-pill{
- display:inline-flex;gap:7px;align-items:center;margin:10px 0 0;padding:7px 12px;border-radius:20px;
- background:#0003;font-weight:900
-}
-.game-logo{cursor:pointer}
-.coinbar{display:flex;align-items:center;gap:8px;font-weight:900;font-size:14px}
-.coin{color:#ffd43b;font-size:19px}
-.level-badge{font-weight:1000;font-size:13px;color:#ffd43b;margin-bottom:2px}
-.progress-wrap{height:5px;background:#ffffff20;border-radius:9px;margin-top:4px;overflow:hidden}
-#levelProgressBar{height:100%;width:0;background:#ffd43b;transition:width .3s}
-.pulse{animation:pulse .35s ease}
-@keyframes pulse{50%{transform:scale(1.08)}}
-.reward{
- position:fixed;top:16%;left:50%;transform:translateX(-50%);z-index:9998;
- background:#ffd43b;color:#15347e;padding:10px 18px;border-radius:22px;font-weight:1000;
- box-shadow:0 10px 35px #0005;animation:reward .9s ease forwards
-}
-@keyframes reward{0%{opacity:0;transform:translate(-50%,20px) scale(.8)}20%{opacity:1;transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-35px)}}
-.leaderboard-modal{
- width:min(92vw,380px);max-height:82vh;overflow:auto;background:#0d3d9d;border-radius:24px;
- padding:22px;color:white;box-shadow:0 20px 70px #0008
-}
-.leader-row{display:flex;justify-content:space-between;padding:10px 8px;border-bottom:1px solid #ffffff18}
-.leader-row.me{background:#ffffff12;border-radius:10px}
-.rank{font-weight:1000;width:38px}.leader-name{flex:1;text-align:left}.leader-score{font-weight:1000}
-.empty-board{animation:boardGlow 1.4s ease-in-out infinite alternate}
-@keyframes boardGlow{from{box-shadow:0 0 0 #3db7ff00}to{box-shadow:0 0 25px #3db7ff55}}
+<style id="professional-addons">
+.coinbar{font-weight:900;font-size:14px;white-space:nowrap}.coinbar span:first-child{color:#ffd43b;font-size:18px}
+.start-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 20%,#258cff,#071b55 60%,#020617);padding:20px}
+.start-card{width:min(92vw,390px);padding:30px 22px;border-radius:30px;text-align:center;background:rgba(12,50,125,.92);border:1px solid #ffffff2b;box-shadow:0 25px 80px #0008}
+.start-logo{font-size:42px;font-weight:1000}.start-logo span{color:#ffd43b}.start-tag{margin:8px 0 24px;opacity:.85;font-weight:700}
+.coin-pill{display:inline-flex;gap:7px;align-items:center;margin:0 0 18px;padding:8px 13px;border-radius:20px;background:#0003;font-weight:900}
+.big-play{width:100%;padding:15px;border:0;border-radius:16px;background:#ffd43b;color:#123b9a;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 8px 25px #0004}
+.menu-row{display:flex;gap:8px;margin-top:12px}.menu-btn{flex:1;padding:12px;border:0;border-radius:14px;background:#ffffff18;color:#fff;font-weight:900;cursor:pointer}
+.leaderboard-modal{width:min(92vw,380px);max-height:82vh;overflow:auto;background:#0d3d9d;border-radius:24px;padding:22px;color:#fff;box-shadow:0 20px 70px #0008}
+.leader-row{display:flex;align-items:center;gap:8px;padding:10px 6px;border-bottom:1px solid #ffffff18}.rank{font-weight:1000;width:36px}.leader-name{flex:1;text-align:left}.leader-score{font-weight:1000}
 @media(max-width:430px){.start-logo{font-size:36px}}
 </style>
 
@@ -181,8 +142,7 @@ body{overflow:auto;min-height:100vh}
     <div class="controls">
       <button class="control" id="soundBtn">🎵 MUSIC</button>
       <button class="control" id="vibrationBtn">📳 VIBRATION</button>
-      <button class="control" id="settingsBtn">⚙ SETTINGS</button>
-<button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button>
+      <button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button>
     </div>
   </div>
 </div>
@@ -199,9 +159,30 @@ body{overflow:auto;min-height:100vh}
 
 <div id="gameOverOverlay" class="overlay">
   <div class="modal">
-    <h2>💥 GAME OVER</h2><div style="font-size:13px;opacity:.8">FINAL SCORE</div>
+    <h2>Game Over!</h2>
     <p>Your score: <b id="finalScore">0</b></p>
     <button id="playAgain" class="control">PLAY AGAIN</button>
+  </div>
+</div>
+
+
+<div id="startScreen" class="start-screen">
+  <div class="start-card">
+    <div class="start-logo">BLOCK <span>RUSH</span></div>
+    <div class="start-tag">Stack. Clear. Rush to the top.</div>
+    <div class="coin-pill">🪙 <span id="startCoins">0</span> COINS</div>
+    <button id="startGame" class="big-play">▶ PLAY NOW</button>
+    <div class="menu-row">
+      <button id="startLeaderboard" class="menu-btn">🏆 LEADERBOARD</button>
+      <button id="startSettings" class="menu-btn">⚙ SETTINGS</button>
+    </div>
+  </div>
+</div>
+<div id="leaderboardOverlay" class="overlay">
+  <div class="leaderboard-modal">
+    <h2>🏆 Leaderboard</h2>
+    <div id="leaderboardList"></div>
+    <button id="closeLeaderboard" class="control" style="width:100%;margin-top:14px">CLOSE</button>
   </div>
 </div>
 
@@ -214,10 +195,48 @@ const bestEl=document.getElementById('best');
 
 let board=[], score=0, best=Number(localStorage.getItem('blockRushBest')||0);
 let level = 1, totalLines = 0, linesNeeded = 2;
-let coins = Number(localStorage.getItem('blockRushCoins')||0);
-let started = false;
-
 let sound=true, vibration=true, currentPieces=[];
+
+let coins = Number(localStorage.getItem('blockRushCoins')||0);
+
+function saveCoins(){
+  localStorage.setItem('blockRushCoins', String(coins));
+  const a=document.getElementById('coins'), b=document.getElementById('startCoins');
+  if(a)a.textContent=coins;
+  if(b)b.textContent=coins;
+}
+function rewardCoins(amount){
+  coins += amount; saveCoins();
+  const r=document.createElement('div');
+  r.className='reward'; r.textContent='🪙 +'+amount;
+  document.body.appendChild(r); setTimeout(()=>r.remove(),900);
+}
+function loadLeaderboard(){
+  try{
+    const x=JSON.parse(localStorage.getItem('blockRushLeaderboard')||'[]');
+    return Array.isArray(x)?x:[];
+  }catch(e){return []}
+}
+function saveLeaderboard(){
+  const list=loadLeaderboard();
+  list.push({name:'YOU',score:score,level:level});
+  list.sort((a,b)=>b.score-a.score);
+  localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)));
+}
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboardList'); if(!el)return;
+  const list=loadLeaderboard();
+  el.innerHTML=list.length ? list.map((x,i)=>(
+    '<div class="leader-row"><div class="rank">#'+(i+1)+
+    '</div><div class="leader-name">'+x.name+'<br><small>Level '+x.level+
+    '</small></div><div class="leader-score">'+x.score+'</div></div>'
+  )).join('') : '<p style="opacity:.8">No scores yet. Be the first!</p>';
+}
+function openLeaderboard(){
+  renderLeaderboard();
+  document.getElementById('leaderboardOverlay').style.display='flex';
+}
+
 let dragState=null;
 
 const SHAPES=[
@@ -234,45 +253,11 @@ const COLORS=['yellow','cyan','pink'];
 
 bestEl.textContent=best;
 
-
-function saveCoins(){
-  localStorage.setItem('blockRushCoins', coins);
-  const a=document.getElementById('coins'),b=document.getElementById('startCoins');
-  if(a)a.textContent=coins;if(b)b.textContent=coins;
-}
-function rewardCoins(amount, text){
-  coins += amount; saveCoins();
-  const r=document.createElement('div');r.className='reward';r.textContent='🪙 +'+amount+' '+text;
-  document.body.appendChild(r);setTimeout(()=>r.remove(),950);
-}
-function loadLeaderboard(){
-  let list=[];
-  try{list=JSON.parse(localStorage.getItem('blockRushLeaderboard')||'[]')}catch(e){}
-  if(!Array.isArray(list))list=[];
-  return list.sort((a,b)=>b.score-a.score).slice(0,10);
-}
-function saveLeaderboard(){
-  const list=loadLeaderboard();
-  list.push({name:'YOU',score:score,level:level});
-  list.sort((a,b)=>b.score-a.score);
-  localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)));
-}
-function renderLeaderboard(){
-  const el=document.getElementById('leaderboardList');if(!el)return;
-  const list=loadLeaderboard();
-  if(!list.length){el.innerHTML='<p style="opacity:.8">No scores yet. Be the first!</p>';return}
-  el.innerHTML=list.map((x,i)=>`<div class="leader-row"><div class="rank">#${i+1}</div><div class="leader-name">${x.name}<br><small>Level ${x.level}</small></div><div class="leader-score">${x.score}</div></div>`).join('');
-}
-function openLeaderboard(){renderLeaderboard();document.getElementById('leaderboardOverlay').style.display='flex'}
-
 function resetBoard(){
  board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
- score=0; level=1; totalLines=0; updateScore(); updateLevel(); saveCoins(); renderBoard(); generatePieces(); hideOverlays();
+ score=0; level=1; totalLines=0; updateScore(); updateLevel(); renderBoard(); generatePieces(); hideOverlays();
 }
-function updateScore(){
-  scoreEl.textContent=score;bestEl.textContent=best;
-  scoreEl.classList.remove('pulse');void scoreEl.offsetWidth;scoreEl.classList.add('pulse');
-}
+function updateScore(){scoreEl.textContent=score;bestEl.textContent=best}
 function renderBoard(preview=[]){
  boardEl.innerHTML='';
  for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++){
@@ -326,7 +311,7 @@ function clearLines(){
  beep(760,.09);vibrate(35);
  if(score>best){best=score;localStorage.setItem('blockRushBest',best)}
  totalLines += count;
- rewardCoins(count * 5, 'LINE BONUS');
+ rewardCoins(count * 5);
  updateLevel();
  return count;
 }
@@ -335,7 +320,7 @@ function updateLevel(){
   const newLevel = 1 + Math.floor(totalLines / linesNeeded);
   if(newLevel > level){
     level = newLevel;
-    rewardCoins(25, 'LEVEL UP!');
+    rewardCoins(25);
     beep(880,.12);
     vibrate(60);
     showLevelUp();
@@ -372,7 +357,7 @@ function afterPieceUsed(index){
 }
 function gameOver(){
  saveLeaderboard();
- rewardCoins(10, 'GAME COMPLETE');
+ rewardCoins(10);
  document.getElementById('finalScore').textContent=score;
  document.getElementById('gameOverOverlay').style.display='flex';
  beep(180,.18);
@@ -526,7 +511,7 @@ function beep(freq=500,dur=.05){
 }
 function vibrate(ms){if(vibration&&navigator.vibrate)navigator.vibrate(ms)}
 
-document.getElementById('newGame').onclick=()=>{started=true;beep();resetBoard()};
+document.getElementById('newGame').onclick=()=>{beep();resetBoard()};
 document.getElementById('playAgain').onclick=()=>{beep();resetBoard()};
 document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';
 document.getElementById('closeSettings').onclick=hideOverlays;
@@ -546,29 +531,23 @@ document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 
 ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>startMusic(),{once:true}));
 
-document.getElementById('startGame').onclick = function(){
-  started = true;
-  var screen = document.getElementById('startScreen');
-  if(screen) screen.style.display = 'none';
-  resetBoard();
-  try { startMusic(); } catch(e) {}
-};
+saveCoins();
+
+document.getElementById('startGame').addEventListener('click', function(e){
+  e.preventDefault();
   document.getElementById('startScreen').style.display='none';
   resetBoard();
-  startMusic();
-};
+  try{startMusic();}catch(err){}
+});
 document.getElementById('startLeaderboard').onclick=openLeaderboard;
 document.getElementById('leaderboardBtn').onclick=openLeaderboard;
-document.getElementById('closeLeaderboard').onclick=()=>document.getElementById('leaderboardOverlay').style.display='none';
-document.getElementById('startSettings').onclick=()=>{
+document.getElementById('closeLeaderboard').onclick=function(){
+  document.getElementById('leaderboardOverlay').style.display='none';
+};
+document.getElementById('startSettings').onclick=function(){
   document.getElementById('startScreen').style.display='none';
   document.getElementById('settingsOverlay').style.display='flex';
 };
-document.getElementById('settingsBtn').onclick=()=>{
-  document.getElementById('settingsOverlay').style.display='flex';
-};
-document.getElementById('gameLogo').onclick=()=>{if(!started)document.getElementById('startScreen').style.display='flex'};
-saveCoins();
 
 resetBoard();
 </script>
@@ -586,66 +565,5 @@ window.addEventListener("keydown", () => {
 
 
 
-
-<div id="startScreen" class="start-screen">
-  <div class="start-card">
-    <div class="start-logo">BLOCK <span>RUSH</span></div>
-    <div class="start-tag">Stack. Clear. Rush to the top.</div>
-    <div class="coin-pill">🪙 <span id="startCoins">0</span> COINS</div>
-    <button id="startGame" class="big-play">▶ PLAY NOW</button>
-    <div class="menu-row">
-      <button id="startLeaderboard" class="menu-btn">🏆 LEADERBOARD</button>
-      <button id="startSettings" class="menu-btn">⚙ SETTINGS</button>
-    </div>
-  </div>
-</div>
-
-<div id="leaderboardOverlay" class="overlay">
-  <div class="leaderboard-modal">
-    <h2>🏆 Leaderboard</h2>
-    <div id="leaderboardList"></div>
-    <button id="closeLeaderboard" class="control" style="width:100%;margin-top:14px">CLOSE</button>
-  </div>
-</div>
-
 </body>
 </html>
-
-
-<script>
-(function(){
-  function bootBlockRush(){
-    var btn=document.getElementById('startGame');
-    var screen=document.getElementById('startScreen');
-    if(!btn || !screen) return;
-
-    btn.addEventListener('click', function(ev){
-      ev.preventDefault();
-      ev.stopPropagation();
-
-      screen.style.display='none';
-
-      try {
-        if(typeof resetBoard === 'function') resetBoard();
-      } catch(err) {
-        console.error('Block Rush start error:', err);
-        // Fallback: at least show the game area.
-        screen.style.display='none';
-      }
-
-      try {
-        if(typeof startMusic === 'function') startMusic();
-      } catch(err) {}
-    }, true);
-
-    // Keep the start screen visible until PLAY NOW is pressed.
-    screen.style.display='flex';
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bootBlockRush);
-  } else {
-    bootBlockRush();
-  }
-})();
-</script>
