@@ -546,8 +546,13 @@ document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 
 ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>startMusic(),{once:true}));
 
-document.getElementById('startGame').onclick=()=>{
-  started=true;
+document.getElementById('startGame').onclick = function(){
+  started = true;
+  var screen = document.getElementById('startScreen');
+  if(screen) screen.style.display = 'none';
+  resetBoard();
+  try { startMusic(); } catch(e) {}
+};
   document.getElementById('startScreen').style.display='none';
   resetBoard();
   startMusic();
