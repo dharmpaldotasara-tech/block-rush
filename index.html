@@ -705,15 +705,15 @@ body{
       <div class="player-avatar">◆</div>
       <div>
         <div class="hud-label">PLAYER</div>
-        <div class="hud-level">LEVEL 7</div>
-        <div class="xp-track"><span></span></div>
-        <div class="xp-text">650 / 1000 XP</div>
+        <div class="hud-level" id="homeLevel">LEVEL 1</div>
+        <div class="xp-track"><span id="homeXpFill"></span></div>
+        <div class="xp-text" id="homeXpText">0 / 1000 XP</div>
       </div>
     </div>
 
     <div class="top-stat">
       <span class="hud-label">BEST SCORE</span>
-      <strong>★ 18,720</strong>
+      <strong>★ <span id="homeBestTop">0</span></strong>
     </div>
 
     <div class="top-stat coins-stat">
@@ -744,14 +744,14 @@ body{
   </div>
 
   <div class="pro-stats">
-    <div><span>★</span><small>BEST SCORE</small><strong>18,720</strong></div>
-    <div><span>⌁</span><small>GAMES PLAYED</small><strong>56</strong></div>
-    <div><span>▥</span><small>HIGHEST LEVEL</small><strong>LEVEL 12</strong></div>
+    <div><span>★</span><small>BEST SCORE</small><strong id="homeBest">0</strong></div>
+    <div><span>⌁</span><small>GAMES PLAYED</small><strong id="homeGames">0</strong></div>
+    <div><span>▥</span><small>HIGHEST LEVEL</small><strong id="homeHighestLevel">LEVEL 1</strong></div>
   </div>
 
   <div class="pro-actions">
     <div><b>▣</b><span>DAILY REWARD<em>Claim Now ›</em></span></div>
-    <div><b>◎</b><span>ACHIEVEMENTS<em>18 / 40 ›</em></span></div>
+    <div><b>◎</b><span>ACHIEVEMENTS<em id="homeAchievements">0 / 40 ›</em></span></div>
     <div><b>♧</b><span>FREE COINS<em>Watch Ad ›</em></span></div>
     <div><b>🛒</b><span>SHOP<em>Coming Soon ›</em></span></div>
   </div>
@@ -786,14 +786,39 @@ let level = 1, totalLines = 0, linesNeeded = 2;
 let sound=true, vibration=true, currentPieces=[];
 
 let coins = Number(localStorage.getItem('blockRushCoins')||0);
+let gamesPlayed = Number(localStorage.getItem('blockRushGamesPlayed')||0);
+let highestLevel = Number(localStorage.getItem('blockRushHighestLevel')||1);
+let totalLinesLifetime = Number(localStorage.getItem('blockRushTotalLines')||0);
 let runCoins = 0;
 let previousBest = best;
+
+function updateHomeStats(){
+  const homeBest=document.getElementById('homeBest');
+  const homeBestTop=document.getElementById('homeBestTop');
+  const homeGames=document.getElementById('homeGames');
+  const homeHighest=document.getElementById('homeHighestLevel');
+  const homeLevel=document.getElementById('homeLevel');
+  const xpText=document.getElementById('homeXpText');
+  const xpFill=document.getElementById('homeXpFill');
+  const achievements=document.getElementById('homeAchievements');
+  if(homeBest) homeBest.textContent=best.toLocaleString();
+  if(homeBestTop) homeBestTop.textContent=best.toLocaleString();
+  if(homeGames) homeGames.textContent=gamesPlayed.toLocaleString();
+  if(homeHighest) homeHighest.textContent='LEVEL '+highestLevel;
+  if(homeLevel) homeLevel.textContent='LEVEL '+highestLevel;
+  const xp=Math.min(1000, (totalLinesLifetime % 10) * 100);
+  if(xpText) xpText.textContent=xp+' / 1000 XP';
+  if(xpFill) xpFill.style.width=Math.max(0,xp/10)+'%';
+  const unlocked=Math.min(40, Math.floor(best/500)+Math.floor(gamesPlayed/5)+Math.floor(totalLinesLifetime/10));
+  if(achievements) achievements.textContent=unlocked+' / 40 ›';
+}
 
 function saveCoins(){
   localStorage.setItem('blockRushCoins', String(coins));
   const a=document.getElementById('coins'), b=document.getElementById('startCoins');
   if(a)a.textContent=coins;
   if(b)b.textContent=coins;
+  updateHomeStats();
 }
 function rewardCoins(amount){
   coins += amount; runCoins += amount; saveCoins();
@@ -848,7 +873,7 @@ function resetBoard(){
  board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
  score=0; level=1; totalLines=0; runCoins=0; previousBest=best; updateScore(); updateLevel(); renderBoard(); generatePieces(); piecesEl.style.visibility='visible'; hideOverlays();
 }
-function updateScore(){scoreEl.textContent=score;bestEl.textContent=best}
+function updateScore(){scoreEl.textContent=score;bestEl.textContent=best;updateHomeStats()}
 function renderBoard(preview=[]){
  boardEl.innerHTML='';
  for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++){
@@ -911,6 +936,10 @@ function updateLevel(){
   const newLevel = 1 + Math.floor(totalLines / linesNeeded);
   if(newLevel > level){
     level = newLevel;
+    if(level > highestLevel){
+      highestLevel = level;
+      localStorage.setItem('blockRushHighestLevel', String(highestLevel));
+    }
     rewardCoins(25);
     beep(880,.12);
     vibrate(60);
@@ -1123,13 +1152,19 @@ function beep(freq=500,dur=.05){
 }
 function vibrate(ms){if(vibration&&navigator.vibrate)navigator.vibrate(ms)}
 
+function countGameStarted(){
+  gamesPlayed += 1;
+  localStorage.setItem('blockRushGamesPlayed', String(gamesPlayed));
+  updateHomeStats();
+}
+
 function startFreshGame(){
   try{ if(gameOverMusicTimer) clearTimeout(gameOverMusicTimer); }catch(e){}
   resetBoard();
   try{startMusic();}catch(e){}
 }
-document.getElementById('newGame').onclick=()=>{beep();startFreshGame()};
-document.getElementById('playAgain').onclick=()=>{beep();startFreshGame()};
+document.getElementById('newGame').onclick=()=>{beep();countGameStarted();startFreshGame()};
+document.getElementById('playAgain').onclick=()=>{beep();countGameStarted();startFreshGame()};
 document.getElementById('gameOverLeaderboard').onclick=()=>openLeaderboard();
 document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';
 document.getElementById('closeSettings').onclick=hideOverlays;
@@ -1150,17 +1185,18 @@ document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>startMusic(),{once:true}));
 
 saveCoins();
+updateHomeStats();
 
 function launchGame(e){
   if(e){ e.preventDefault(); e.stopPropagation(); }
   const screen=document.getElementById('startScreen');
   if(screen) screen.style.display='none';
+  countGameStarted();
   resetBoard();
   try{ startMusic(); }catch(err){}
 }
 const startGameBtn=document.getElementById('startGame');
 if(startGameBtn){
-  startGameBtn.addEventListener('pointerdown', launchGame);
   startGameBtn.addEventListener('click', launchGame);
 }
 
