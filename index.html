@@ -307,7 +307,7 @@ async function startMusic(){
 
     if(musicGain) { try { musicGain.disconnect(); } catch(e){} }
     musicGain = musicCtx.createGain();
-    musicGain.gain.value = 0.06;
+    musicGain.gain.value = 0.22;
     musicGain.connect(musicCtx.destination);
 
     musicStep = 0;
@@ -318,7 +318,7 @@ async function startMusic(){
       osc.type = 'triangle';
       osc.frequency.value = melody[musicStep % melody.length];
       gain.gain.setValueAtTime(0.0001, musicCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.10, musicCtx.currentTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.20, musicCtx.currentTime + 0.03);
       gain.gain.exponentialRampToValueAtTime(0.0001, musicCtx.currentTime + 0.30);
       osc.connect(gain); gain.connect(musicGain);
       osc.start(); osc.stop(musicCtx.currentTime + 0.31);
@@ -349,7 +349,7 @@ function beep(freq=500,dur=.05){
  try{
    const C=window.AudioContext||window.webkitAudioContext,ctx=new C();
    const o=ctx.createOscillator(),g=ctx.createGain();
-   o.frequency.value=freq;o.type='sine';g.gain.value=.05;
+   o.frequency.value=freq;o.type='sine';g.gain.value=.12;
    o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+dur);
  }catch(e){}
 }
