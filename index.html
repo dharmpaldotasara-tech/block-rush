@@ -49,7 +49,7 @@ body{
 .pieces{display:flex;justify-content:space-around;align-items:center;min-height:82px;gap:10px}
 .piece-slot{width:31%;height:78px;display:flex;justify-content:center;align-items:center}
 .piece{
-  display:grid;gap:4px;cursor:grab;touch-action:none;user-select:none;
+  display:grid;grid-auto-rows:20px;align-content:start;gap:4px;min-width:20px;min-height:20px;cursor:grab;touch-action:none;user-select:none;
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));transition:transform .1s
 }
 .piece.dragging{position:fixed;z-index:20;pointer-events:none;transform:scale(1.15)}
@@ -255,7 +255,7 @@ bestEl.textContent=best;
 
 function resetBoard(){
  board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
- score=0; level=1; totalLines=0; updateScore(); updateLevel(); renderBoard(); generatePieces(); hideOverlays();
+ score=0; level=1; totalLines=0; updateScore(); updateLevel(); renderBoard(); generatePieces(); piecesEl.style.visibility='visible'; hideOverlays();
 }
 function updateScore(){scoreEl.textContent=score;bestEl.textContent=best}
 function renderBoard(preview=[]){
@@ -270,7 +270,7 @@ function renderBoard(preview=[]){
 function makePiece(shape,color,index){
  const p=document.createElement('div');p.className='piece';p.dataset.index=index;
  const maxR=Math.max(...shape.map(x=>x[0])),maxC=Math.max(...shape.map(x=>x[1]));
- p.style.gridTemplateColumns=`repeat(${maxC+1},20px)`;
+ p.style.gridTemplateColumns=`repeat(${maxC+1},20px)`;p.style.gridTemplateRows=`repeat(${maxR+1},20px)`;
  shape.forEach(([r,c])=>{
    const x=document.createElement('div');x.className='mini-cell '+color;
    x.style.gridRow=r+1;x.style.gridColumn=c+1;p.appendChild(x);
@@ -413,6 +413,7 @@ function endDrag(e){
 
 
 let musicOn = true;
+let musicPlaying = false;
 let musicCtx = null;
 let musicGain = null;
 let musicTimer = null;
@@ -427,7 +428,7 @@ const melody = [
 
 
 function startMusic() {
-  if (musicPlaying) return;
+  if (!musicOn || musicPlaying) return;
   musicPlaying = true;
 
   const AC = window.AudioContext || window.webkitAudioContext;
