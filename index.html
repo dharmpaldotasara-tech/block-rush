@@ -300,6 +300,7 @@ const COLORS=['yellow','cyan','pink'];
 bestEl.textContent=best;
 
 function resetBoard(){
+ gameEnded = false;
  board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
  score=0; level=1; totalLines=0; runCoins=0; previousBest=best; updateScore(); updateLevel(); renderBoard(); generatePieces(); piecesEl.style.visibility='visible'; hideOverlays();
 }
@@ -390,8 +391,12 @@ function showLevelUp(){
 }
 
 function hasMove(){
- return currentPieces.some(p=>{
-   for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(canPlace(p.shape,r,c))return true;
+ return currentPieces.filter(Boolean).some(p=>{
+   for(let r=0;r<SIZE;r++){
+     for(let c=0;c<SIZE;c++){
+       if(canPlace(p.shape,r,c)) return true;
+     }
+   }
    return false;
  });
 }
@@ -399,9 +404,17 @@ function afterPieceUsed(index){
  currentPieces[index]=null;
  const allUsed=currentPieces.every(x=>x===null);
  if(allUsed) generatePieces();
- if(!hasMove()) setTimeout(gameOver,120);
+
+ // Check the freshly available pieces. If none can fit anywhere,
+ // the game ends immediately.
+ if(currentPieces.filter(Boolean).length && !hasMove()){
+   setTimeout(gameOver,120);
+ }
 }
+let gameEnded = false;
 function gameOver(){
+ if(gameEnded) return;
+ gameEnded = true;
  saveLeaderboard();
  rewardCoins(10);
  document.getElementById('finalScore').textContent=score;
