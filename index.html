@@ -610,3 +610,42 @@ window.addEventListener("keydown", () => {
 
 </body>
 </html>
+
+
+<script>
+(function(){
+  function bootBlockRush(){
+    var btn=document.getElementById('startGame');
+    var screen=document.getElementById('startScreen');
+    if(!btn || !screen) return;
+
+    btn.addEventListener('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+
+      screen.style.display='none';
+
+      try {
+        if(typeof resetBoard === 'function') resetBoard();
+      } catch(err) {
+        console.error('Block Rush start error:', err);
+        // Fallback: at least show the game area.
+        screen.style.display='none';
+      }
+
+      try {
+        if(typeof startMusic === 'function') startMusic();
+      } catch(err) {}
+    }, true);
+
+    // Keep the start screen visible until PLAY NOW is pressed.
+    screen.style.display='flex';
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bootBlockRush);
+  } else {
+    bootBlockRush();
+  }
+})();
+</script>
