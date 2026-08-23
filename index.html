@@ -276,6 +276,369 @@ body{
 }
 
 </style>
+
+<style id="block-rush-pro-home">
+/* PRO HOME SCREEN — inspired by the supplied game HUD reference */
+.pro-home{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  overflow:auto;
+  display:block;
+  padding:0 18px 28px;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(14,112,145,.15),transparent 28%),
+    radial-gradient(circle at 10% 15%,rgba(0,120,255,.10),transparent 25%),
+    linear-gradient(180deg,#071019 0%,#050b12 58%,#071019 100%);
+  color:#eef8ff;
+  font-family:Arial,sans-serif;
+}
+.pro-home:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.42;
+  background:
+    linear-gradient(135deg,transparent 0 49.6%,rgba(74,151,183,.08) 49.8%,transparent 50.1%),
+    linear-gradient(45deg,transparent 0 49.6%,rgba(74,151,183,.05) 49.8%,transparent 50.1%);
+  background-size:280px 280px;
+}
+.pro-topbar{
+  position:relative;
+  z-index:2;
+  width:min(1120px,100%);
+  min-height:112px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.55fr 1fr 1fr auto auto;
+  align-items:center;
+  gap:0;
+  border-bottom:1px solid rgba(107,182,215,.20);
+}
+.player-chip{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px 24px 18px 10px;
+  border-right:1px solid rgba(107,182,215,.20);
+}
+.player-avatar{
+  width:74px;height:74px;
+  display:grid;place-items:center;
+  font-size:30px;color:#25e0df;
+  border:1px solid rgba(54,224,224,.45);
+  clip-path:polygon(24% 3%,76% 3%,97% 27%,91% 76%,50% 98%,9% 76%,3% 27%);
+  background:radial-gradient(circle,#0e5966,#08131c 70%);
+  box-shadow:inset 0 0 25px rgba(26,221,224,.10);
+}
+.hud-label{
+  display:block;
+  color:rgba(238,248,255,.72);
+  font-size:11px;
+  letter-spacing:1.2px;
+}
+.hud-level{
+  margin-top:4px;
+  color:#31e5df;
+  font-size:20px;
+  letter-spacing:.8px;
+}
+.xp-track{
+  width:160px;height:5px;
+  margin-top:7px;
+  background:#26323b;
+}
+.xp-track span{
+  display:block;width:65%;height:100%;
+  background:#2adbd9;
+}
+.xp-text{
+  margin-top:5px;
+  color:#d7e2e8;
+  font-size:11px;
+}
+.top-stat{
+  min-height:70px;
+  padding:10px 28px;
+  border-right:1px solid rgba(107,182,215,.20);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.top-stat strong{
+  margin-top:6px;
+  color:#f5bf36;
+  font-size:25px;
+  letter-spacing:.4px;
+}
+.coins-stat strong{color:#f3edf0}
+.top-icon{
+  width:62px;height:62px;
+  margin:0 7px;
+  display:grid;place-items:center;
+  border:1px solid rgba(120,167,190,.30);
+  background:rgba(8,20,29,.65);
+  color:#eef8ff;
+  font-size:27px;
+  clip-path:polygon(15% 0,85% 0,100% 15%,100% 85%,85% 100%,15% 100%,0 85%,0 15%);
+}
+.pro-hero{
+  position:relative;
+  z-index:1;
+  width:min(920px,100%);
+  min-height:630px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.cube-mark{
+  color:#2de2df;
+  font-size:82px;
+  line-height:.75;
+  text-shadow:0 0 20px rgba(45,226,223,.20);
+}
+.pro-title{
+  margin-top:22px;
+  text-align:center;
+  font-size:84px;
+  line-height:.83;
+  font-weight:1000;
+  letter-spacing:4px;
+  color:#edf2f5;
+  text-shadow:0 5px 0 rgba(0,0,0,.35);
+}
+.pro-title span{color:#1fd4d2}
+.pro-tag{
+  margin-top:26px;
+  color:#b9c6cd;
+  font-size:13px;
+  letter-spacing:3px;
+}
+.pro-tag b{color:#2de2df;margin:0 12px}
+.pro-play{
+  width:min(430px,76vw);
+  margin-top:46px;
+  padding:21px 24px;
+  border:1px solid #2bdedc;
+  color:#e9f7f8;
+  background:linear-gradient(180deg,rgba(16,50,57,.80),rgba(7,25,31,.92));
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:2px;
+  clip-path:polygon(5% 0,94% 0,100% 20%,100% 80%,94% 100%,5% 100%,0 80%,0 20%);
+  box-shadow:inset 0 0 25px rgba(37,221,218,.08);
+}
+.pro-play span{color:#2de2df;margin-right:16px}
+.pro-menu{
+  margin-top:18px;
+  display:flex;
+  border:1px solid rgba(120,167,190,.22);
+  background:rgba(7,17,24,.65);
+}
+.pro-menu-btn{
+  min-width:230px;
+  padding:14px 25px;
+  border:0;
+  background:transparent;
+  color:#dce7eb;
+  font-size:13px;
+  letter-spacing:1px;
+}
+.pro-menu-btn + .pro-menu-btn{border-left:1px solid rgba(120,167,190,.22)}
+.pro-menu-btn span{color:#2de2df;font-size:20px;margin-right:10px}
+
+.hero-block{
+  position:absolute;
+  width:112px;height:112px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:5px;
+  transform:rotate(-15deg);
+  opacity:.9;
+}
+.hero-block i{
+  display:block;
+  aspect-ratio:1;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 8px 15px rgba(255,255,255,.10),0 8px 18px rgba(0,0,0,.35);
+}
+.purple{left:3%;top:21%}.purple i{background:linear-gradient(145deg,#9a4fff,#4a1aa7)}
+.orange{right:4%;top:20%}.orange i{background:linear-gradient(145deg,#ff8a45,#b73517)}
+.blue{left:4%;bottom:10%}.blue i{background:linear-gradient(145deg,#338df2,#174ba5)}
+.yellow{right:5%;bottom:10%}.yellow i{background:linear-gradient(145deg,#ffc738,#9c6411)}
+.hero-bottom-left{transform:rotate(-15deg)}
+.hero-bottom-right{transform:rotate(15deg)}
+
+.pro-stats,
+.pro-actions,
+.pro-nav{
+  position:relative;
+  z-index:2;
+  width:min(1120px,100%);
+  margin:0 auto;
+  border:1px solid rgba(120,167,190,.20);
+  background:rgba(6,15,22,.62);
+}
+.pro-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+.pro-stats>div{
+  min-height:150px;
+  padding:20px;
+  text-align:center;
+  border-right:1px solid rgba(120,167,190,.20);
+}
+.pro-stats>div:last-child{border-right:0}
+.pro-stats span{
+  display:block;
+  color:#f2bd35;
+  font-size:28px;
+}
+.pro-stats>div:nth-child(2) span{color:#2de2df}
+.pro-stats>div:nth-child(3) span{color:#a46cf5}
+.pro-stats small{
+  display:block;
+  margin-top:8px;
+  color:#aab9c2;
+  font-size:11px;
+  letter-spacing:1px;
+}
+.pro-stats strong{
+  display:block;
+  margin-top:12px;
+  color:#f1c13d;
+  font-size:30px;
+}
+.pro-stats>div:nth-child(2) strong{color:#2de2df}
+.pro-stats>div:nth-child(3) strong{color:#a86bf1}
+
+.pro-actions{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+.pro-actions>div{
+  min-height:94px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px 18px;
+  border-right:1px solid rgba(120,167,190,.20);
+}
+.pro-actions>div:last-child{border-right:0}
+.pro-actions b{
+  color:#2de2df;
+  font-size:28px;
+}
+.pro-actions span{
+  color:#dce6eb;
+  font-size:11px;
+  letter-spacing:.6px;
+}
+.pro-actions em{
+  display:block;
+  margin-top:8px;
+  color:#2de2df;
+  font-style:normal;
+  font-size:12px;
+}
+.pro-actions>div:nth-child(2) b,.pro-actions>div:nth-child(2) em{color:#5db8ff}
+.pro-actions>div:nth-child(3) b,.pro-actions>div:nth-child(3) em{color:#b56df2}
+.pro-actions>div:nth-child(4) b,.pro-actions>div:nth-child(4) em{color:#f3b62f}
+
+.pro-nav{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:60px 1fr 1fr 90px 1fr 1fr 60px;
+  min-height:84px;
+  align-items:center;
+}
+.pro-nav>div{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  color:#aab8c0;
+  font-size:25px;
+  border-right:1px solid rgba(120,167,190,.18);
+}
+.pro-nav>div:last-child{border-right:0}
+.pro-nav span{font-size:10px;letter-spacing:1px}
+.pro-nav .active{color:#2de2df;background:rgba(30,211,209,.05)}
+.nav-play{
+  color:#2de2df !important;
+  font-size:34px !important;
+  border:1px solid rgba(45,226,223,.55);
+  clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);
+}
+
+/* Keep the actual game screen untouched after PLAY NOW */
+@media(max-width:760px){
+  .pro-topbar{
+    grid-template-columns:1.5fr 1fr 1fr;
+    min-height:90px;
+  }
+  .player-chip{padding-right:10px}
+  .player-avatar{width:52px;height:52px;font-size:22px}
+  .hud-level{font-size:15px}
+  .xp-track{width:105px}
+  .top-stat{padding:8px 10px}
+  .top-stat strong{font-size:17px}
+  .top-icon{display:none}
+  .pro-hero{min-height:550px}
+  .pro-title{font-size:58px}
+  .cube-mark{font-size:58px}
+  .pro-tag{font-size:9px;letter-spacing:1.4px}
+  .pro-play{font-size:20px;margin-top:30px}
+  .pro-menu-btn{min-width:150px;font-size:10px;padding:12px 10px}
+  .hero-block{width:70px;height:70px}
+  .pro-stats>div{min-height:110px;padding:12px 5px}
+  .pro-stats strong{font-size:20px}
+  .pro-actions{grid-template-columns:1fr 1fr}
+  .pro-actions>div:nth-child(2){border-right:0}
+  .pro-actions>div:nth-child(-n+2){border-bottom:1px solid rgba(120,167,190,.20)}
+  .pro-nav{grid-template-columns:40px 1fr 1fr 58px 1fr 1fr 40px}
+  .pro-nav>div{font-size:19px}
+}
+@media(max-width:430px){
+  .pro-home{padding:0 8px 18px}
+  .pro-topbar{grid-template-columns:1.35fr .8fr .8fr}
+  .player-chip{gap:8px}
+  .player-avatar{width:43px;height:43px}
+  .hud-label{font-size:8px}
+  .hud-level{font-size:13px}
+  .xp-track{width:80px;height:4px}
+  .xp-text{font-size:8px}
+  .top-stat strong{font-size:14px}
+  .pro-hero{min-height:470px}
+  .pro-title{font-size:43px;letter-spacing:2px;margin-top:15px}
+  .cube-mark{font-size:43px}
+  .pro-tag{margin-top:17px;font-size:7px}
+  .pro-tag b{margin:0 5px}
+  .pro-play{width:86vw;padding:15px;font-size:17px;margin-top:25px}
+  .pro-menu{width:86vw}
+  .pro-menu-btn{min-width:0;flex:1;padding:10px 4px;font-size:8px}
+  .hero-block{width:54px;height:54px}
+  .pro-stats>div{min-height:95px}
+  .pro-stats span{font-size:20px}
+  .pro-stats small{font-size:7px}
+  .pro-stats strong{font-size:15px}
+  .pro-actions>div{min-height:78px;padding:9px 8px}
+  .pro-actions b{font-size:20px}
+  .pro-actions span{font-size:8px}
+  .pro-actions em{font-size:9px;margin-top:5px}
+  .pro-nav{min-height:67px;grid-template-columns:28px 1fr 1fr 46px 1fr 1fr 28px}
+  .pro-nav>div{font-size:15px}
+  .pro-nav span{font-size:7px}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -336,16 +699,71 @@ body{
 </div>
 
 
-<div id="startScreen" class="start-screen">
-  <div class="start-card">
-    <div class="start-logo">BLOCK <span>RUSH</span></div>
-    <div class="start-tag">Stack. Clear. Rush to the top.</div>
-    <div class="coin-pill">🪙 <span id="startCoins">0</span> COINS</div>
-    <button id="startGame" class="big-play">▶ PLAY NOW</button>
-    <div class="menu-row">
-      <button id="startLeaderboard" class="menu-btn">🏆 LEADERBOARD</button>
-      <button id="startSettings" class="menu-btn">⚙ SETTINGS</button>
+<div id="startScreen" class="start-screen pro-home">
+  <div class="pro-topbar">
+    <div class="player-chip">
+      <div class="player-avatar">◆</div>
+      <div>
+        <div class="hud-label">PLAYER</div>
+        <div class="hud-level">LEVEL 7</div>
+        <div class="xp-track"><span></span></div>
+        <div class="xp-text">650 / 1000 XP</div>
+      </div>
     </div>
+
+    <div class="top-stat">
+      <span class="hud-label">BEST SCORE</span>
+      <strong>★ 18,720</strong>
+    </div>
+
+    <div class="top-stat coins-stat">
+      <span class="hud-label">COINS</span>
+      <strong>◉ <span id="startCoins">0</span></strong>
+    </div>
+
+    <div class="top-icon">▥</div>
+    <div class="top-icon">⚙</div>
+  </div>
+
+  <div class="pro-hero">
+    <div class="hero-block hero-left purple"><i></i><i></i><i></i><i></i></div>
+    <div class="hero-block hero-right orange"><i></i><i></i><i></i><i></i></div>
+    <div class="hero-block hero-bottom-left blue"><i></i><i></i><i></i><i></i></div>
+    <div class="hero-block hero-bottom-right yellow"><i></i><i></i><i></i><i></i></div>
+
+    <div class="cube-mark">◇</div>
+    <div class="pro-title">BLOCK<br><span>RUSH</span></div>
+    <div class="pro-tag"><b>—</b> STACK. CLEAR. RUSH TO THE TOP. <b>—</b></div>
+
+    <button id="startGame" class="pro-play"><span>▶</span> PLAY NOW</button>
+
+    <div class="pro-menu">
+      <button id="startLeaderboard" class="pro-menu-btn"><span>♜</span> LEADERBOARD</button>
+      <button id="startSettings" class="pro-menu-btn"><span>☷</span> SETTINGS</button>
+    </div>
+  </div>
+
+  <div class="pro-stats">
+    <div><span>★</span><small>BEST SCORE</small><strong>18,720</strong></div>
+    <div><span>⌁</span><small>GAMES PLAYED</small><strong>56</strong></div>
+    <div><span>▥</span><small>HIGHEST LEVEL</small><strong>LEVEL 12</strong></div>
+  </div>
+
+  <div class="pro-actions">
+    <div><b>▣</b><span>DAILY REWARD<em>Claim Now ›</em></span></div>
+    <div><b>◎</b><span>ACHIEVEMENTS<em>18 / 40 ›</em></span></div>
+    <div><b>♧</b><span>FREE COINS<em>Watch Ad ›</em></span></div>
+    <div><b>🛒</b><span>SHOP<em>Coming Soon ›</em></span></div>
+  </div>
+
+  <div class="pro-nav">
+    <div>?</div>
+    <div class="active">⌂<span>HOME</span></div>
+    <div>♕<span>RANK</span></div>
+    <div class="nav-play">▷</div>
+    <div>☆<span>ACHIEVEMENTS</span></div>
+    <div>🛒<span>SHOP</span></div>
+    <div>⌁</div>
   </div>
 </div>
 <div id="leaderboardOverlay" class="overlay">
