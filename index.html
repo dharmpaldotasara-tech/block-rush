@@ -581,6 +581,40 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
 .mega-categories{display:none;position:absolute;right:0;top:48px;z-index:20;min-width:280px;max-width:min(92vw,520px);padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 12px 35px rgba(0,0,0,.12)}
 .mega-categories.open{display:block}
 .mega-grid{display:flex;flex-wrap:wrap;gap:8px}
+
+#target{
+  min-height:58px;
+  font-size:18px;
+  padding:16px 18px;
+  border-radius:14px;
+}
+#target::placeholder{font-size:17px}
+@media(max-width:700px){
+  #target{min-height:60px;font-size:17px;padding:17px 16px}
+  #target::placeholder{font-size:16px}
+}
+
+.all-category-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border:2px solid var(--line);border-radius:16px;background:var(--surface);font-size:17px;font-weight:900;cursor:pointer}
+.all-category-arrow{font-size:22px;line-height:1}
+.category-preview{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:10px}
+.category-preview::-webkit-scrollbar{display:none}
+.category-popup{display:none;position:fixed;inset:0;z-index:9999}
+.category-popup.open{display:block}
+.category-popup-backdrop{position:absolute;inset:0;background:rgba(20,25,35,.5)}
+.category-popup-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(900px,92vw);max-height:82vh;overflow:auto;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
+.category-popup-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+#categoryPopupTitle{font-size:23px;font-weight:950}
+.category-popup-sub{margin-top:4px;color:var(--muted);font-size:13px}
+.category-popup-close{border:0;background:transparent;font-size:30px;line-height:1;cursor:pointer}
+.category-popup-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.popup-cat{border:1px solid var(--line);background:transparent;border-radius:12px;padding:12px 10px;text-align:left;font-weight:750;cursor:pointer}
+.popup-cat:hover,.popup-cat.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media(max-width:700px){
+ .all-category-btn{padding:15px 16px;font-size:16px}
+ .category-popup-card{width:94vw;padding:16px;border-radius:18px}
+ .category-popup-grid{grid-template-columns:1fr 1fr}
+ .popup-cat{font-size:12px;padding:11px 9px}
+}
 </style>
 <meta name="description" content="BidTopper — live public bidding leaderboard.">
 </head>
@@ -619,69 +653,40 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
  </div>
 </section>
 
-<section id="categories" class="categories-wrap">
- <div class="categories"><button class="cat active all-category-only" data-filter="All">▦ All Category</button></div>
 
-  <div class="mega" id="megaCategories">
-  <div class="mega-top">
-   <button class="mega-pill active" data-filter="All">▦ All</button>
-   <span>Explore every category</span>
+
+<section id="categories" class="categories-wrap">
+  <button type="button" id="allCategoryBtn" class="all-category-btn" data-filter="All">
+    <span>All Category</span><span class="all-category-arrow">⌄</span>
+  </button>
+  <div class="category-preview">
+    <button type="button" class="category-pill" data-filter="Website">Website</button><button type="button" class="category-pill" data-filter="App">App</button><button type="button" class="category-pill" data-filter="Hospital">Hospital</button><button type="button" class="category-pill" data-filter="School">School</button><button type="button" class="category-pill" data-filter="Extension">Extension</button><button type="button" class="category-pill" data-filter="SEO &amp; AI Visibility">SEO &amp; AI Visibility</button>
   </div>
-  <div class="mega-grid">
-    <button data-filter="Website">Website</button>
-    <button data-filter="App">App</button>
-    <button data-filter="Hospital">Hospital</button>
-    <button data-filter="School">School</button>
-    <button data-filter="Extension">Extension</button>
-    <button data-filter="SEO & AI Visibility">SEO & AI Visibility</button>
-    <button data-filter="AI Agents & Infrastructure">AI Agents & Infrastructure</button>
-    <button data-filter="AI Media Generation">AI Media Generation</button>
-    <button data-filter="Marketing & Advertising">Marketing & Advertising</button>
-    <button data-filter="Developer Tools">Developer Tools</button>
-    <button data-filter="Productivity & Personal Tools">Productivity & Personal Tools</button>
-    <button data-filter="People & Profiles">People & Profiles</button>
-    <button data-filter="Design & Creative">Design & Creative</button>
-    <button data-filter="Social Media & Creator Tools">Social Media & Creator Tools</button>
-    <button data-filter="Writing & Content">Writing & Content</button>
-    <button data-filter="Sales & Lead Generation">Sales & Lead Generation</button>
-    <button data-filter="Business, Finance & Investing">Business, Finance & Investing</button>
-    <button data-filter="Games & Entertainment">Games & Entertainment</button>
-    <button data-filter="Education & Learning">Education & Learning</button>
-    <button data-filter="Health, Fitness & Wellness">Health, Fitness & Wellness</button>
-    <button data-filter="Ecommerce & Retail">Ecommerce & Retail</button>
-    <button data-filter="Directories, Launch & Discovery">Directories, Launch & Discovery</button>
-    <button data-filter="Hiring, Jobs & Careers">Hiring, Jobs & Careers</button>
-    <button data-filter="Audio, Voice & Podcasting">Audio, Voice & Podcasting</button>
-    <button data-filter="Crypto, Web3 & Investing">Crypto, Web3 & Investing</button>
-    <button data-filter="Agencies, Studios & Services">Agencies, Studios & Services</button>
-    <button data-filter="Security, Privacy & Compliance">Security, Privacy & Compliance</button>
-    <button data-filter="Travel, Local & Lifestyle">Travel, Local & Lifestyle</button>
-    <button data-filter="Media & News">Media & News</button>
-    <button data-filter="Domains & Web Assets">Domains & Web Assets</button>
-    <button data-filter="Leaderboards & Attention Markets">Leaderboards & Attention Markets</button>
-    <button data-filter="Real Estate & Property">Real Estate & Property</button>
-    <button data-filter="Other">Other</button>
-   </div>
- </div>
 </section>
 
-<nav class="category-nav" aria-label="Categories">
-  <div class="category-scroll">
-    <button type="button" class="category-pill" data-filter="All">All</button><button type="button" class="category-pill" data-filter="Website">Website</button><button type="button" class="category-pill" data-filter="App">App</button><button type="button" class="category-pill" data-filter="Hospital">Hospital</button><button type="button" class="category-pill" data-filter="School">School</button><button type="button" class="category-pill" data-filter="Extension">Extension</button><button type="button" class="category-pill" data-filter="SEO & AI Visibility">SEO & AI Visibility</button>
-    
-<button type="button" class="category-pill more-category" id="moreCategories" data-filter="More">More ▾</button>
-<div id="megaCategories" class="mega-categories">
-  <div class="mega-grid">
-    <button type="button" class="category-pill" data-filter="AI Agents & Infrastructure">AI Agents & Infrastructure</button><button type="button" class="category-pill" data-filter="AI Media Generation">AI Media Generation</button><button type="button" class="category-pill" data-filter="Marketing & Advertising">Marketing & Advertising</button><button type="button" class="category-pill" data-filter="Developer Tools">Developer Tools</button><button type="button" class="category-pill" data-filter="Productivity & Personal Tools">Productivity & Personal Tools</button><button type="button" class="category-pill" data-filter="People & Profiles">People & Profiles</button><button type="button" class="category-pill" data-filter="Design & Creative">Design & Creative</button><button type="button" class="category-pill" data-filter="Social Media & Creator Tools">Social Media & Creator Tools</button><button type="button" class="category-pill" data-filter="Writing & Content">Writing & Content</button><button type="button" class="category-pill" data-filter="Sales & Lead Generation">Sales & Lead Generation</button><button type="button" class="category-pill" data-filter="Business, Finance & Investing">Business, Finance & Investing</button><button type="button" class="category-pill" data-filter="Games & Entertainment">Games & Entertainment</button><button type="button" class="category-pill" data-filter="Education & Learning">Education & Learning</button><button type="button" class="category-pill" data-filter="Health, Fitness & Wellness">Health, Fitness & Wellness</button><button type="button" class="category-pill" data-filter="Ecommerce & Retail">Ecommerce & Retail</button><button type="button" class="category-pill" data-filter="Directories, Launch & Discovery">Directories, Launch & Discovery</button><button type="button" class="category-pill" data-filter="Hiring, Jobs & Careers">Hiring, Jobs & Careers</button><button type="button" class="category-pill" data-filter="Audio, Voice & Podcasting">Audio, Voice & Podcasting</button><button type="button" class="category-pill" data-filter="Crypto, Web3 & Investing">Crypto, Web3 & Investing</button><button type="button" class="category-pill" data-filter="Agencies, Studios & Services">Agencies, Studios & Services</button><button type="button" class="category-pill" data-filter="Security, Privacy & Compliance">Security, Privacy & Compliance</button><button type="button" class="category-pill" data-filter="Travel, Local & Lifestyle">Travel, Local & Lifestyle</button><button type="button" class="category-pill" data-filter="Media & News">Media & News</button><button type="button" class="category-pill" data-filter="Domains & Web Assets">Domains & Web Assets</button><button type="button" class="category-pill" data-filter="Leaderboards & Attention Markets">Leaderboards & Attention Markets</button><button type="button" class="category-pill" data-filter="Real Estate & Property">Real Estate & Property</button><button type="button" class="category-pill" data-filter="Other">Other</button>
+<div id="categoryPopup" class="category-popup" aria-hidden="true">
+  <div class="category-popup-backdrop" id="categoryPopupBackdrop"></div>
+  <div class="category-popup-card" role="dialog" aria-modal="true" aria-labelledby="categoryPopupTitle">
+    <div class="category-popup-head">
+      <div>
+        <div id="categoryPopupTitle">All Categories</div>
+        <div class="category-popup-sub">Choose a category to open its own rank list.</div>
+      </div>
+      <button type="button" id="closeCategoryPopup" class="category-popup-close">×</button>
+    </div>
+    <div class="category-popup-grid">
+      <button type="button" class="popup-cat all-popup active" data-filter="All">All Category</button>
+      <button type="button" class="popup-cat" data-filter="Website">Website</button><button type="button" class="popup-cat" data-filter="App">App</button><button type="button" class="popup-cat" data-filter="Hospital">Hospital</button><button type="button" class="popup-cat" data-filter="School">School</button><button type="button" class="popup-cat" data-filter="Extension">Extension</button><button type="button" class="popup-cat" data-filter="SEO &amp; AI Visibility">SEO &amp; AI Visibility</button><button type="button" class="popup-cat" data-filter="AI Agents &amp; Infrastructure">AI Agents &amp; Infrastructure</button><button type="button" class="popup-cat" data-filter="AI Media Generation">AI Media Generation</button><button type="button" class="popup-cat" data-filter="Marketing &amp; Advertising">Marketing &amp; Advertising</button><button type="button" class="popup-cat" data-filter="Developer Tools">Developer Tools</button><button type="button" class="popup-cat" data-filter="Productivity &amp; Personal Tools">Productivity &amp; Personal Tools</button><button type="button" class="popup-cat" data-filter="People &amp; Profiles">People &amp; Profiles</button><button type="button" class="popup-cat" data-filter="Design &amp; Creative">Design &amp; Creative</button><button type="button" class="popup-cat" data-filter="Social Media &amp; Creator Tools">Social Media &amp; Creator Tools</button><button type="button" class="popup-cat" data-filter="Writing &amp; Content">Writing &amp; Content</button><button type="button" class="popup-cat" data-filter="Sales &amp; Lead Generation">Sales &amp; Lead Generation</button><button type="button" class="popup-cat" data-filter="Business, Finance &amp; Investing">Business, Finance &amp; Investing</button><button type="button" class="popup-cat" data-filter="Games &amp; Entertainment">Games &amp; Entertainment</button><button type="button" class="popup-cat" data-filter="Education &amp; Learning">Education &amp; Learning</button><button type="button" class="popup-cat" data-filter="Health, Fitness &amp; Wellness">Health, Fitness &amp; Wellness</button><button type="button" class="popup-cat" data-filter="Ecommerce &amp; Retail">Ecommerce &amp; Retail</button><button type="button" class="popup-cat" data-filter="Directories, Launch &amp; Discovery">Directories, Launch &amp; Discovery</button><button type="button" class="popup-cat" data-filter="Hiring, Jobs &amp; Careers">Hiring, Jobs &amp; Careers</button><button type="button" class="popup-cat" data-filter="Audio, Voice &amp; Podcasting">Audio, Voice &amp; Podcasting</button><button type="button" class="popup-cat" data-filter="Crypto, Web3 &amp; Investing">Crypto, Web3 &amp; Investing</button><button type="button" class="popup-cat" data-filter="Agencies, Studios &amp; Services">Agencies, Studios &amp; Services</button><button type="button" class="popup-cat" data-filter="Security, Privacy &amp; Compliance">Security, Privacy &amp; Compliance</button><button type="button" class="popup-cat" data-filter="Travel, Local &amp; Lifestyle">Travel, Local &amp; Lifestyle</button><button type="button" class="popup-cat" data-filter="Media &amp; News">Media &amp; News</button><button type="button" class="popup-cat" data-filter="Domains &amp; Web Assets">Domains &amp; Web Assets</button><button type="button" class="popup-cat" data-filter="Leaderboards &amp; Attention Markets">Leaderboards &amp; Attention Markets</button><button type="button" class="popup-cat" data-filter="Real Estate &amp; Property">Real Estate &amp; Property</button><button type="button" class="popup-cat" data-filter="Other">Other</button>
+    </div>
   </div>
 </div>
-  </div>
-</nav>
+
 <div class="board-head">
   <div id="boardLabel" class="board-label">All Category — Live Rankings</div>
   <div id="boardNote" class="board-note">Every category ranked together by current bid.</div>
 </div>
 <section id="board" class="board"><div class="empty">Loading live leaderboard…</div></section>
+
 
 <section class="activity">
  <h2><span class="activity-dot">•</span> Latest activity</h2>
@@ -760,13 +765,13 @@ function render(){
    const safeTarget=esc(b.target||'');
    const hrefTarget=toHttpUrl(b.target);
    const clickable=hrefTarget ? `href="${esc(hrefTarget)}" rel="noopener noreferrer"` : '';
-   return `<article class="row rank-link ${i===0?'top':''}" data-target="${safeTarget}" data-listing-id="${esc(b.id||'')}" tabindex="0" role="link" aria-label="Open ${esc(b.display_name||b.target||'listing')}">
+   return `<article class="row rank-link ${i===0?'top':''}" data-target="${encodeURIComponent(b.target||'')}" data-listing-id="${esc(b.id||'')}" tabindex="0" role="link" aria-label="Open ${esc(b.display_name||b.target||'listing')}">
     <div class="rank">#${i+1}</div>
     <div class="logoBox">${esc(initials)}</div>
     <div class="info">
       <div class="title">${hrefTarget ? `<a class="listing-url" ${clickable}>${esc(b.display_name||b.target)}</a>` : `<span>${esc(b.display_name||b.target)}</span>`} · ${esc(b.category)}</div>
       <div class="desc">${esc(b.target)} · Live public BidTopper listing.</div>
-      <div class="meta"><span>${esc(b.category)}</span><span>•</span><span>live now</span><span>•</span><span class="clicks">${Number(b.clicks||0)} clicks</span><span> <button class="details" type="button" data-target="${safeTarget}">open website</button></span></div>
+      <div class="meta"><span>${esc(b.category)}</span><span>•</span><span>live now</span><span>•</span><span class="clicks">${Number(b.clicks||0)} clicks</span><span> <button class="details" type="button" data-target="">open website</button></span></div>
     </div>
     <div><div class="amount">${money(b.current_amount)}</div></div>
    </article>`;
@@ -797,7 +802,9 @@ function toHttpUrl(target){
 }
 
 async function openListingTarget(target,listingId){
-  const url=toHttpUrl(target);
+  let decoded=String(target||'');
+  try{ decoded=decodeURIComponent(decoded); }catch{}
+  const url=toHttpUrl(decoded);
   if(!url){
     toast('This listing does not contain a valid website URL.');
     return;
@@ -825,7 +832,7 @@ function bindRankLinks(){
       if(details){
         e.preventDefault();
         e.stopPropagation();
-        await openListingTarget(details.dataset.target,row.dataset.listingId);
+        await openListingTarget(row.dataset.target,row.dataset.listingId);
         return;
       }
 
@@ -960,54 +967,64 @@ $('outbid').onclick=async()=>{
 const FILTER_MAP={};
 
 function setFilter(raw){
- if(!raw || raw==='More') return;
- const next=FILTER_MAP[raw]||raw;
- filter=(next==='All'||ALLOWED.includes(next))?next:'All';
+  if(!raw || raw==='More') return;
+  const next=FILTER_MAP[raw]||raw;
+  filter=(next==='All'||ALLOWED.includes(next))?next:'All';
 
- document.querySelectorAll('[data-filter]').forEach(x=>{
-   const value=FILTER_MAP[x.dataset.filter]||x.dataset.filter;
-   x.classList.toggle('active',value===filter);
- });
+  document.querySelectorAll('[data-filter]').forEach(el=>{
+    const value=FILTER_MAP[el.dataset.filter]||el.dataset.filter;
+    if(el.id!=='moreCategories') el.classList.toggle('active',value===filter);
+  });
 
- const mega=$('megaCategories');
- if(mega) mega.classList.remove('open');
-
- // Re-render immediately using ONLY this category's listings.
- render();
-
- const board=$('board');
- if(board) board.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-document.querySelectorAll('.cat,.category-pill').forEach(b=>{
- b.onclick=(e)=>{
-   if(b.id==='moreCategories') return;
-   e.preventDefault();
-   e.stopPropagation();
-   setFilter(b.dataset.filter);
-   const mega=$('megaCategories');
-   if(mega) mega.classList.remove('open');
- };
-});
-
-document.querySelectorAll('.mega-grid button,.mega-pill').forEach(b=>{
- b.onclick=(e)=>{
-   e.preventDefault();
-   e.stopPropagation();
-   setFilter(b.dataset.filter);
-   const mega=$('megaCategories');
-   if(mega) mega.classList.remove('open');
- };
-});
-
-const moreCategories=$('moreCategories');
-if(moreCategories){
- moreCategories.onclick=(e)=>{
-  e.stopPropagation();
   const mega=$('megaCategories');
-  if(mega) mega.classList.toggle('open');
- };
+  if(mega) mega.classList.remove('open');
+
+  render();
+
+  const board=$('board');
+  if(board) board.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+
+document.querySelectorAll('.category-preview .category-pill, .category-popup .popup-cat').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    setFilter(btn.dataset.filter);
+    closeCategoryPopup();
+  });
+});
+
+const allCategoryBtn=$('allCategoryBtn');
+const categoryPopup=$('categoryPopup');
+const closeCategoryPopupBtn=$('closeCategoryPopup');
+const categoryPopupBackdrop=$('categoryPopupBackdrop');
+
+function openCategoryPopup(){
+  if(!categoryPopup)return;
+  categoryPopup.classList.add('open');
+  categoryPopup.setAttribute('aria-hidden','false');
+}
+
+function closeCategoryPopup(){
+  if(!categoryPopup)return;
+  categoryPopup.classList.remove('open');
+  categoryPopup.setAttribute('aria-hidden','true');
+}
+
+if(allCategoryBtn) allCategoryBtn.addEventListener('click',openCategoryPopup);
+if(closeCategoryPopupBtn) closeCategoryPopupBtn.addEventListener('click',closeCategoryPopup);
+if(categoryPopupBackdrop) categoryPopupBackdrop.addEventListener('click',closeCategoryPopup);
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeCategoryPopup();
+});
+
+document.addEventListener('click',e=>{
+  const mega=$('megaCategories');
+  const more=$('moreCategories');
+  if(mega && more && !mega.contains(e.target) && e.target!==more) mega.classList.remove('open');
+});
 
 load();subscribe();
 </script>
@@ -1132,7 +1149,7 @@ load();subscribe();
       el.addEventListener('focus',()=>show(el));
       el.addEventListener('mouseleave',hide);
       el.addEventListener('blur',hide);
-      el.addEventListener('click',()=>show(el));
+      el.addEventListener('click',e=>{ e.stopPropagation(); show(el); });
     });
   }
 
