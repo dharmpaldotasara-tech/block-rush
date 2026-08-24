@@ -572,6 +572,15 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
 .board-label{font-size:22px;font-weight:900;letter-spacing:-.4px}
 .board-note{margin-top:4px;color:var(--muted);font-size:13px}
 @media(max-width:700px){.board-label{font-size:19px}.board-note{font-size:12px}}
+
+.category-nav{position:relative;margin:14px 0}
+.category-scroll{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.category-scroll::-webkit-scrollbar{display:none}
+.category-pill{border:1px solid var(--line);background:var(--card);padding:9px 14px;border-radius:999px;white-space:nowrap;cursor:pointer;font-weight:700}
+.category-pill.active{background:var(--ink);color:var(--bg)}
+.mega-categories{display:none;position:absolute;right:0;top:48px;z-index:20;min-width:280px;max-width:min(92vw,520px);padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 12px 35px rgba(0,0,0,.12)}
+.mega-categories.open{display:block}
+.mega-grid{display:flex;flex-wrap:wrap;gap:8px}
 </style>
 <meta name="description" content="BidTopper — live public bidding leaderboard.">
 </head>
@@ -656,6 +665,18 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
  </div>
 </section>
 
+<nav class="category-nav" aria-label="Categories">
+  <div class="category-scroll">
+    <button type="button" class="category-pill" data-filter="All">All</button><button type="button" class="category-pill" data-filter="Website">Website</button><button type="button" class="category-pill" data-filter="App">App</button><button type="button" class="category-pill" data-filter="Hospital">Hospital</button><button type="button" class="category-pill" data-filter="School">School</button><button type="button" class="category-pill" data-filter="Extension">Extension</button><button type="button" class="category-pill" data-filter="SEO & AI Visibility">SEO & AI Visibility</button>
+    
+<button type="button" class="category-pill more-category" id="moreCategories" data-filter="More">More ▾</button>
+<div id="megaCategories" class="mega-categories">
+  <div class="mega-grid">
+    <button type="button" class="category-pill" data-filter="AI Agents & Infrastructure">AI Agents & Infrastructure</button><button type="button" class="category-pill" data-filter="AI Media Generation">AI Media Generation</button><button type="button" class="category-pill" data-filter="Marketing & Advertising">Marketing & Advertising</button><button type="button" class="category-pill" data-filter="Developer Tools">Developer Tools</button><button type="button" class="category-pill" data-filter="Productivity & Personal Tools">Productivity & Personal Tools</button><button type="button" class="category-pill" data-filter="People & Profiles">People & Profiles</button><button type="button" class="category-pill" data-filter="Design & Creative">Design & Creative</button><button type="button" class="category-pill" data-filter="Social Media & Creator Tools">Social Media & Creator Tools</button><button type="button" class="category-pill" data-filter="Writing & Content">Writing & Content</button><button type="button" class="category-pill" data-filter="Sales & Lead Generation">Sales & Lead Generation</button><button type="button" class="category-pill" data-filter="Business, Finance & Investing">Business, Finance & Investing</button><button type="button" class="category-pill" data-filter="Games & Entertainment">Games & Entertainment</button><button type="button" class="category-pill" data-filter="Education & Learning">Education & Learning</button><button type="button" class="category-pill" data-filter="Health, Fitness & Wellness">Health, Fitness & Wellness</button><button type="button" class="category-pill" data-filter="Ecommerce & Retail">Ecommerce & Retail</button><button type="button" class="category-pill" data-filter="Directories, Launch & Discovery">Directories, Launch & Discovery</button><button type="button" class="category-pill" data-filter="Hiring, Jobs & Careers">Hiring, Jobs & Careers</button><button type="button" class="category-pill" data-filter="Audio, Voice & Podcasting">Audio, Voice & Podcasting</button><button type="button" class="category-pill" data-filter="Crypto, Web3 & Investing">Crypto, Web3 & Investing</button><button type="button" class="category-pill" data-filter="Agencies, Studios & Services">Agencies, Studios & Services</button><button type="button" class="category-pill" data-filter="Security, Privacy & Compliance">Security, Privacy & Compliance</button><button type="button" class="category-pill" data-filter="Travel, Local & Lifestyle">Travel, Local & Lifestyle</button><button type="button" class="category-pill" data-filter="Media & News">Media & News</button><button type="button" class="category-pill" data-filter="Domains & Web Assets">Domains & Web Assets</button><button type="button" class="category-pill" data-filter="Leaderboards & Attention Markets">Leaderboards & Attention Markets</button><button type="button" class="category-pill" data-filter="Real Estate & Property">Real Estate & Property</button><button type="button" class="category-pill" data-filter="Other">Other</button>
+  </div>
+</div>
+  </div>
+</nav>
 <div class="board-head">
   <div id="boardLabel" class="board-label">All Category — Live Rankings</div>
   <div id="boardNote" class="board-note">Every category ranked together by current bid.</div>
@@ -738,7 +759,7 @@ function render(){
    const initials=(b.target||b.display_name||'BT').replace(/^https?:\/\//i,'').slice(0,2).toUpperCase();
    const safeTarget=esc(b.target||'');
    const hrefTarget=toHttpUrl(b.target);
-   const clickable=hrefTarget ? `href="${esc(hrefTarget)}" target="_blank" rel="noopener noreferrer"` : '';
+   const clickable=hrefTarget ? `href="${esc(hrefTarget)}" rel="noopener noreferrer"` : '';
    return `<article class="row rank-link ${i===0?'top':''}" data-target="${safeTarget}" data-listing-id="${esc(b.id||'')}" tabindex="0" role="link" aria-label="Open ${esc(b.display_name||b.target||'listing')}">
     <div class="rank">#${i+1}</div>
     <div class="logoBox">${esc(initials)}</div>
@@ -753,6 +774,16 @@ function render(){
   bindRankLinks();
 }
 
+async function registerListingClick(listingId){
+  if(!listingId) return;
+  try{
+    const {error}=await client.rpc('increment_bidtopper_click',{p_listing_id:Number(listingId)});
+    if(error) console.warn('Click count update failed:',error);
+  }catch(err){
+    console.warn('Click count update failed:',err);
+  }
+}
+
 function toHttpUrl(target){
   const raw=String(target||'').trim();
   if(!raw) return '';
@@ -765,38 +796,47 @@ function toHttpUrl(target){
   }catch{return ''}
 }
 
-function openListingTarget(target){
+async function openListingTarget(target,listingId){
   const url=toHttpUrl(target);
   if(!url){
     toast('This listing does not contain a valid website URL.');
     return;
   }
-  window.open(url,'_blank','noopener,noreferrer');
+  await registerListingClick(listingId);
+  // Navigate directly to the bidder's submitted website.
+  window.location.href=url;
 }
 
 function bindRankLinks(){
   document.querySelectorAll('.rank-link').forEach(row=>{
     if(row.dataset.targetBound) return;
     row.dataset.targetBound='1';
-    row.addEventListener('click',e=>{
-      if(e.target.closest('a')) return;
+
+    row.addEventListener('click',async e=>{
+      const anchor=e.target.closest('a.listing-url');
+      if(anchor){
+        e.preventDefault();
+        e.stopPropagation();
+        await openListingTarget(row.dataset.target,row.dataset.listingId);
+        return;
+      }
+
       const details=e.target.closest('.details');
       if(details){
         e.preventDefault();
         e.stopPropagation();
-        registerListingClick(row.dataset.listingId);
-        openListingTarget(details.dataset.target);
+        await openListingTarget(details.dataset.target,row.dataset.listingId);
         return;
       }
+
       if(e.target.closest('button')) return;
-      registerListingClick(row.dataset.listingId);
-      openListingTarget(row.dataset.target);
+      await openListingTarget(row.dataset.target,row.dataset.listingId);
     });
-    row.addEventListener('keydown',e=>{
+
+    row.addEventListener('keydown',async e=>{
       if((e.key==='Enter'||e.key===' ') && !e.target.closest('a,button')){
         e.preventDefault();
-        registerListingClick(row.dataset.listingId);
-        openListingTarget(row.dataset.target);
+        await openListingTarget(row.dataset.target,row.dataset.listingId);
       }
     });
   });
@@ -930,16 +970,20 @@ function setFilter(raw){
  });
 
  const mega=$('megaCategories');
- if(mega && filter==='All') mega.classList.remove('open');
+ if(mega) mega.classList.remove('open');
 
+ // Re-render immediately using ONLY this category's listings.
  render();
 
  const board=$('board');
  if(board) board.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-document.querySelectorAll('.cat').forEach(b=>{
- b.onclick=()=>{
+document.querySelectorAll('.cat,.category-pill').forEach(b=>{
+ b.onclick=(e)=>{
+   if(b.id==='moreCategories') return;
+   e.preventDefault();
+   e.stopPropagation();
    setFilter(b.dataset.filter);
    const mega=$('megaCategories');
    if(mega) mega.classList.remove('open');
@@ -947,7 +991,9 @@ document.querySelectorAll('.cat').forEach(b=>{
 });
 
 document.querySelectorAll('.mega-grid button,.mega-pill').forEach(b=>{
- b.onclick=()=>{
+ b.onclick=(e)=>{
+   e.preventDefault();
+   e.stopPropagation();
    setFilter(b.dataset.filter);
    const mega=$('megaCategories');
    if(mega) mega.classList.remove('open');
@@ -956,8 +1002,10 @@ document.querySelectorAll('.mega-grid button,.mega-pill').forEach(b=>{
 
 const moreCategories=$('moreCategories');
 if(moreCategories){
- moreCategories.onclick=()=>{
-  $('megaCategories').classList.toggle('open');
+ moreCategories.onclick=(e)=>{
+  e.stopPropagation();
+  const mega=$('megaCategories');
+  if(mega) mega.classList.toggle('open');
  };
 }
 
