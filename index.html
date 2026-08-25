@@ -77,7 +77,7 @@ button{font-family:inherit}
 .mini-cell{width:20px;height:20px;border-radius:5px}
 .yellow{background:#ffe27a}.cyan{background:#5fe3ff}.pink{background:#ff8ad8}
 .controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.control{flex:1 1 30%;min-width:0;border:0;border-radius:14px;padding:11px 6px;background:#fff;color:#1764d9;font-weight:900;cursor:pointer;white-space:nowrap}
-.hint{text-align:center;font-size:11px;line-height:1.35;opacity:.8;margin-top:8px}.overlay{position:fixed;inset:0;background:rgba(2,12,40,.65);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.hint{text-align:center;font-size:11px;line-height:1.35;opacity:.8;margin-top:8px}.overlay{position:fixed;inset:0;background:rgba(2,12,40,.65);display:none;align-items:center;justify-content:center;z-index:11000 !important;padding:20px}
 .modal{width:min(90vw,360px);max-width:100%;background:#1670ee;border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:24px;text-align:center;box-shadow:0 20px 60px #0007}.modal h2{margin-top:0}.modal button{margin-top:8px}
 .settings-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ffffff33}.toggle{padding:8px 14px;border:0;border-radius:20px;font-weight:800}
 .coin-display{position:absolute;top:18px;left:18px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:800;font-size:14px;backdrop-filter:blur(8px);z-index:5}
@@ -802,6 +802,9 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
 })();
 </script>
 <script>
+/* HOME OVERLAY FIX: overlays must appear above the fixed home screen */
+#leaderboardOverlay, #settingsOverlay{z-index:11000 !important;}
+
 /* FINAL HOME CARD FIX — direct handlers, no document-level interception */
 (function(){
   function bindHomeCards(){
