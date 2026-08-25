@@ -671,11 +671,12 @@ button{font-family:inherit}
 const SIZE=8,boardEl=document.getElementById('board'),piecesEl=document.getElementById('pieces'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best');
 let board=[],score=0,best=Number(localStorage.getItem('blockRushBest')||0),level=1,totalLines=0,linesNeeded=2,sound=true,vibration=true,currentPieces=[];
 let coins=Number(localStorage.getItem('blockRushCoins')||0),gamesPlayed=Number(localStorage.getItem('blockRushGamesPlayed')||0),highestLevel=Number(localStorage.getItem('blockRushHighestLevel')||1),totalLinesLifetime=Number(localStorage.getItem('blockRushTotalLines')||0),runCoins=0,previousBest=best;
-function updateHomeStats(){const a=document.getElementById('homeBest'),b=document.getElementById('homeBestTop'),c=document.getElementById('homeGames'),d=document.getElementById('homeHighestLevel'),e=document.getElementById('homeLevel'),f=document.getElementById('homeXpText'),g=document.getElementById('homeXpFill'),h=document.getElementById('homeAchievements');if(a)a.textContent=best.toLocaleString();if(b)b.textContent=best.toLocaleString();if(c)c.textContent=gamesPlayed.toLocaleString();if(d)d.textContent='LEVEL '+highestLevel;if(e)e.textContent='LEVEL '+highestLevel;const xp=Math.min(1000,(totalLinesLifetime%10)*100);if(f)f.textContent=xp+' / 1000 XP';if(g)g.style.width=Math.max(0,xp/10)+'%';const unlocked=Math.min(40,Math.floor(best/500)+Math.floor(gamesPlayed/5)+Math.floor(totalLinesLifetime/10));if(h)h.textContent=unlocked+' / 40 ›'}
+function updateHomeStats(){const a=document.getElementById('homeBest'),b=document.getElementById('homeBestTop'),c=document.getElementById('homeGames'),d=document.getElementById('homeHighestLevel'),e=document.getElementById('homeLevel'),f=document.getElementById('homeXpText'),g=document.getElementById('homeXpFill'),h=document.getElementById('homeAchievements');if(a)a.textContent=best.toLocaleString();if(b)b.textContent=best.toLocaleString();if(c)c.textContent=gamesPlayed.toLocaleString();if(d)d.textContent='LEVEL '+highestLevel;if(e)e.textContent='LEVEL '+highestLevel;const xp=Math.min(1000,(totalLinesLifetime%10)*100);if(f)f.textContent=xp+' / 1000 XP';if(g)g.style.width=Math.max(0,xp/10)+'%';const unlocked=Math.min(40,Math.floor(best/500)+Math.floor(gamesPlayed/5)+Math.floor(totalLinesLifetime/10));if(h)h.textContent=unlocked+' / 40 ›';updateSimpleHomeStats()}
 function saveCoins(){localStorage.setItem('blockRushCoins',String(coins));const a=document.getElementById('coins'),b=document.getElementById('startCoins');if(a)a.textContent=coins;if(b)b.textContent=coins;updateHomeStats()}
 function rewardCoins(amount){coins+=amount;runCoins+=amount;saveCoins();const r=document.createElement('div');r.className='reward';r.textContent='🪙 +'+amount;document.body.appendChild(r);setTimeout(()=>r.remove(),900)}
 function loadLeaderboard(){try{const x=JSON.parse(localStorage.getItem('blockRushLeaderboard')||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}}
-function saveLeaderboard(){const list=loadLeaderboard();list.push({name:'YOU',score:score,level:level});list.sort((a,b)=>b.score-a.score);localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)))}
+function saveLeaderboard(){const list=loadLeaderboard();list.push({name:'YOU',score:score,level:level});list.sort((a,b)=>b.score-a.score);localStorage.setItem('blockRushLeaderboard',JSON.stringify(list.slice(0,10)));updateHomeStats();updateSimpleHomeStats()}
+function updateSimpleHomeStats(){const coinEl=document.getElementById('brCoinValue'),highEl=document.getElementById('brHighScoreValue'),rankEl=document.getElementById('brLeaderboardValue');if(coinEl)coinEl.textContent=Number(coins||0).toLocaleString();if(highEl)highEl.textContent=Number(best||0).toLocaleString();if(rankEl)rankEl.textContent=String(loadLeaderboard().length)}
 function renderLeaderboard(){const el=document.getElementById('leaderboardList');if(!el)return;const list=loadLeaderboard();el.innerHTML=list.length?list.map((x,i)=>'<div class="leader-row"><div class="rank">#'+(i+1)+'</div><div class="leader-name">'+x.name+'<br><small>Level '+x.level+'</small></div><div class="leader-score">'+x.score+'</div></div>').join(''):'<p style="opacity:.8">No scores yet. Be the first!</p>'}
 function openLeaderboard(){renderLeaderboard();document.getElementById('leaderboardOverlay').style.display='flex'}
 let dragState=null;
@@ -785,7 +786,7 @@ if(startGameBtn){
     if(e.pointerType==='touch') launchGame(e);
   });
 }
-document.getElementById('startLeaderboard').onclick=openLeaderboard;document.getElementById('leaderboardBtn').onclick=openLeaderboard;document.getElementById('closeLeaderboard').onclick=function(){document.getElementById('leaderboardOverlay').style.display='none'};document.getElementById('startSettings').onclick=function(){document.getElementById('startScreen').style.setProperty('display','none','important');document.getElementById('settingsOverlay').style.display='flex'};
+document.getElementById('startLeaderboard').onclick=openLeaderboard;document.getElementById('leaderboardBtn').onclick=openLeaderboard;document.getElementById('brLeaderboardCard').onclick=openLeaderboard;document.getElementById('closeLeaderboard').onclick=function(){document.getElementById('leaderboardOverlay').style.display='none'};function openStartSettings(){document.getElementById('startScreen').style.setProperty('display','none','important');document.getElementById('settingsOverlay').style.display='flex'}document.getElementById('startSettings').onclick=openStartSettings;document.getElementById('brSettingsCard').onclick=openStartSettings;
 resetBoard();
 let gameOverMusicCtx=null,gameOverMusicTimer=null;
 function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||window.webkitAudioContext;if(!AC||!musicOn)return;gameOverMusicCtx=gameOverMusicCtx||new AC;const ctx=gameOverMusicCtx;if(ctx.state==='suspended')ctx.resume();if(gameOverMusicTimer)clearTimeout(gameOverMusicTimer);const master=ctx.createGain();master.gain.value=.22;master.connect(ctx.destination);const notes=[{f:392,d:.18},{f:349.23,d:.18},{f:329.63,d:.22},{f:261.63,d:.35},{f:293.66,d:.22},{f:261.63,d:.45}];let t=ctx.currentTime+.04;notes.forEach((n,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=i<3?'triangle':'sine';o.frequency.setValueAtTime(n.f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.11,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(master);o.start(t);o.stop(t+n.d+.04);t+=n.d*.9});[130.81,164.81,196].forEach(f=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t-.02);g.gain.exponentialRampToValueAtTime(.035,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.75);o.connect(g);g.connect(master);o.start(t-.02);o.stop(t+.8)});gameOverMusicTimer=setTimeout(()=>{try{master.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.25)}catch(e){}},850)}catch(e){}}
@@ -794,13 +795,10 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
 <script>
 (function(){
   function syncSimpleHome(){
-    const coinEl=document.getElementById('brCoinValue');
-    const highEl=document.getElementById('brHighScoreValue');
-    if(coinEl && typeof coins!=='undefined') coinEl.textContent=Number(coins||0).toLocaleString();
-    if(highEl && typeof best!=='undefined') highEl.textContent=Number(best||0).toLocaleString();
+    if(typeof updateSimpleHomeStats==='function') updateSimpleHomeStats();
   }
   syncSimpleHome();
-  setInterval(syncSimpleHome,500);
+  window.addEventListener('pageshow',syncSimpleHome);
 })();
 </script>
 </body>
