@@ -802,38 +802,42 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
 })();
 </script>
 <script>
-/* FINAL CLICK FIX: leaderboard targets always win over other home controls */
+/* FINAL HOME CARD FIX — direct handlers, no document-level interception */
 (function(){
-  function forceLeaderboard(e){
-    const t=e.target.closest('#startLeaderboard, #leaderboardBtn, #brLeaderboardCard, #gameOverLeaderboard');
-    if(!t)return;
-    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-    try{ openLeaderboard(); }catch(err){
-      const o=document.getElementById('leaderboardOverlay');
-      if(o)o.style.display='flex';
+  function bindHomeCards(){
+    const leaderboard=document.getElementById('brLeaderboardCard');
+    const settings=document.getElementById('brSettingsCard');
+    if(leaderboard){
+      leaderboard.style.pointerEvents='auto';
+      leaderboard.style.touchAction='manipulation';
+      leaderboard.onclick=function(e){
+        e.preventDefault(); e.stopPropagation();
+        const o=document.getElementById('leaderboardOverlay');
+        if(o){ renderLeaderboard(); o.style.display='flex'; }
+      };
+      leaderboard.ontouchend=function(e){
+        e.preventDefault(); e.stopPropagation();
+        const o=document.getElementById('leaderboardOverlay');
+        if(o){ renderLeaderboard(); o.style.display='flex'; }
+      };
+    }
+    if(settings){
+      settings.style.pointerEvents='auto';
+      settings.style.touchAction='manipulation';
+      settings.onclick=function(e){
+        e.preventDefault(); e.stopPropagation();
+        const o=document.getElementById('settingsOverlay');
+        if(o) o.style.display='flex';
+      };
+      settings.ontouchend=function(e){
+        e.preventDefault(); e.stopPropagation();
+        const o=document.getElementById('settingsOverlay');
+        if(o) o.style.display='flex';
+      };
     }
   }
-  function forceSettings(e){
-    const t=e.target.closest('#startSettings, #settingsBtn, #brSettingsCard');
-    if(!t)return;
-    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-    const o=document.getElementById('settingsOverlay');
-    if(o)o.style.display='flex';
-  }
-  function homeCardClick(e){
-    const t=e.target.closest('#brLeaderboardCard, #brSettingsCard');
-    if(!t)return;
-    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-    if(t.id==='brLeaderboardCard'){ openLeaderboard(); }
-    else { const o=document.getElementById('settingsOverlay'); if(o)o.style.display='flex'; }
-  }
-  document.addEventListener('pointerdown',homeCardClick,true);
-  document.addEventListener('touchend',homeCardClick,true);
-  document.addEventListener('click',homeCardClick,true);
-  document.addEventListener('pointerup',forceLeaderboard,true);
-  document.addEventListener('click',forceLeaderboard,true);
-  document.addEventListener('pointerup',forceSettings,true);
-  document.addEventListener('click',forceSettings,true);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindHomeCards);
+  else bindHomeCards();
 })();
 </script>
 </body>
