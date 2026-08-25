@@ -801,5 +801,40 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
   window.addEventListener('pageshow',syncSimpleHome);
 })();
 </script>
+<script>
+/* FINAL CLICK FIX: leaderboard targets always win over other home controls */
+(function(){
+  function forceLeaderboard(e){
+    const t=e.target.closest('#startLeaderboard, #leaderboardBtn, #brLeaderboardCard, #gameOverLeaderboard');
+    if(!t)return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    try{ openLeaderboard(); }catch(err){
+      const o=document.getElementById('leaderboardOverlay');
+      if(o)o.style.display='flex';
+    }
+  }
+  function forceSettings(e){
+    const t=e.target.closest('#startSettings, #settingsBtn, #brSettingsCard');
+    if(!t)return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    const o=document.getElementById('settingsOverlay');
+    if(o)o.style.display='flex';
+  }
+  function homeCardClick(e){
+    const t=e.target.closest('#brLeaderboardCard, #brSettingsCard');
+    if(!t)return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    if(t.id==='brLeaderboardCard'){ openLeaderboard(); }
+    else { const o=document.getElementById('settingsOverlay'); if(o)o.style.display='flex'; }
+  }
+  document.addEventListener('pointerdown',homeCardClick,true);
+  document.addEventListener('touchend',homeCardClick,true);
+  document.addEventListener('click',homeCardClick,true);
+  document.addEventListener('pointerup',forceLeaderboard,true);
+  document.addEventListener('click',forceLeaderboard,true);
+  document.addEventListener('pointerup',forceSettings,true);
+  document.addEventListener('click',forceSettings,true);
+})();
+</script>
 </body>
 </html>
