@@ -554,16 +554,84 @@ button{font-family:inherit}
   position:relative !important;
   z-index:100 !important;
 }
+
+/* ===== PAST YOU vs PRESENT YOU ===== */
+.past-compare{margin-top:10px;border:1px solid rgba(84,242,168,.24);background:rgba(8,28,24,.72);border-radius:16px;padding:10px;display:none}
+.past-compare.show{display:block}
+.past-compare-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.past-compare-title{font-weight:900;font-size:12px;letter-spacing:.8px;color:#f4fff8}
+.past-compare-sub{font-size:9px;color:#a9bdb3;margin-top:3px}
+.past-compare-score{display:flex;justify-content:space-between;gap:8px;margin:9px 0 7px}
+.past-score-box{flex:1;background:rgba(255,255,255,.055);border-radius:10px;padding:7px;text-align:center}
+.past-score-box small{display:block;font-size:8px;color:#a9bdb3;letter-spacing:.7px}.past-score-box b{display:block;font-size:17px;margin-top:2px}
+.past-vs{font-size:10px;color:#55f1a8;font-weight:900;align-self:center}
+.past-compare-actions{display:flex;gap:6px}.past-btn{flex:1;border:1px solid rgba(84,242,168,.28);background:rgba(84,242,168,.08);color:#eafff3;border-radius:9px;padding:8px 6px;font-size:9px;font-weight:900;cursor:pointer;touch-action:manipulation}
+.past-btn.active{background:rgba(84,242,168,.20);border-color:#55f1a8;color:#55f1a8}
+.beat-status{font-size:9px;text-align:center;color:#a9bdb3;margin-top:7px;min-height:12px}
+.ghost-modal{width:min(94vw,430px);max-height:88vh;overflow:auto;background:#071b16;border:1px solid rgba(84,242,168,.28);border-radius:22px;padding:18px;box-shadow:0 20px 70px #0009;color:#effff5}
+.ghost-modal h2{margin:0 0 5px;font-size:20px}.ghost-sub{font-size:10px;color:#a9bdb3;margin:0 0 12px}
+.ghost-board-wrap{position:relative;width:min(78vw,300px);margin:0 auto}.ghost-board{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:5px;background:#0b2a22;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+.ghost-cell{aspect-ratio:1;border-radius:5px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.035)}
+.ghost-cell.yellow{background:#f1c13d}.ghost-cell.cyan{background:#2de2df}.ghost-cell.pink{background:#a86bf1}
+.ghost-controls{display:flex;align-items:center;gap:7px;margin-top:11px}.ghost-controls button{flex:1}.ghost-move-label{font-size:10px;min-width:75px;text-align:center;color:#c8d8d0}
+.ghost-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:10px}.ghost-stat{background:rgba(255,255,255,.045);padding:8px;border-radius:10px;text-align:center}.ghost-stat small{display:block;font-size:8px;color:#8fa79d}.ghost-stat b{font-size:13px;display:block;margin-top:2px}
+.ghost-result{margin-top:10px;text-align:center;padding:9px;border-radius:11px;background:rgba(84,242,168,.08);color:#55f1a8;font-size:11px;font-weight:900}
+.ghost-empty{padding:22px 10px;text-align:center;color:#a9bdb3;font-size:11px}
+@media(max-width:520px){.past-compare{padding:8px}.ghost-modal{padding:14px}.ghost-board{gap:3px}.ghost-cell{border-radius:4px}}
+@media(min-width:761px){
+  html,body{height:100%;min-height:100%;overflow:hidden}
+  body{align-items:center}
+  .app{width:min(96vw,980px);height:100vh;min-height:0;padding:12px 14px;justify-content:center}
+  .header{flex:0 0 auto;margin-bottom:10px}
+  .game-card{width:100%;height:min(78vh,620px);min-height:0;padding:14px;display:grid;grid-template-columns:minmax(380px,420px) minmax(0,1fr);grid-template-rows:auto auto auto auto auto;column-gap:16px;row-gap:8px;align-content:center;overflow:hidden}
+  .board{grid-column:1;grid-row:1 / 6;width:min(100%,420px);max-width:420px;align-self:center}
+  .info{grid-column:2;grid-row:1;min-height:36px}
+  .past-compare{grid-column:2;grid-row:2;margin-top:0;align-self:start}
+  .pieces{grid-column:2;grid-row:3;min-height:76px;margin-top:0}
+  .hint{grid-column:2;grid-row:4;margin:0;align-self:center}
+  .controls{grid-column:2;grid-row:5;margin-top:0;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .control{min-height:38px}
+  .past-compare-score{margin:7px 0 6px}
+  .past-score-box{padding:6px}
+  .past-compare-actions{gap:7px}
+  .past-btn{padding:8px 5px}
+  .past-compare-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+@media(min-width:761px) and (max-height:680px){
+  .app{padding-top:6px;padding-bottom:6px}
+  .header{margin-bottom:6px}
+  .game-card{height:calc(100vh - 72px);padding:10px;column-gap:12px;row-gap:5px}
+  .board{width:min(52vh,390px);max-width:390px}
+  .pieces{min-height:66px}
+  .piece-slot{height:62px}
+  .past-compare{padding:7px}
+  .past-compare-title{font-size:11px}
+  .past-compare-sub,.beat-status{font-size:8px}
+  .past-score-box{padding:5px}
+  .past-score-box b{font-size:15px}
+  .past-btn{padding:6px 4px;font-size:8px}
+  .hint{font-size:9px}
+  .control{padding:8px 4px;font-size:9px;min-height:32px}
+}
+
+
 </style>
 </head>
 <body>
 <div class="app">
 <div class="header"><div class="logo">BLOCK <span>RUSH</span></div><div class="scorebox"><small>SCORE</small><div id="level" style="font-weight:800;margin-bottom:4px;">LEVEL 1</div><div id="levelProgress" style="font-size:12px;margin-top:4px;opacity:.9;">Clear 2 more lines to level up</div><div class="coin-display">🪙 <span id="coins">0</span></div><div id="score">0</div></div></div>
-<div class="game-card"><div id="board" class="board"></div><div class="info"><div class="best">BEST <span id="best">0</span></div><button id="newGame">NEW GAME</button></div><div id="pieces" class="pieces"></div><div class="hint">Drag blocks onto the board • Complete rows or columns to clear them</div><div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
+<div class="game-card"><div id="board" class="board"></div><div class="info"><div class="best">BEST <span id="best">0</span></div><button id="newGame">NEW GAME</button></div><div id="pastCompare" class="past-compare">
+  <div class="past-compare-head"><div><div class="past-compare-title">🧠 PAST YOU VS PRESENT YOU</div><div class="past-compare-sub" id="pastCompareSub">Your previous run becomes your ghost.</div></div><button id="pastYouBtn" class="past-btn" type="button">👻 PAST YOU</button></div>
+  <div class="past-compare-score"><div class="past-score-box"><small>PAST YOU</small><b id="pastScoreLive">—</b></div><div class="past-vs">VS</div><div class="past-score-box"><small>PRESENT YOU</small><b id="presentScoreLive">0</b></div></div>
+  <div class="past-compare-actions"><button id="beatBestBtn" class="past-btn" type="button">⚔️ BEAT YOUR BEST</button><button id="saveRunBtn" class="past-btn" type="button">💾 SAVE MOVES</button></div>
+  <div class="beat-status" id="beatStatus">No previous run yet.</div>
+</div>
+<div id="pieces" class="pieces"></div><div class="hint">Drag blocks onto the board • Complete rows or columns to clear them</div><div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
 </div>
 
 <div id="settingsOverlay" class="overlay"><div class="modal"><h2>Settings</h2><div class="settings-row"><span>Sound</span><button id="soundToggle" class="toggle">ON</button></div><div class="settings-row"><span>Music</span><button id="musicToggle" class="toggle">ON</button></div><div class="settings-row"><span>Vibration</span><button id="vibToggle" class="toggle">ON</button></div><button id="closeSettings" class="control">CLOSE</button></div></div>
-<div id="gameOverOverlay" class="overlay"><div class="modal gameover-modal"><div class="gameover-badge">RUN COMPLETE</div><h2>GAME OVER</h2><p class="gameover-sub">Great run! Ready for another?</p><div class="result-grid"><div class="result-box"><span>Score</span><b id="finalScore">0</b></div><div class="result-box"><span>Level</span><b id="finalLevel">1</b></div><div class="result-box"><span>Coins Earned</span><b>🪙 <span id="finalCoins">0</span></b></div><div class="result-box"><span>Best</span><b id="finalBest">0</b></div></div><p id="newBestMsg" class="new-best" style="display:none">🏆 NEW BEST SCORE!</p><div class="gameover-actions"><button id="playAgain" class="control">▶️ PLAY AGAIN</button><button id="gameOverLeaderboard" class="control">🏆 LEADERBOARD</button></div></div></div>
+<div id="gameOverOverlay" class="overlay"><div class="modal gameover-modal"><div class="gameover-badge">RUN COMPLETE</div><h2>GAME OVER</h2><p class="gameover-sub">Great run! Ready for another?</p><div class="result-grid"><div class="result-box"><span>Score</span><b id="finalScore">0</b></div><div class="result-box"><span>Level</span><b id="finalLevel">1</b></div><div class="result-box"><span>Coins Earned</span><b>🪙 <span id="finalCoins">0</span></b></div><div class="result-box"><span>Best</span><b id="finalBest">0</b></div></div><p id="newBestMsg" class="new-best" style="display:none">🏆 NEW BEST SCORE!</p><p id="gameOverComparison" class="beat-status" style="font-size:11px;margin:8px 0 0;color:#55f1a8"></p><div class="gameover-actions"><button id="playAgain" class="control">▶️ PLAY AGAIN</button><button id="gameOverLeaderboard" class="control">🏆 LEADERBOARD</button></div></div></div>
 
 <div id="startScreen" class="start-screen pro-home">
 
@@ -607,6 +675,17 @@ button{font-family:inherit}
 <div class="pro-actions"><div><b>▣</b><span>DAILY REWARD<em>Claim Now ›</em></span></div><div><b>◎</b><span>ACHIEVEMENTS<em id="homeAchievements">0 / 40 ›</em></span></div><div><b>♧</b><span>FREE COINS<em>Watch Ad ›</em></span></div><div><b>🛒</b><span>SHOP<em>Coming Soon ›</em></span></div></div>
 <div class="pro-nav"><div>?</div><div class="active">⌂<span>HOME</span></div><div>♕<span>RANK</span></div><div class="nav-play">▷</div><div>☆<span>ACHIEVEMENTS</span></div><div>🛒<span>SHOP</span></div><div>⌁</div></div>
 </div>
+<div id="pastYouOverlay" class="overlay"><div class="ghost-modal">
+  <h2>👻 Past You vs Present You</h2><p class="ghost-sub">Replay the saved board from your previous run and try to beat it.</p>
+  <div id="ghostEmpty" class="ghost-empty" style="display:none">No previous game is saved yet. Finish a game and your moves will be saved automatically.</div>
+  <div id="ghostContent">
+    <div class="ghost-board-wrap"><div id="ghostBoard" class="ghost-board"></div></div>
+    <div class="ghost-controls"><button id="ghostPrev" class="past-btn" type="button">◀ PREV</button><div id="ghostMoveLabel" class="ghost-move-label">MOVE 0</div><button id="ghostNext" class="past-btn" type="button">NEXT ▶</button></div>
+    <div class="ghost-stats"><div class="ghost-stat"><small>PAST SCORE</small><b id="ghostPastScore">0</b></div><div class="ghost-stat"><small>YOUR SCORE</small><b id="ghostPresentScore">0</b></div><div class="ghost-stat"><small>MOVES</small><b id="ghostMoves">0</b></div></div>
+    <div id="ghostResult" class="ghost-result">Beat your past self to set a new personal win.</div>
+  </div>
+  <button id="closePastYou" class="control" style="width:100%;margin-top:12px">CLOSE</button>
+</div></div>
 <div id="leaderboardOverlay" class="overlay"><div class="leaderboard-modal"><h2>🏆 Leaderboard</h2><div id="leaderboardList"></div><button id="closeLeaderboard" class="control" style="width:100%;margin-top:14px">CLOSE</button></div></div>
 
 <!-- Analytics consent -->
@@ -671,6 +750,16 @@ button{font-family:inherit}
 const SIZE=8,boardEl=document.getElementById('board'),piecesEl=document.getElementById('pieces'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best');
 let board=[],score=0,best=Number(localStorage.getItem('blockRushBest')||0),level=1,totalLines=0,linesNeeded=2,sound=true,vibration=true,currentPieces=[];
 let coins=Number(localStorage.getItem('blockRushCoins')||0),gamesPlayed=Number(localStorage.getItem('blockRushGamesPlayed')||0),highestLevel=Number(localStorage.getItem('blockRushHighestLevel')||1),totalLinesLifetime=Number(localStorage.getItem('blockRushTotalLines')||0),runCoins=0,previousBest=best;
+const PAST_RUN_KEY='blockRushPreviousGameV1'; let currentRunMoves=[],pastRun=null,beatBestMode=false,beatTarget=best,ghostMoveIndex=0;
+function cloneBoardState(){return board.map(row=>row.slice())}
+function loadPastRun(){try{const x=JSON.parse(localStorage.getItem(PAST_RUN_KEY)||'null');if(!x||!Array.isArray(x.moves))return null;return x}catch(e){return null}}
+function savePastRun(){if(!currentRunMoves.length)return;const data={score:score,level:level,moves:currentRunMoves.slice(-150),savedAt:Date.now()};try{localStorage.setItem(PAST_RUN_KEY,JSON.stringify(data));pastRun=data}catch(e){}}
+function recordRunMove(){currentRunMoves.push({score:score,level:level,board:cloneBoardState()});if(currentRunMoves.length>150)currentRunMoves.shift();updatePastCompare()}
+function beatPercent(current,target){if(!target||target<=0)return 0;return Math.max(0,Math.round(((current-target)/target)*100))}
+function updatePastCompare(){const wrap=document.getElementById('pastCompare');if(!wrap)return;const ps=pastRun&&Number(pastRun.score)||0;const psEl=document.getElementById('pastScoreLive'),prEl=document.getElementById('presentScoreLive'),status=document.getElementById('beatStatus'),sub=document.getElementById('pastCompareSub');if(psEl)psEl.textContent=ps.toLocaleString();if(prEl)prEl.textContent=score.toLocaleString();if(sub)sub.textContent=ps?'Previous run: '+ps.toLocaleString()+' points.':'Finish a game to create your first ghost.';if(status){if(beatBestMode){const target=beatTarget;status.textContent=target>score?'⚔️ '+(target-score).toLocaleString()+' points to beat your best.':score===target?'⚔️ You matched your best!':'🔥 Best beaten by '+beatPercent(score,target)+'%!'}else if(ps){status.textContent=score>=ps?'🔥 Ahead of Past You by '+beatPercent(score,ps)+'%!':'Past You is '+(ps-score).toLocaleString()+' points ahead.'}else status.textContent='No previous run yet.'}}
+function renderGhostBoard(index){const root=document.getElementById('ghostBoard'),label=document.getElementById('ghostMoveLabel'),pastScoreEl=document.getElementById('ghostPastScore'),presentScoreEl=document.getElementById('ghostPresentScore'),movesEl=document.getElementById('ghostMoves'),result=document.getElementById('ghostResult');if(!root)return;const moves=pastRun&&pastRun.moves||[];if(!moves.length){document.getElementById('ghostEmpty').style.display='block';document.getElementById('ghostContent').style.display='none';return}document.getElementById('ghostEmpty').style.display='none';document.getElementById('ghostContent').style.display='block';ghostMoveIndex=Math.max(0,Math.min(index,moves.length-1));const snap=moves[ghostMoveIndex],g=snap.board||[];root.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const cell=document.createElement('div');cell.className='ghost-cell';if(g[r]&&g[r][c])cell.classList.add(g[r][c]);root.appendChild(cell)}if(label)label.textContent='MOVE '+(ghostMoveIndex+1)+' / '+moves.length;if(pastScoreEl)pastScoreEl.textContent=Number(snap.score||0).toLocaleString();if(presentScoreEl)presentScoreEl.textContent=score.toLocaleString();if(movesEl)movesEl.textContent=moves.length;if(result){const ps=Number(pastRun.score||0);result.textContent=score>=ps?'🔥 You are ahead of Past You by '+beatPercent(score,ps)+'%!':'🎯 '+(ps-score).toLocaleString()+' points left to beat Past You.'}}
+function openPastYou(){pastRun=loadPastRun();ghostMoveIndex=0;renderGhostBoard(0);const o=document.getElementById('pastYouOverlay');if(o)o.style.display='flex'}
+function setBeatBestMode(v){beatBestMode=v;const b=document.getElementById('beatBestBtn');if(b){b.classList.toggle('active',v);b.textContent=v?'⚔️ BEAT YOUR BEST: ON':'⚔️ BEAT YOUR BEST'}updatePastCompare()}
 function updateHomeStats(){const a=document.getElementById('homeBest'),b=document.getElementById('homeBestTop'),c=document.getElementById('homeGames'),d=document.getElementById('homeHighestLevel'),e=document.getElementById('homeLevel'),f=document.getElementById('homeXpText'),g=document.getElementById('homeXpFill'),h=document.getElementById('homeAchievements');if(a)a.textContent=best.toLocaleString();if(b)b.textContent=best.toLocaleString();if(c)c.textContent=gamesPlayed.toLocaleString();if(d)d.textContent='LEVEL '+highestLevel;if(e)e.textContent='LEVEL '+highestLevel;const xp=Math.min(1000,(totalLinesLifetime%10)*100);if(f)f.textContent=xp+' / 1000 XP';if(g)g.style.width=Math.max(0,xp/10)+'%';const unlocked=Math.min(40,Math.floor(best/500)+Math.floor(gamesPlayed/5)+Math.floor(totalLinesLifetime/10));if(h)h.textContent=unlocked+' / 40 ›';updateSimpleHomeStats()}
 function saveCoins(){localStorage.setItem('blockRushCoins',String(coins));const a=document.getElementById('coins'),b=document.getElementById('startCoins');if(a)a.textContent=coins;if(b)b.textContent=coins;updateHomeStats()}
 function rewardCoins(amount){coins+=amount;runCoins+=amount;saveCoins();const r=document.createElement('div');r.className='reward';r.textContent='🪙 +'+amount;document.body.appendChild(r);setTimeout(()=>r.remove(),900)}
@@ -682,20 +771,20 @@ function openLeaderboard(){renderLeaderboard();document.getElementById('leaderbo
 let dragState=null;
 const SHAPES=[[[0,0]],[[0,0],[0,1]],[[0,0],[1,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[1,0],[1,1]],[[0,0],[0,1],[1,1]],[[0,1],[1,0],[1,1]],[[0,0],[1,0],[1,1]],[[0,0],[0,1],[0,2],[1,1]],[[0,0],[1,0],[2,0],[2,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[2,0],[2,1],[2,2]],[[0,0],[0,1],[0,2],[1,0],[2,0]],[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]],[[0,0],[0,1],[0,2],[1,1],[2,1]]],COLORS=['yellow','cyan','pink'];
 bestEl.textContent=best;
-function resetBoard(){gameEnded=false;board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));score=0;level=1;totalLines=0;runCoins=0;previousBest=best;updateScore();updateLevel();renderBoard();generatePieces();piecesEl.style.visibility='visible';hideOverlays()}
+function resetBoard(){gameEnded=false;board=Array.from({length:SIZE},()=>Array(SIZE).fill(null));score=0;level=1;totalLines=0;runCoins=0;previousBest=best;beatTarget=best;currentRunMoves=[];pastRun=loadPastRun();updateScore();updateLevel();renderBoard();generatePieces();piecesEl.style.visibility='visible';const pc=document.getElementById('pastCompare');if(pc)pc.classList.toggle('show',!!pastRun);updatePastCompare();hideOverlays()}
 function updateScore(){scoreEl.textContent=score;bestEl.textContent=best;updateHomeStats()}
 function renderBoard(preview=[]){boardEl.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const el=document.createElement('div');el.className='cell';if(board[r][c])el.classList.add('filled',board[r][c]);if(preview.some(p=>p.r===r&&p.c===c&&!board[r][c]))el.classList.add('preview');boardEl.appendChild(el)}}
 function makePiece(shape,color,index){const p=document.createElement('div');p.className='piece';p.dataset.index=index;const maxR=Math.max(...shape.map(x=>x[0])),maxC=Math.max(...shape.map(x=>x[1]));p.style.gridTemplateColumns=`repeat(${maxC+1},20px)`;p.style.gridTemplateRows=`repeat(${maxR+1},20px)`;shape.forEach(([r,c])=>{const x=document.createElement('div');x.className='mini-cell '+color;x.style.gridRow=r+1;x.style.gridColumn=c+1;p.appendChild(x)});p.addEventListener('pointerdown',startDrag);return p}
 function generatePieces(){currentPieces=Array.from({length:3},()=>({shape:SHAPES[Math.floor(Math.random()*SHAPES.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)]}));piecesEl.innerHTML='';currentPieces.forEach((p,i)=>{const slot=document.createElement('div');slot.className='piece-slot';slot.appendChild(makePiece(p.shape,p.color,i));piecesEl.appendChild(slot)});setTimeout(updateForcedBlockHint,80)}
 function canPlace(shape,r,c){return shape.every(([dr,dc])=>r+dr>=0&&r+dr<SIZE&&c+dc>=0&&c+dc<SIZE&&!board[r+dr][c+dc])}
-function place(shape,color,r,c){shape.forEach(([dr,dc])=>board[r+dr][c+dc]=color);score+=shape.length;vibrate(15);beep(520,.05);clearLines();updateScore();renderBoard()}
+function place(shape,color,r,c){shape.forEach(([dr,dc])=>board[r+dr][c+dc]=color);score+=shape.length;vibrate(15);beep(520,.05);clearLines();updateScore();renderBoard();recordRunMove()}
 function clearLines(){let rows=[],cols=[];for(let r=0;r<SIZE;r++)if(board[r].every(Boolean))rows.push(r);for(let c=0;c<SIZE;c++)if(board.every(row=>row[c]))cols.push(c);const count=rows.length+cols.length;if(!count)return 0;rows.forEach(r=>{for(let c=0;c<SIZE;c++)board[r][c]=null});cols.forEach(c=>{for(let r=0;r<SIZE;r++)board[r][c]=null});score+=count*SIZE*2+Math.max(0,count-1)*10;beep(760,.09);vibrate(35);if(score>best){best=score;localStorage.setItem('blockRushBest',best)}totalLines+=count;totalLinesLifetime+=count;localStorage.setItem('blockRushTotalLines',String(totalLinesLifetime));rewardCoins(count*5);updateLevel();return count}
 function updateLevel(){const newLevel=1+Math.floor(totalLines/linesNeeded);if(newLevel>level){level=newLevel;if(level>highestLevel){highestLevel=level;localStorage.setItem('blockRushHighestLevel',String(highestLevel))}rewardCoins(25);beep(880,.12);vibrate(60);showLevelUp()}const a=document.getElementById('level'),b=document.getElementById('levelProgress');if(a)a.textContent=level;if(b){const next=level*linesNeeded-totalLines;b.textContent=next+' line'+(next===1?'':'s')+' to Level '+(level+1)}}
 function showLevelUp(){const old=document.querySelector('.level-up-overlay');if(old)old.remove();const o=document.createElement('div');o.className='level-up-overlay';o.innerHTML='<div class="level-up-card"><div class="big">LEVEL '+level+' 🎉</div><div class="small">Keep going!</div></div>';document.body.appendChild(o);setTimeout(()=>o.remove(),1550)}
 function hasMove(){return currentPieces.filter(Boolean).some(p=>{for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(canPlace(p.shape,r,c))return true;return false})}
 function afterPieceUsed(index){currentPieces[index]=null;const allUsed=currentPieces.every(x=>x===null);if(allUsed)generatePieces();if(currentPieces.filter(Boolean).length&&!hasMove())setTimeout(gameOver,120);else setTimeout(updateForcedBlockHint,80)}
 let gameEnded=false;
-function gameOver(){if(gameEnded)return;gameEnded=true;saveLeaderboard();rewardCoins(10);document.getElementById('finalScore').textContent=score;document.getElementById('finalLevel').textContent=level;document.getElementById('finalCoins').textContent=runCoins;document.getElementById('finalBest').textContent=Math.max(best,score);const nb=document.getElementById('newBestMsg');if(nb)nb.style.display=(score>previousBest?'block':'none');document.getElementById('gameOverOverlay').style.display='flex';beep(180,.18);playGameOverMusic()}
+function gameOver(){if(gameEnded)return;gameEnded=true;const oldPast=pastRun||loadPastRun();savePastRun();pastRun=loadPastRun();saveLeaderboard();rewardCoins(10);document.getElementById('finalScore').textContent=score;document.getElementById('finalLevel').textContent=level;document.getElementById('finalCoins').textContent=runCoins;document.getElementById('finalBest').textContent=Math.max(best,score);const nb=document.getElementById('newBestMsg');if(nb)nb.style.display=(score>previousBest?'block':'none');const cmp=document.getElementById('gameOverComparison');if(cmp){if(oldPast&&Number(oldPast.score)>0&&score>=Number(oldPast.score))cmp.textContent='🔥 You beat Past You by '+beatPercent(score,Number(oldPast.score))+'%!';else if(oldPast&&Number(oldPast.score)>0)cmp.textContent='🎯 Past You is '+(Number(oldPast.score)-score).toLocaleString()+' points ahead.';else cmp.textContent='🧠 Your moves are saved — next run will have a ghost.'}const pc=document.getElementById('pastCompare');if(pc)pc.classList.add('show');updatePastCompare();document.getElementById('gameOverOverlay').style.display='flex';beep(180,.18);playGameOverMusic()}
 function hideOverlays(){document.querySelectorAll('.overlay').forEach(x=>x.style.display='none')}
 function getDragOffset(){return Math.min(55,Math.max(38,window.innerWidth*0.13))}
 function pieceHasMove(data){
@@ -763,7 +852,7 @@ function startDrag(e){
   document.addEventListener('pointerup',endDrag,{once:true});
 }
 function moveDrag(e){if(!dragState)return;const {el,data,lift}=dragState;el.style.left=(e.clientX-el.offsetWidth/2)+'px';el.style.top=(e.clientY-el.offsetHeight/2-lift)+'px';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;let preview=[];if(canPlace(data.shape,r,c))preview=data.shape.map(([dr,dc])=>({r:r+dr,c:c+dc}));renderBoard(preview)}
-function endDrag(e){document.removeEventListener('pointermove',moveDrag);if(!dragState)return;const {el,index,data,lift}=dragState;el.classList.remove('dragging');el.style.position='';el.style.left='';el.style.top='';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;if(canPlace(data.shape,r,c)){clearSmartHint();place(data.shape,data.color,r,c);afterPieceUsed(index)}else{renderBoard();showSmartHint(index)}dragState=null}
+function endDrag(e){document.removeEventListener('pointermove',moveDrag);if(!dragState)return;const {el,index,data,lift}=dragState;el.classList.remove('dragging');el.style.position='';el.style.left='';el.style.top='';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;if(canPlace(data.shape,r,c)){clearSmartHint();place(data.shape,data.color,r,c);recordRunMove();afterPieceUsed(index)}else{renderBoard();showSmartHint(index)}dragState=null}
 
 let musicOn=true,musicPlaying=false,musicCtx=null,musicGain=null,musicTimer=null,musicStep=0;
 function startMusic(){if(!musicOn||musicPlaying)return;musicPlaying=true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;musicCtx=musicCtx||new AC;if(musicCtx.state==='suspended')musicCtx.resume();musicGain=musicCtx.createGain();musicGain.gain.value=.22;musicGain.connect(musicCtx.destination);const master=musicGain,tempo=132,beat=60/tempo,notes=[261.63,329.63,392,523.25,392,329.63,293.66,392],bass=[130.81,130.81,146.83,146.83,164.81,164.81,146.83,130.81];function tone(freq,duration,type,volume,when){const osc=musicCtx.createOscillator(),g=musicCtx.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(volume,when+.012);g.gain.exponentialRampToValueAtTime(.0001,when+duration);osc.connect(g);g.connect(master);osc.start(when);osc.stop(when+duration+.03)}function schedule(){if(!musicPlaying)return;const now=musicCtx.currentTime+.03;for(let i=0;i<8;i++){const t=now+i*beat*.5;tone(notes[(musicStep+i)%notes.length],beat*.38,'triangle',.055,t);if(i%2===0)tone(bass[(musicStep+i)%bass.length],beat*.72,'sine',.085,t)}const chord=[notes[musicStep%8],notes[(musicStep+2)%8],notes[(musicStep+4)%8]];chord.forEach((f,j)=>tone(f/2,beat*3.5,'sine',.018,now+j*.015));musicStep=(musicStep+8)%notes.length;musicTimer=setTimeout(schedule,beat*4*1000-40)}schedule()}
@@ -786,7 +875,9 @@ if(startGameBtn){
     if(e.pointerType==='touch') launchGame(e);
   });
 }
-document.getElementById('startLeaderboard').onclick=openLeaderboard;document.getElementById('leaderboardBtn').onclick=openLeaderboard;document.getElementById('brLeaderboardCard').onclick=openLeaderboard;document.getElementById('closeLeaderboard').onclick=function(){document.getElementById('leaderboardOverlay').style.display='none'};function openStartSettings(){document.getElementById('startScreen').style.setProperty('display','none','important');document.getElementById('settingsOverlay').style.display='flex'}document.getElementById('startSettings').onclick=openStartSettings;document.getElementById('brSettingsCard').onclick=openStartSettings;
+document.getElementById('startLeaderboard').onclick=openLeaderboard;document.getElementById('leaderboardBtn').onclick=openLeaderboard;document.getElementById('brLeaderboardCard').onclick=openLeaderboard;document.getElementById('closeLeaderboard').onclick=function(){document.getElementById('leaderboardOverlay').style.display='none'};
+document.getElementById('pastYouBtn').onclick=openPastYou;document.getElementById('closePastYou').onclick=()=>document.getElementById('pastYouOverlay').style.display='none';document.getElementById('ghostPrev').onclick=()=>renderGhostBoard(ghostMoveIndex-1);document.getElementById('ghostNext').onclick=()=>renderGhostBoard(ghostMoveIndex+1);document.getElementById('beatBestBtn').onclick=()=>setBeatBestMode(!beatBestMode);document.getElementById('saveRunBtn').onclick=()=>{savePastRun();pastRun=loadPastRun();const pc=document.getElementById('pastCompare');if(pc)pc.classList.add('show');updatePastCompare();};
+function openStartSettings(){document.getElementById('startScreen').style.setProperty('display','none','important');document.getElementById('settingsOverlay').style.display='flex'}document.getElementById('startSettings').onclick=openStartSettings;document.getElementById('brSettingsCard').onclick=openStartSettings;
 resetBoard();
 let gameOverMusicCtx=null,gameOverMusicTimer=null;
 function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||window.webkitAudioContext;if(!AC||!musicOn)return;gameOverMusicCtx=gameOverMusicCtx||new AC;const ctx=gameOverMusicCtx;if(ctx.state==='suspended')ctx.resume();if(gameOverMusicTimer)clearTimeout(gameOverMusicTimer);const master=ctx.createGain();master.gain.value=.22;master.connect(ctx.destination);const notes=[{f:392,d:.18},{f:349.23,d:.18},{f:329.63,d:.22},{f:261.63,d:.35},{f:293.66,d:.22},{f:261.63,d:.45}];let t=ctx.currentTime+.04;notes.forEach((n,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=i<3?'triangle':'sine';o.frequency.setValueAtTime(n.f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.11,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+n.d);o.connect(g);g.connect(master);o.start(t);o.stop(t+n.d+.04);t+=n.d*.9});[130.81,164.81,196].forEach(f=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t-.02);g.gain.exponentialRampToValueAtTime(.035,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.75);o.connect(g);g.connect(master);o.start(t-.02);o.stop(t+.8)});gameOverMusicTimer=setTimeout(()=>{try{master.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.25)}catch(e){}},850)}catch(e){}}
