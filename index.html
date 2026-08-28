@@ -24,7 +24,7 @@ body{margin:0;width:100%;min-height:100vh;font-family:Arial,sans-serif;color:var
 button{font-family:inherit}
 .app{width:min(94vw,520px);max-width:100%;padding:14px 14px 28px;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
 .header{position:relative;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;min-width:0}
-.logo{font-size:34px;font-weight:900;letter-spacing:1px;white-space:nowrap}.logo span{color:#ffd43b}
+.logo{font-size:34px;font-weight:900;letter-spacing:1px;white-space:nowrap;color:#ff2d2d}.logo span{color:#22e36a}
 .scorebox{text-align:center;font-weight:800;min-width:90px}.scorebox small{display:block;font-size:12px;letter-spacing:1px;opacity:.9}#score{font-size:30px;margin-top:2px}#level{font-size:12px;font-weight:800;margin-top:4px}#levelProgress{font-size:10px;margin-top:2px;opacity:.8;font-weight:700;max-width:150px;line-height:1.2}
 .game-card{width:100%;max-width:100%;background:rgba(25,115,242,.72);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.25);overflow:hidden}
 .board{width:100%;max-width:420px;aspect-ratio:1;margin:auto;padding:6px;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;background:rgba(0,55,170,.38);border-radius:17px}
@@ -81,7 +81,8 @@ button{font-family:inherit}
 .hint{text-align:center;font-size:11px;line-height:1.35;opacity:.8;margin-top:8px}.overlay{position:fixed;inset:0;background:rgba(2,12,40,.65);display:none;align-items:center;justify-content:center;z-index:11000 !important;padding:20px}
 .modal{width:min(90vw,360px);max-width:100%;background:#1670ee;border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:24px;text-align:center;box-shadow:0 20px 60px #0007}.modal h2{margin-top:0}.modal button{margin-top:8px}
 .settings-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #ffffff33}.toggle{padding:8px 14px;border:0;border-radius:20px;font-weight:800}
-.coin-display{position:absolute;top:18px;left:18px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:800;font-size:14px;backdrop-filter:blur(8px);z-index:5}
+.header-left{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0}
+.coin-display{position:static;top:auto;left:auto;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:800;font-size:13px;backdrop-filter:blur(8px);z-index:5}
 #newBestMsg{font-weight:900;font-size:16px;margin:8px 0}.reward{position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:9999;padding:10px 18px;border-radius:999px;background:#fff;color:#1649b8;font-weight:900;box-shadow:0 12px 35px rgba(0,0,0,.25);animation:coinPop .9s ease forwards}
 @keyframes coinPop{0%{opacity:0;transform:translate(-50%,18px) scale(.85)}20%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-55px) scale(1.05)}}
 .level-up-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,12,45,.42);z-index:9999;pointer-events:none;animation:levelOverlayIn .18s ease-out;backdrop-filter:blur(3px)}
@@ -1015,8 +1016,10 @@ body{min-height:100dvh}
 <body>
 <div class="app">
 <div class="header">
-  <div class="coin-display">🪙 <span id="coins">0</span></div>
-  <div class="logo">BLOCK <span>RUSH</span></div>
+  <div class="header-left">
+    <div class="logo">BLOCK <span>RUSH</span></div>
+    <div class="coin-display">🪙 <span id="coins">0</span></div>
+  </div>
   <div class="scorebox">
     <small>SCORE</small>
     <div id="score">0</div>
@@ -1155,11 +1158,6 @@ body{min-height:100dvh}
     <div class="icon">🪙</div>
     <div class="label">COINS</div>
     <div class="value" id="brCoinValue">0</div>
-  </div>
-  <div class="br-home-card clickable" id="brPastYouCard" style="grid-column:1 / -1;min-height:88px;height:auto">
-    <div class="icon">👻</div>
-    <div class="label">PAST YOU VS PRESENT YOU</div>
-    <div class="value" id="brPastYouValue">No ghost yet</div>
   </div>
 </div><div class="pro-menu"><button id="startLeaderboard" class="pro-menu-btn"><span>♜</span> LEADERBOARD</button><button id="startSettings" class="pro-menu-btn"><span>☷</span> SETTINGS</button></div></div>
 <div class="pro-stats"><div><span>★</span><small>BEST SCORE</small><strong id="homeBest">0</strong></div><div><span>⌁</span><small>GAMES PLAYED</small><strong id="homeGames">0</strong></div><div><span>▥</span><small>HIGHEST LEVEL</small><strong id="homeHighestLevel">LEVEL 1</strong></div></div>
@@ -1498,6 +1496,9 @@ function launchGame(e){
   if(e){e.preventDefault();e.stopPropagation()}
   if(gameActive)return;
   gameActive=true;
+  document.body.classList.add('game-running');
+  const banner=document.getElementById('analyticsConsent');
+  if(banner) banner.style.display='none';
   const screen=document.getElementById('startScreen');
   if(screen)screen.style.setProperty('display','none','important');
   countGameStarted();
@@ -1511,6 +1512,7 @@ function quitToHome(){
   if(currentRunMoves && currentRunMoves.length) savePastRun();
   gameActive=false;
   gameEnded=false;
+  document.body.classList.remove('game-running');
   const screen=document.getElementById('startScreen');
   if(screen){
     screen.style.removeProperty('display');
@@ -1702,6 +1704,99 @@ body.playing-mobile .app{
   .past-score-box b{font-size:16px!important}
   .past-btn{font-size:9px!important;padding:7px 4px!important}
 }
+</style>
+
+<style id="home-consent-and-desktop-scale">
+/* Analytics consent belongs on MAIN HOME only — not replaced by Past You */
+#analyticsConsent{
+  position:fixed !important;
+  left:16px !important;
+  right:16px !important;
+  bottom:16px !important;
+  z-index:30000 !important;
+}
+body.playing-mobile #analyticsConsent,
+body.game-running #analyticsConsent{
+  display:none !important;
+}
+#startScreen.pro-home{
+  padding-bottom:118px !important;
+}
+
+/* Desktop start page: fill the screen, larger content */
+@media (min-width:761px){
+  #startScreen.pro-home{
+    min-height:100dvh !important;
+    height:100dvh !important;
+    overflow:hidden !important;
+    justify-content:center !important;
+    padding-top:24px !important;
+    padding-bottom:130px !important;
+  }
+  #startScreen.pro-home .pro-topbar{
+    display:none !important;
+  }
+  #startScreen.pro-home .pro-hero{
+    min-height:0 !important;
+    width:min(980px,92vw) !important;
+    padding:0 !important;
+  }
+  #startScreen.pro-home .cube-mark{
+    font-size:72px !important;
+  }
+  #startScreen.pro-home .pro-title{
+    font-size:92px !important;
+    letter-spacing:6px !important;
+    margin-top:8px !important;
+  }
+  #startScreen.pro-home #br-home-block-art{
+    width:min(420px,46vw) !important;
+    height:130px !important;
+    transform:scale(1.15) !important;
+    margin:18px auto 8px !important;
+  }
+  #startScreen.pro-home .pro-play{
+    width:min(720px,72vw) !important;
+    min-height:92px !important;
+    margin:28px auto 22px !important;
+    font-size:34px !important;
+    border-radius:28px !important;
+  }
+  #startScreen.pro-home #br-simple-home-cards{
+    width:min(720px,72vw) !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    grid-auto-rows:168px !important;
+    gap:18px !important;
+    margin:0 auto 0 !important;
+  }
+  #startScreen.pro-home #br-simple-home-cards .br-home-card{
+    height:168px !important;
+    min-height:168px !important;
+    border-radius:26px !important;
+  }
+  #startScreen.pro-home #br-simple-home-cards .br-home-card .icon{
+    font-size:40px !important;
+  }
+  #startScreen.pro-home #br-simple-home-cards .br-home-card .label{
+    font-size:18px !important;
+  }
+  #startScreen.pro-home #br-simple-home-cards .br-home-card .value{
+    font-size:30px !important;
+  }
+}
+@media (min-width:761px) and (max-height:820px){
+  #startScreen.pro-home .pro-title{font-size:72px !important}
+  #startScreen.pro-home .pro-play{min-height:76px !important;font-size:28px !important;margin:16px auto 14px !important}
+  #startScreen.pro-home #br-simple-home-cards{grid-auto-rows:132px !important;gap:14px !important}
+  #startScreen.pro-home #br-simple-home-cards .br-home-card{height:132px !important;min-height:132px !important}
+}
+
+/* Game page title only: BLOCK red, RUSH green. Nothing stacked above the name. */
+.header{padding-top:0 !important}
+.header-left{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.coin-display{position:static !important;top:auto !important;left:auto !important}
+.logo{color:#ff2d2d !important}
+.logo span{color:#22e36a !important}
 </style>
 </body>
 </html>
