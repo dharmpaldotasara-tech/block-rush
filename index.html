@@ -619,9 +619,9 @@ button{font-family:inherit}
 
 /* MOBILE GAME LAYOUT: BLOCKS FIRST, FEATURES BELOW */
 @media(max-width:760px){
-  html,body{min-height:100%;overflow-x:hidden;overflow-y:auto}
-  body{align-items:flex-start}
-  .app{width:100%;min-height:100vh;padding:8px 8px calc(12px + env(safe-area-inset-bottom));justify-content:flex-start}
+  html{min-height:100%;overflow-x:hidden;overflow-y:auto;scroll-behavior:auto;overscroll-behavior-y:none}
+  body{min-height:100dvh;align-items:flex-start;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:none}
+  .app{width:100%;min-height:100dvh;padding:8px 8px calc(12px + env(safe-area-inset-bottom));justify-content:flex-start}
   .header{margin-bottom:7px;padding-top:28px}
   .game-card{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:9px;border-radius:18px;overflow:visible}
   /* Board / blocks always stay at the top */
@@ -666,18 +666,59 @@ button{font-family:inherit}
   .past-score-box b{font-size:14px}
   .past-btn{font-size:7px!important}
 }
+
+/* FINAL MOBILE GAME FIX — board first, features below, compact for phones */
+@media (max-width:760px){
+  html,body{overflow-x:hidden!important;overflow-y:auto!important;}
+  body{align-items:flex-start!important;justify-content:flex-start!important;}
+  .app{width:100%!important;min-height:100dvh!important;padding:6px 7px calc(10px + env(safe-area-inset-bottom))!important;justify-content:flex-start!important;}
+  .header{padding-top:8px!important;margin-bottom:5px!important;}
+  .logo{font-size:24px!important;}
+  .scorebox{min-width:78px!important;}
+  #score{font-size:22px!important;}
+  .game-card{display:flex!important;flex-direction:column!important;gap:4px!important;padding:7px!important;border-radius:16px!important;overflow:visible!important;}
+  .board{order:1!important;width:min(70vw,285px)!important;max-width:285px!important;padding:3px!important;gap:2px!important;border-radius:12px!important;}
+  .cell{border-radius:4px!important;}
+  .info{order:2!important;margin:2px 1px 1px!important;min-height:27px!important;}
+  #newGame{padding:7px 12px!important;font-size:10px!important;}
+  .pieces{order:3!important;min-height:48px!important;height:48px!important;margin:0!important;}
+  .piece-slot{height:46px!important;}
+  .mini-cell{width:17px!important;height:17px!important;}
+  .piece{grid-auto-rows:17px!important;gap:2px!important;}
+  .past-compare{order:4!important;width:100%!important;margin:0!important;padding:7px!important;border-radius:12px!important;}
+  .past-compare-title{font-size:10px!important;}
+  .past-compare-sub{font-size:7.5px!important;}
+  .past-compare-score{margin:5px 0!important;}
+  .past-score-box{padding:4px!important;}
+  .past-score-box small{font-size:7px!important;}
+  .past-score-box b{font-size:14px!important;}
+  .past-btn{padding:6px 3px!important;font-size:7.5px!important;}
+  .beat-status{font-size:7.5px!important;margin-top:4px!important;}
+  .hint{order:5!important;margin:0!important;font-size:8px!important;line-height:1.15!important;}
+  .controls{order:6!important;gap:4px!important;margin:0!important;}
+  .control{padding:7px 2px!important;font-size:8px!important;min-height:29px!important;border-radius:10px!important;}
+}
+@media (max-width:380px){
+  .board{width:min(68vw,260px)!important;max-width:260px!important;}
+  .past-compare-title{font-size:9px!important;}
+  .past-btn{font-size:7px!important;padding:5px 2px!important;}
+  .control{font-size:7.5px!important;padding:6px 1px!important;}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
 <div class="header"><div class="logo">BLOCK <span>RUSH</span></div><div class="scorebox"><small>SCORE</small><div id="level" style="font-weight:800;margin-bottom:4px;">LEVEL 1</div><div id="levelProgress" style="font-size:12px;margin-top:4px;opacity:.9;">Clear 2 more lines to level up</div><div class="coin-display">🪙 <span id="coins">0</span></div><div id="score">0</div></div></div>
-<div class="game-card"><div id="board" class="board"></div><div class="info"><div class="best">BEST <span id="best">0</span></div><button id="newGame">NEW GAME</button></div><div id="pastCompare" class="past-compare">
+<div class="game-card"><div id="board" class="board"></div><div class="info"><div class="best">BEST <span id="best">0</span></div><button id="newGame">NEW GAME</button></div>
+<div id="pieces" class="pieces"></div><div class="hint">Drag blocks onto the board • Complete rows or columns to clear them</div>
+<div id="pastCompare" class="past-compare">
   <div class="past-compare-head"><div><div class="past-compare-title">🧠 PAST YOU VS PRESENT YOU</div><div class="past-compare-sub" id="pastCompareSub">Your previous run becomes your ghost.</div></div><button id="pastYouBtn" class="past-btn" type="button">👻 PAST YOU</button></div>
   <div class="past-compare-score"><div class="past-score-box"><small>PAST YOU</small><b id="pastScoreLive">—</b></div><div class="past-vs">VS</div><div class="past-score-box"><small>PRESENT YOU</small><b id="presentScoreLive">0</b></div></div>
   <div class="past-compare-actions"><button id="beatBestBtn" class="past-btn" type="button">⚔️ BEAT YOUR BEST</button><button id="saveRunBtn" class="past-btn" type="button">💾 SAVE MOVES</button></div>
   <div class="beat-status" id="beatStatus">No previous run yet.</div>
 </div>
-<div id="pieces" class="pieces"></div><div class="hint">Drag blocks onto the board • Complete rows or columns to clear them</div><div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
+<div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
 </div>
 
 <div id="settingsOverlay" class="overlay"><div class="modal"><h2>Settings</h2><div class="settings-row"><span>Sound</span><button id="soundToggle" class="toggle">ON</button></div><div class="settings-row"><span>Music</span><button id="musicToggle" class="toggle">ON</button></div><div class="settings-row"><span>Vibration</span><button id="vibToggle" class="toggle">ON</button></div><button id="closeSettings" class="control">CLOSE</button></div></div>
@@ -902,7 +943,7 @@ function startDrag(e){
   document.addEventListener('pointerup',endDrag,{once:true});
 }
 function moveDrag(e){if(!dragState)return;const {el,data,lift}=dragState;el.style.left=(e.clientX-el.offsetWidth/2)+'px';el.style.top=(e.clientY-el.offsetHeight/2-lift)+'px';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;let preview=[];if(canPlace(data.shape,r,c))preview=data.shape.map(([dr,dc])=>({r:r+dr,c:c+dc}));renderBoard(preview)}
-function endDrag(e){document.removeEventListener('pointermove',moveDrag);if(!dragState)return;const {el,index,data,lift}=dragState;el.classList.remove('dragging');el.style.position='';el.style.left='';el.style.top='';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;if(canPlace(data.shape,r,c)){clearSmartHint();place(data.shape,data.color,r,c);recordRunMove();afterPieceUsed(index)}else{renderBoard();showSmartHint(index)}dragState=null}
+function endDrag(e){document.removeEventListener('pointermove',moveDrag);if(!dragState)return;const {el,index,data,lift}=dragState;el.classList.remove('dragging');el.style.position='';el.style.left='';el.style.top='';const b=boardEl.getBoundingClientRect(),cell=b.width/SIZE,centerR=Math.floor((e.clientY-b.top-lift)/cell),centerC=Math.floor((e.clientX-b.left)/cell),minR=Math.min(...data.shape.map(x=>x[0])),minC=Math.min(...data.shape.map(x=>x[1])),r=centerR-minR,c=centerC-minC;if(canPlace(data.shape,r,c)){clearSmartHint();place(data.shape,data.color,r,c);afterPieceUsed(index)}else{renderBoard();showSmartHint(index)}dragState=null}
 
 let musicOn=true,musicPlaying=false,musicCtx=null,musicGain=null,musicTimer=null,musicStep=0;
 function startMusic(){if(!musicOn||musicPlaying)return;musicPlaying=true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;musicCtx=musicCtx||new AC;if(musicCtx.state==='suspended')musicCtx.resume();musicGain=musicCtx.createGain();musicGain.gain.value=.22;musicGain.connect(musicCtx.destination);const master=musicGain,tempo=132,beat=60/tempo,notes=[261.63,329.63,392,523.25,392,329.63,293.66,392],bass=[130.81,130.81,146.83,146.83,164.81,164.81,146.83,130.81];function tone(freq,duration,type,volume,when){const osc=musicCtx.createOscillator(),g=musicCtx.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(volume,when+.012);g.gain.exponentialRampToValueAtTime(.0001,when+duration);osc.connect(g);g.connect(master);osc.start(when);osc.stop(when+duration+.03)}function schedule(){if(!musicPlaying)return;const now=musicCtx.currentTime+.03;for(let i=0;i<8;i++){const t=now+i*beat*.5;tone(notes[(musicStep+i)%notes.length],beat*.38,'triangle',.055,t);if(i%2===0)tone(bass[(musicStep+i)%bass.length],beat*.72,'sine',.085,t)}const chord=[notes[musicStep%8],notes[(musicStep+2)%8],notes[(musicStep+4)%8]];chord.forEach((f,j)=>tone(f/2,beat*3.5,'sine',.018,now+j*.015));musicStep=(musicStep+8)%notes.length;musicTimer=setTimeout(schedule,beat*4*1000-40)}schedule()}
@@ -912,12 +953,13 @@ function beep(freq=500,dur=.05){if(!sound)return;try{const C=window.AudioContext
 function vibrate(ms){if(vibration&&navigator.vibrate)navigator.vibrate(ms)}
 function countGameStarted(){gamesPlayed+=1;localStorage.setItem('blockRushGamesPlayed',String(gamesPlayed));updateHomeStats()}
 function startFreshGame(){try{if(gameOverMusicTimer)clearTimeout(gameOverMusicTimer)}catch(e){}resetBoard();try{startMusic()}catch(e){}}
-document.getElementById('newGame').onclick=()=>{beep();countGameStarted();startFreshGame()};document.getElementById('playAgain').onclick=()=>{beep();countGameStarted();startFreshGame()};document.getElementById('gameOverLeaderboard').onclick=openLeaderboard;document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';document.getElementById('closeSettings').onclick=hideOverlays;
+document.getElementById('newGame').onclick=()=>{beep();countGameStarted();startFreshGame();keepMobileGameAtTop()};document.getElementById('playAgain').onclick=()=>{beep();countGameStarted();startFreshGame();keepMobileGameAtTop()};document.getElementById('gameOverLeaderboard').onclick=openLeaderboard;document.getElementById('settingsBtn').onclick=()=>document.getElementById('settingsOverlay').style.display='flex';document.getElementById('closeSettings').onclick=hideOverlays;
 function setSound(v){sound=v;document.getElementById('soundToggle').textContent=v?'ON':'OFF';document.getElementById('soundBtn').textContent=v?'🔊 SOUND':'🔇 SOUND'}function setVib(v){vibration=v;document.getElementById('vibToggle').textContent=v?'ON':'OFF';document.getElementById('vibrationBtn').textContent=v?'📳 VIBRATION':'📴 VIBRATION'}
 document.getElementById('soundToggle').onclick=()=>setSound(!sound);document.getElementById('vibToggle').onclick=()=>setVib(!vibration);document.getElementById('soundBtn').onclick=()=>{if(!musicOn)setMusic(true);else startMusic()};document.getElementById('vibrationBtn').onclick=()=>setVib(!vibration);document.getElementById('musicToggle').onclick=()=>setMusic(!musicOn);
 ['pointerdown','keydown','touchstart','click'].forEach(evt=>document.addEventListener(evt,()=>startMusic(),{once:true}));
 saveCoins();updateHomeStats();
-function launchGame(e){if(e){e.preventDefault();e.stopPropagation()}const screen=document.getElementById('startScreen');if(screen)screen.style.setProperty('display','none','important');countGameStarted();resetBoard();try{startMusic()}catch(err){}}
+function keepMobileGameAtTop(){if(window.matchMedia && window.matchMedia('(max-width:760px)').matches){requestAnimationFrame(()=>window.scrollTo(0,0));setTimeout(()=>window.scrollTo(0,0),60)}}
+function launchGame(e){if(e){e.preventDefault();e.stopPropagation()}const screen=document.getElementById('startScreen');if(screen)screen.style.setProperty('display','none','important');countGameStarted();resetBoard();keepMobileGameAtTop();try{startMusic()}catch(err){}}
 const startGameBtn=document.getElementById('startGame');
 if(startGameBtn){
   startGameBtn.addEventListener('click',launchGame);
@@ -942,10 +984,11 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
   window.addEventListener('pageshow',syncSimpleHome);
 })();
 </script>
-<script>
+<style>
 /* HOME OVERLAY FIX: overlays must appear above the fixed home screen */
 #leaderboardOverlay, #settingsOverlay{z-index:11000 !important;}
-
+</style>
+<script>
 /* FINAL HOME CARD FIX — direct handlers, no document-level interception */
 (function(){
   function bindHomeCards(){
