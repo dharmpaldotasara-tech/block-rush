@@ -616,6 +616,56 @@ button{font-family:inherit}
 }
 
 
+
+/* MOBILE GAME LAYOUT: BLOCKS FIRST, FEATURES BELOW */
+@media(max-width:760px){
+  html,body{min-height:100%;overflow-x:hidden;overflow-y:auto}
+  body{align-items:flex-start}
+  .app{width:100%;min-height:100vh;padding:8px 8px calc(12px + env(safe-area-inset-bottom));justify-content:flex-start}
+  .header{margin-bottom:7px;padding-top:28px}
+  .game-card{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:9px;border-radius:18px;overflow:visible}
+  /* Board / blocks always stay at the top */
+  .board{order:1;width:min(82vw,330px);max-width:330px;align-self:center;padding:4px;gap:3px;border-radius:13px}
+  .info{order:2;min-height:30px;margin:0}
+  .pieces{order:3;min-height:58px;height:58px;margin:0}
+  .piece-slot{height:56px}
+  .hint{order:5;margin:0;font-size:9px;line-height:1.2}
+  .past-compare{order:4;margin:0;width:100%;padding:7px;border-radius:13px}
+  .past-compare-head{gap:5px}
+  .past-compare-title{font-size:10px}
+  .past-compare-sub{font-size:8px}
+  .past-compare-score{margin:6px 0 5px}
+  .past-score-box{padding:5px}
+  .past-score-box small{font-size:7px}
+  .past-score-box b{font-size:15px}
+  .past-vs{font-size:9px}
+  .past-compare-actions{gap:5px}
+  .past-btn{padding:6px 4px;font-size:8px;border-radius:8px}
+  .beat-status{font-size:8px;margin-top:5px}
+  .controls{order:6;gap:5px;margin:0}
+  .control{padding:8px 3px;font-size:9px;min-height:32px}
+}
+
+/* Smaller phones: keep the complete game compact and reduce scrolling */
+@media(max-width:430px){
+  .header{padding-top:25px}
+  .board{width:min(80vw,310px);max-width:310px}
+  .game-card{padding:8px;gap:5px}
+  .pieces{min-height:54px;height:54px}
+  .piece-slot{height:52px}
+  .past-compare{padding:6px}
+  .past-compare-actions .past-btn{font-size:7.5px;padding:6px 3px}
+  .hint{font-size:8px}
+}
+
+/* Tiny phones */
+@media(max-width:360px){
+  .board{width:min(78vw,285px);max-width:285px}
+  .past-compare-title{font-size:9px}
+  .past-compare-sub{display:none}
+  .past-score-box b{font-size:14px}
+  .past-btn{font-size:7px!important}
+}
 </style>
 </head>
 <body>
