@@ -706,6 +706,21 @@ button{font-family:inherit}
 }
 
 </style>
+
+<style>
+.legal-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.legal-modal{max-height:min(82vh,680px);overflow:auto;text-align:left}
+.legal-modal h2{text-align:center;margin-bottom:8px}
+.legal-modal h3{font-size:12px;margin:12px 0 4px}
+.legal-modal p{font-size:11px;line-height:1.5;margin:5px 0;color:#d9e7e1}
+.legal-sub,.legal-contact{text-align:center;opacity:.85}
+.legal-input,.legal-textarea{width:100%;box-sizing:border-box;border:1px solid #ffffff33;border-radius:12px;background:#0d1720;color:#fff;padding:11px;margin:5px 0;font:inherit}
+.legal-textarea{min-height:140px;resize:vertical}
+.br-legal-footer{font-size:9px;text-align:center;opacity:.65;margin-top:6px;line-height:1.4}
+.br-legal-footer button{border:0;background:none;color:inherit;font:inherit;text-decoration:underline;padding:0 3px;cursor:pointer}
+@media(max-width:760px){.legal-modal{width:min(92vw,420px);max-height:78vh;padding:16px}.legal-actions{grid-template-columns:1fr 1fr}.legal-modal p{font-size:10.5px}}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -721,7 +736,72 @@ button{font-family:inherit}
 <div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
 </div>
 
-<div id="settingsOverlay" class="overlay"><div class="modal"><h2>Settings</h2><div class="settings-row"><span>Sound</span><button id="soundToggle" class="toggle">ON</button></div><div class="settings-row"><span>Music</span><button id="musicToggle" class="toggle">ON</button></div><div class="settings-row"><span>Vibration</span><button id="vibToggle" class="toggle">ON</button></div><button id="closeSettings" class="control">CLOSE</button></div></div>
+<div id="settingsOverlay" class="overlay"><div class="modal">
+<h2>Settings</h2>
+<div class="settings-row"><span>Sound</span><button id="soundToggle" class="toggle">ON</button></div>
+<div class="settings-row"><span>Music</span><button id="musicToggle" class="toggle">ON</button></div>
+<div class="settings-row"><span>Vibration</span><button id="vibToggle" class="toggle">ON</button></div>
+<div class="legal-actions">
+<button id="feedbackBtn" class="control">💬 FEEDBACK</button>
+<button id="privacyBtn" class="control">🔐 PRIVACY</button>
+<button id="termsBtn" class="control">📜 TERMS</button>
+<button id="cookieBtn" class="control">🍪 COOKIES</button>
+<button id="disclaimerBtn" class="control">⚖️ DISCLAIMER</button>
+</div>
+<button id="closeSettings" class="control">CLOSE</button>
+</div></div>
+
+<div id="feedbackOverlay" class="overlay"><div class="modal legal-modal">
+<h2>💬 Feedback</h2><p class="legal-sub">Help us make Block Rush better.</p>
+<input id="feedbackSubject" class="legal-input" maxlength="100" placeholder="Subject (optional)">
+<textarea id="feedbackMessage" class="legal-textarea" maxlength="2000" placeholder="Tell us what you think, report a bug, or suggest a feature..."></textarea>
+<div class="legal-actions"><button id="sendFeedback" class="control">✉️ SEND</button><button id="closeFeedback" class="control">CLOSE</button></div>
+<small class="legal-contact">Feedback email: dharmpaldotasara@gmail.com</small>
+</div></div>
+
+<div id="privacyOverlay" class="overlay"><div class="modal legal-modal"><h2>🔐 Privacy Policy</h2>
+<p><b>Effective:</b> 28 August 2026</p>
+<p>Block Rush is a browser game operated by <b>Dharm Pal</b> at <b>blockrush.rishabhdotasara.com</b>.</p>
+<h3>Information</h3><p>Block Rush may process gameplay information such as scores, progress, moves and leaderboard information. Information you voluntarily send through Feedback may include your email and message.</p>
+<h3>Local Storage</h3><p>Gameplay preferences, scores and previous-run information may be stored in your browser's local storage. You can remove locally stored data through your browser settings.</p>
+<h3>Use of Information</h3><p>Information may be used to operate the game, provide game features, improve the experience, maintain security, respond to support requests and comply with applicable law.</p>
+<h3>Third Parties</h3><p>If analytics, advertising, authentication, payments or other third-party services are introduced, this policy may be updated to describe them.</p>
+<h3>Your Choices</h3><p>For privacy questions or applicable requests, contact <b>dharmpaldotasara@gmail.com</b>.</p>
+<h3>Changes</h3><p>This policy may be updated as Block Rush or applicable requirements change.</p>
+<p><b>Contact:</b> Dharm Pal · dharmpaldotasara@gmail.com</p>
+<button id="closePrivacy" class="control">CLOSE</button></div></div>
+
+<div id="termsOverlay" class="overlay"><div class="modal legal-modal"><h2>📜 Terms & Conditions</h2>
+<p><b>Effective:</b> 28 August 2026</p>
+<p>By using Block Rush, you agree to use the game lawfully and fairly.</p>
+<h3>Fair Play</h3><p>Do not use bots, scripts, exploits, unauthorized access or other methods intended to manipulate scores, rankings or the experience of other players.</p>
+<h3>Scores & Leaderboards</h3><p>Scores and rankings may be removed, reset or modified when necessary to address cheating, technical manipulation, exploitation or fairness issues.</p>
+<h3>Intellectual Property</h3><p>Block Rush branding, design, code and original content are owned by or licensed to the operator unless otherwise stated. Unauthorized copying or commercial exploitation is not permitted.</p>
+<h3>Availability & Updates</h3><p>Features may change, be temporarily unavailable, or be discontinued due to maintenance, updates, technical issues or other circumstances.</p>
+<h3>Third Parties</h3><p>Third-party services or links may be used. Their own terms and privacy practices apply.</p>
+<h3>Disclaimer & Liability</h3><p>Block Rush is provided for entertainment. To the extent permitted by law, uninterrupted or error-free operation is not guaranteed, and liability is limited as permitted by applicable law.</p>
+<p><b>Contact:</b> Dharm Pal · dharmpaldotasara@gmail.com</p>
+<button id="closeTerms" class="control">CLOSE</button></div></div>
+
+<div id="cookieOverlay" class="overlay"><div class="modal legal-modal"><h2>🍪 Cookie Policy</h2>
+<p><b>Effective:</b> 28 August 2026</p>
+<p>Block Rush may use cookies or similar browser technologies where needed for website functionality or where third-party services are introduced.</p>
+<h3>Local Storage</h3><p>The game may use browser local storage for preferences, scores, progress and previous-run information.</p>
+<h3>Third-Party Technologies</h3><p>If analytics, advertising, authentication or payment services are added, their technologies may have their own policies and controls. This policy will be updated when appropriate.</p>
+<h3>Managing Cookies</h3><p>You can manage or delete cookies through your browser settings. Some functionality may be affected.</p>
+<p><b>Contact:</b> dharmpaldotasara@gmail.com</p>
+<button id="closeCookie" class="control">CLOSE</button></div></div>
+
+<div id="disclaimerOverlay" class="overlay"><div class="modal legal-modal"><h2>⚖️ Disclaimer</h2>
+<p><b>Effective:</b> 28 August 2026</p>
+<p>Block Rush is an entertainment game operated by <b>Dharm Pal</b>.</p>
+<p>The game is provided on an “as available” basis. Availability, scores, rankings and gameplay results may be affected by technical issues, updates or changes to game mechanics.</p>
+<p>Users are responsible for using Block Rush lawfully and fairly. Attempts to manipulate scores, rankings or gameplay systems are prohibited.</p>
+<p>Third-party services or links, if any, are governed by their own terms and policies.</p>
+<p>Nothing in this Disclaimer excludes or limits rights or liability that cannot legally be excluded or limited.</p>
+<p><b>Contact:</b> Dharm Pal · dharmpaldotasara@gmail.com</p>
+<button id="closeDisclaimer" class="control">CLOSE</button></div></div>
+
 <div id="gameOverOverlay" class="overlay"><div class="modal gameover-modal"><div class="gameover-badge">RUN COMPLETE</div><h2>GAME OVER</h2><p class="gameover-sub">Great run! Ready for another?</p><div class="result-grid"><div class="result-box"><span>Score</span><b id="finalScore">0</b></div><div class="result-box"><span>Level</span><b id="finalLevel">1</b></div><div class="result-box"><span>Coins Earned</span><b>🪙 <span id="finalCoins">0</span></b></div><div class="result-box"><span>Best</span><b id="finalBest">0</b></div></div><p id="newBestMsg" class="new-best" style="display:none">🏆 NEW BEST SCORE!</p><p id="gameOverComparison" class="beat-status" style="font-size:11px;margin:8px 0 0;color:#55f1a8"></p><div class="gameover-actions"><button id="playAgain" class="control">▶️ PLAY AGAIN</button><button id="gameOverLeaderboard" class="control">🏆 LEADERBOARD</button></div></div></div>
 
 <div id="startScreen" class="start-screen pro-home">
@@ -1027,5 +1107,26 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
   else bindHomeCards();
 })();
 </script>
+
+<script>
+(function(){
+  function show(id){const el=document.getElementById(id);if(el)el.style.display='flex'}
+  function hide(id){const el=document.getElementById(id);if(el)el.style.display='none'}
+  [['feedbackBtn','feedbackOverlay'],['privacyBtn','privacyOverlay'],['termsBtn','termsOverlay'],['cookieBtn','cookieOverlay'],['disclaimerBtn','disclaimerOverlay']].forEach(function(x){
+    const b=document.getElementById(x[0]);if(b)b.onclick=function(e){e.preventDefault();e.stopPropagation();show(x[1])};
+  });
+  [['closeFeedback','feedbackOverlay'],['closePrivacy','privacyOverlay'],['closeTerms','termsOverlay'],['closeCookie','cookieOverlay'],['closeDisclaimer','disclaimerOverlay']].forEach(function(x){
+    const b=document.getElementById(x[0]);if(b)b.onclick=function(){hide(x[1])};
+  });
+  const send=document.getElementById('sendFeedback');
+  if(send)send.onclick=function(){
+    const subject=(document.getElementById('feedbackSubject').value||'Block Rush Feedback').trim();
+    const message=(document.getElementById('feedbackMessage').value||'').trim();
+    if(!message){alert('Please enter your feedback first.');return}
+    window.location.href='mailto:dharmpaldotasara@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message+'\\n\\n— Block Rush feedback');
+  };
+})();
+</script>
+
 </body>
 </html>
