@@ -561,7 +561,7 @@ button{font-family:inherit}
 .past-compare-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .past-compare-title{font-weight:900;font-size:12px;letter-spacing:.8px;color:#f4fff8}
 .past-compare-sub{font-size:9px;color:#a9bdb3;margin-top:3px}
-.past-compare-score{display:flex;justify-content:space-between;gap:8px;margin:9px 0 7px}
+.past-compare-score{display:flex;justify-content:space-between;gap:6px;margin:9px 0 7px;align-items:stretch}.past-compare-score .past-score-box{min-width:0}
 .past-score-box{flex:1;background:rgba(255,255,255,.055);border-radius:10px;padding:7px;text-align:center}
 .past-score-box small{display:block;font-size:8px;color:#a9bdb3;letter-spacing:.7px}.past-score-box b{display:block;font-size:17px;margin-top:2px}
 .past-vs{font-size:10px;color:#55f1a8;font-weight:900;align-self:center}
@@ -721,6 +721,51 @@ button{font-family:inherit}
 @media(max-width:760px){.legal-modal{width:min(92vw,420px);max-height:78vh;padding:16px}.legal-actions{grid-template-columns:1fr 1fr}.legal-modal p{font-size:10.5px}}
 </style>
 
+
+<style id="final-responsive-fit">
+html,body{width:100%;min-height:100%;overflow-x:hidden}
+body{box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box}
+
+@media (min-width:761px){
+  body{min-height:100dvh;display:flex;flex-direction:column;overflow-y:auto}
+  .game-container{width:min(96vw,1100px);margin:0 auto;padding:clamp(8px,1.2vh,16px)}
+  .game-layout{width:100%;max-width:1050px;margin:0 auto}
+  .game-board{max-width:min(58vh,520px);max-height:min(58vh,520px)}
+}
+
+@media (max-width:760px){
+  body{min-height:100dvh;padding:0 8px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .game-container{width:100%;max-width:430px;margin:0 auto;padding:6px 0}
+  .game-layout{display:flex!important;flex-direction:column!important;align-items:center!important;width:100%!important;gap:7px!important}
+  .game-board{order:1!important;width:min(82vw,330px)!important;height:min(82vw,330px)!important;max-width:330px!important;max-height:330px!important}
+  .game-info{order:2!important;width:100%!important}
+  .blocks-container{order:3!important;width:100%!important}
+  .past-present-panel,.features,.comparison-panel{order:4!important;width:100%!important}
+  .hint-container{order:5!important;width:100%!important}
+  .controls{order:6!important;width:100%!important}
+  .br-legal-footer{order:7!important;width:100%!important}
+  .legal-modal{width:min(94vw,420px)!important;max-height:78dvh!important}
+}
+
+@media (max-width:430px){
+  .game-container{padding-top:4px}
+  .game-board{width:min(78vw,300px)!important;height:min(78vw,300px)!important}
+  .control{min-height:34px}
+}
+
+@media (max-height:700px) and (min-width:761px){
+  .game-container{padding-top:4px;padding-bottom:4px}
+  .game-board{max-width:min(48vh,440px);max-height:min(48vh,440px)}
+  .game-layout{gap:6px!important}
+}
+
+@media (max-height:620px) and (max-width:760px){
+  .game-container{padding-top:2px}
+  .game-board{width:min(68vw,270px)!important;height:min(68vw,270px)!important}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -729,8 +774,9 @@ button{font-family:inherit}
 <div id="pieces" class="pieces"></div><div class="hint">Drag blocks onto the board • Complete rows or columns to clear them</div>
 <div id="pastCompare" class="past-compare">
   <div class="past-compare-head"><div><div class="past-compare-title">🧠 PAST YOU VS PRESENT YOU</div><div class="past-compare-sub" id="pastCompareSub">Your previous run becomes your ghost.</div></div><button id="pastYouBtn" class="past-btn" type="button">👻 PAST YOU</button></div>
-  <div class="past-compare-score"><div class="past-score-box"><small>PAST YOU</small><b id="pastScoreLive">—</b></div><div class="past-vs">VS</div><div class="past-score-box"><small>PRESENT YOU</small><b id="presentScoreLive">0</b></div></div>
-  <div class="past-compare-actions"><button id="beatBestBtn" class="past-btn" type="button">⚔️ BEAT YOUR BEST</button><button id="saveRunBtn" class="past-btn" type="button">💾 SAVE MOVES</button></div>
+  <div class="past-compare-score"><div class="past-score-box"><small>PAST YOU</small><b id="pastScoreLive">—</b></div><div class="past-vs">VS</div><div class="past-score-box"><small>PRESENT YOU</small><b id="presentScoreLive">0</b></div><div class="past-score-box"><small>BEAT %</small><b id="pastBeatPercent">—</b></div></div>
+  <div class="past-compare-actions"><button id="beatBestBtn" class="past-btn" type="button">⚔️ BEAT YOUR BEST</button><button id="pastYouBtn" class="past-btn" type="button">👻 GHOST BOARD</button></div>
+  <div class="past-compare-actions"><button id="saveRunBtn" class="past-btn" type="button">💾 SAVE MOVES</button></div>
   <div class="beat-status" id="beatStatus">No previous run yet.</div>
 </div>
 <div class="controls"><button class="control" id="soundBtn">🎵 MUSIC</button><button class="control" id="vibrationBtn">📳 VIBRATION</button><button class="control" id="settingsBtn">⚙ SETTINGS</button><button class="control" id="leaderboardBtn">🏆 LEADERBOARD</button></div></div>
@@ -927,7 +973,7 @@ function loadPastRun(){try{const x=JSON.parse(localStorage.getItem(PAST_RUN_KEY)
 function savePastRun(){if(!currentRunMoves.length)return;const data={score:score,level:level,moves:currentRunMoves.slice(-150),savedAt:Date.now()};try{localStorage.setItem(PAST_RUN_KEY,JSON.stringify(data));pastRun=data}catch(e){}}
 function recordRunMove(){currentRunMoves.push({score:score,level:level,board:cloneBoardState()});if(currentRunMoves.length>150)currentRunMoves.shift();updatePastCompare()}
 function beatPercent(current,target){if(!target||target<=0)return 0;return Math.max(0,Math.round(((current-target)/target)*100))}
-function updatePastCompare(){const wrap=document.getElementById('pastCompare');if(!wrap)return;const ps=pastRun&&Number(pastRun.score)||0;const psEl=document.getElementById('pastScoreLive'),prEl=document.getElementById('presentScoreLive'),status=document.getElementById('beatStatus'),sub=document.getElementById('pastCompareSub');if(psEl)psEl.textContent=ps.toLocaleString();if(prEl)prEl.textContent=score.toLocaleString();if(sub)sub.textContent=ps?'Previous run: '+ps.toLocaleString()+' points.':'Finish a game to create your first ghost.';if(status){if(beatBestMode){const target=beatTarget;status.textContent=target>score?'⚔️ '+(target-score).toLocaleString()+' points to beat your best.':score===target?'⚔️ You matched your best!':'🔥 Best beaten by '+beatPercent(score,target)+'%!'}else if(ps){status.textContent=score>=ps?'🔥 Ahead of Past You by '+beatPercent(score,ps)+'%!':'Past You is '+(ps-score).toLocaleString()+' points ahead.'}else status.textContent='No previous run yet.'}}
+function updatePastCompare(){const wrap=document.getElementById('pastCompare');if(!wrap)return;const ps=pastRun&&Number(pastRun.score)||0;const psEl=document.getElementById('pastScoreLive'),prEl=document.getElementById('presentScoreLive'),pctEl=document.getElementById('pastBeatPercent'),status=document.getElementById('beatStatus'),sub=document.getElementById('pastCompareSub');if(psEl)psEl.textContent=ps?ps.toLocaleString():'—';if(prEl)prEl.textContent=score.toLocaleString();if(pctEl)pctEl.textContent=ps?(score>=ps?beatPercent(score,ps)+'%':'-'+beatPercent(ps,score)+'%'):'—';if(sub)sub.textContent=ps?'Previous run: '+ps.toLocaleString()+' points • Ghost saved.':'Finish a game to create your first ghost.';if(status){if(beatBestMode){const target=beatTarget;status.textContent=target>score?'⚔️ '+(target-score).toLocaleString()+' points to beat your best.':score===target?'⚔️ You matched your best!':'🔥 Best beaten by '+beatPercent(score,target)+'%!'}else if(ps){status.textContent=score>=ps?'🔥 You are ahead of Past You by '+beatPercent(score,ps)+'%!':'🎯 Past You is '+(ps-score).toLocaleString()+' points ahead.'}else status.textContent='No previous run yet.'}}
 function renderGhostBoard(index){const root=document.getElementById('ghostBoard'),label=document.getElementById('ghostMoveLabel'),pastScoreEl=document.getElementById('ghostPastScore'),presentScoreEl=document.getElementById('ghostPresentScore'),movesEl=document.getElementById('ghostMoves'),result=document.getElementById('ghostResult');if(!root)return;const moves=pastRun&&pastRun.moves||[];if(!moves.length){document.getElementById('ghostEmpty').style.display='block';document.getElementById('ghostContent').style.display='none';return}document.getElementById('ghostEmpty').style.display='none';document.getElementById('ghostContent').style.display='block';ghostMoveIndex=Math.max(0,Math.min(index,moves.length-1));const snap=moves[ghostMoveIndex],g=snap.board||[];root.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const cell=document.createElement('div');cell.className='ghost-cell';if(g[r]&&g[r][c])cell.classList.add(g[r][c]);root.appendChild(cell)}if(label)label.textContent='MOVE '+(ghostMoveIndex+1)+' / '+moves.length;if(pastScoreEl)pastScoreEl.textContent=Number(snap.score||0).toLocaleString();if(presentScoreEl)presentScoreEl.textContent=score.toLocaleString();if(movesEl)movesEl.textContent=moves.length;if(result){const ps=Number(pastRun.score||0);result.textContent=score>=ps?'🔥 You are ahead of Past You by '+beatPercent(score,ps)+'%!':'🎯 '+(ps-score).toLocaleString()+' points left to beat Past You.'}}
 function openPastYou(){pastRun=loadPastRun();ghostMoveIndex=0;renderGhostBoard(0);const o=document.getElementById('pastYouOverlay');if(o)o.style.display='flex'}
 function setBeatBestMode(v){beatBestMode=v;const b=document.getElementById('beatBestBtn');if(b){b.classList.toggle('active',v);b.textContent=v?'⚔️ BEAT YOUR BEST: ON':'⚔️ BEAT YOUR BEST'}updatePastCompare()}
@@ -1125,6 +1171,20 @@ function playGameOverMusic(){try{stopMusic();const AC=window.AudioContext||windo
     if(!message){alert('Please enter your feedback first.');return}
     window.location.href='mailto:dharmpaldotasara@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message+'\\n\\n— Block Rush feedback');
   };
+})();
+</script>
+
+
+<script id="final-viewport-reset">
+(function(){
+  function top(){ try{ window.scrollTo(0,0); }catch(e){} }
+  window.addEventListener('load', function(){ setTimeout(top,50); });
+  document.addEventListener('click', function(e){
+    var id=e.target && e.target.id;
+    if(id==='newGameBtn' || id==='startGameBtn' || id==='restartBtn' || id==='playAgainBtn'){
+      setTimeout(top,30);
+    }
+  });
 })();
 </script>
 
