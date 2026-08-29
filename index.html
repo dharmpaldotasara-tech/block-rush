@@ -655,6 +655,36 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
 }
 </style>
 <meta name="description" content="BidTopper — live public bidding leaderboard.">
+
+<style>
+/* BidTopper visitor stats */
+.visitor-stats{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:10px auto 16px;
+  padding:8px 14px;
+  width:max-content;
+  max-width:calc(100% - 24px);
+  border:1px solid rgba(123,76,226,.18);
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  box-sizing:border-box;
+}
+.visitor-stat{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.visitor-dot{font-size:10px}
+.visitor-total{opacity:.8}
+@media (max-width:600px){
+  .visitor-stats{width:calc(100% - 24px);border-radius:14px;gap:8px 12px}
+}
+body.dark-mode .visitor-stats{
+  background:rgba(24,28,37,.82);
+  border-color:rgba(155,120,240,.25);
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -667,7 +697,13 @@ main,.main,.page,.container,.wrap,.content{max-width:var(--face-width)!important
  </div>
 </header>
 
-<div class="live"><span class="dot">●</span><b id="online">Live</b> · <b id="visitors">0</b> listings on the board</div>
+<div class="live visitor-stats">
+  <span class="visitor-stat"><span class="dot visitor-dot">●</span><b id="onlineVisitors">0</b> online now</span>
+  <span>·</span>
+  <span class="visitor-stat visitor-total"><b id="totalVisitors">0</b> total visitors</span>
+  <span>·</span>
+  <span><b id="visitors">0</b> live listings</span>
+</div>
 
 <section class="hero">
  <div class="claim">Take #<span id="claimRank">1</span> for <span class="price-ctrl"><button class="minus" id="minus">−</button><span class="money" id="price">₹100</span><button class="plus" id="plus">+</button></span></div>
@@ -775,6 +811,41 @@ const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY)
 const $=id=>document.getElementById(id);
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0});
 let listings=[],events=[],channel=null,eventChannel=null,filter='All',chosenPrice=100,userSetPrice=false,rangeMode='all';
+
+const VISITOR_STORAGE_KEY='bidtopper_visitor_id_v1';
+const VISITOR_HEARTBEAT_MS=60000;
+
+function getVisitorId(){
+  try{
+    let id=localStorage.getItem(VISITOR_STORAGE_KEY);
+    if(!id){
+      id=(crypto.randomUUID?crypto.randomUUID():('v_'+Date.now()+'_'+Math.random().toString(36).slice(2)));
+      localStorage.setItem(VISITOR_STORAGE_KEY,id);
+    }
+    return id;
+  }catch{
+    return 'v_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+  }
+}
+
+async function updateVisitorStats(){
+  try{
+    const {data,error}=await client.rpc('bidtopper_track_visitor',{p_visitor_id:getVisitorId()});
+    if(error) throw error;
+    const stats=Array.isArray(data)?data[0]:data;
+    $('onlineVisitors').textContent=Number(stats?.online_visitors||0).toLocaleString('en-IN');
+    $('totalVisitors').textContent=Number(stats?.total_visitors||0).toLocaleString('en-IN');
+  }catch(error){
+    console.warn('Visitor stats unavailable:',error);
+  }
+}
+
+updateVisitorStats();
+setInterval(updateVisitorStats,VISITOR_HEARTBEAT_MS);
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible') updateVisitorStats();
+});
+
 
 const ALLOWED=['Website', 'X', 'Instagram', 'Facebook', 'App', 'Hospital', 'School', 'Extension', 'SEO & AI Visibility', 'AI Agents & Infrastructure', 'AI Media Generation', 'Marketing & Advertising', 'Developer Tools', 'Productivity & Personal Tools', 'People & Profiles', 'Design & Creative', 'Social Media & Creator Tools', 'Writing & Content', 'Sales & Lead Generation', 'Business, Finance & Investing', 'Games & Entertainment', 'Education & Learning', 'Health, Fitness & Wellness', 'Ecommerce & Retail', 'Directories, Launch & Discovery', 'Hiring, Jobs & Careers', 'Audio, Voice & Podcasting', 'Crypto, Web3 & Investing', 'Agencies, Studios & Services', 'Security, Privacy & Compliance', 'Travel, Local & Lifestyle', 'Media & News', 'Domains & Web Assets', 'Leaderboards & Attention Markets', 'Real Estate & Property', 'Other'];
 
